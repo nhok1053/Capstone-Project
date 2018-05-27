@@ -19,10 +19,10 @@ public class IntroActivity extends AppIntro {
         addSlide(IntroSlide.newInstance(R.layout.intro_slide_3));
         addSlide(AppIntroFragment.newInstance("Title","Description",R.drawable.ic_done_white, Color.CYAN));
         setFadeAnimation();
-
         SharedPreferences.Editor editor = getSharedPreferences("check", MODE_PRIVATE).edit();
         editor.putString("firstTime","N");
         editor.apply();
+
     }
     @Override
     public void onSkipPressed(Fragment currentFragment) {

@@ -1,4 +1,4 @@
-package com.example.huynhha.cookandshare;
+package com.example.huynhha.cookandshare.fragment;
 
 
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.huynhha.cookandshare.R;
 
 
 /**
