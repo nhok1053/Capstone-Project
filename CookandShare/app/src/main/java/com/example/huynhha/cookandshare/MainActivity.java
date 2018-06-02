@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private void appIntro() {
         SharedPreferences prefs = getSharedPreferences("check", MODE_PRIVATE);
         String restoredText = prefs.getString("firstTime", null);
-        Toast.makeText(this, "++++++"+restoredText+"'''''''''", LENGTH_LONG).show();
+        Toast.makeText(this, restoredText, LENGTH_LONG).show();
         if (restoredText != "N") {
             Intent intent = new Intent(MainActivity.this, IntroActivity.class);
             startActivity(intent);
