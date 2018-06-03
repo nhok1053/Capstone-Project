@@ -63,7 +63,7 @@ public class LoginFragment extends Fragment {
         ButterKnife.bind(this,v);
         // Configure Google Sign In
         signInWithGoogle();
-       // signInWithPhone();
+        signInWithPhone();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -83,15 +83,15 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-//    private void signInWithPhone(){
-//        singInPhone.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction().replace(R.id.fl,new LoginWithPhoneFragment()).addToBackStack(null);
-//                transaction.commit();
-//            }
-//        });
-//    }
+    private void signInWithPhone(){
+        singInPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().replace(R.id.fl,new LoginWithPhoneFragment()).addToBackStack(null);
+                transaction.commit();
+            }
+        });
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -101,6 +101,7 @@ public class LoginFragment extends Fragment {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
@@ -131,6 +132,9 @@ public class LoginFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(getContext(),"Login Successfull",Toast.LENGTH_LONG);
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_main,new UpdateProfileFragment()).addToBackStack(null);
+                            transaction.commit();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

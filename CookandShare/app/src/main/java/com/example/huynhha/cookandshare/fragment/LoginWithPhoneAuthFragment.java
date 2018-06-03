@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -62,7 +64,7 @@ public class LoginWithPhoneAuthFragment extends Fragment {
         ButterKnife.bind(this, v);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            phoneNumber = getArguments().getString("phoneNumber");
+            phoneNumber = "+84"+ getArguments().getString("phoneNumber");
             System.out.println("Key phone " + phoneNumber);
         }
         firebaseAuth = FirebaseAuth.getInstance();
@@ -117,6 +119,9 @@ public class LoginWithPhoneAuthFragment extends Fragment {
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                 signInWithAuthCredital(phoneAuthCredential);
                 Log.d(TAG, "onVerificationCompleted:" + phoneAuthCredential);
+                Toast.makeText(getContext(),"Login Successfull",Toast.LENGTH_LONG);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_main,new UpdateProfileFragment()).addToBackStack(null);
+                transaction.commit();
             }
 
             @Override
