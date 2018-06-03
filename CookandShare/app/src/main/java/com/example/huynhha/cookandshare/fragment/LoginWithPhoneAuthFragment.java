@@ -120,6 +120,10 @@ public class LoginWithPhoneAuthFragment extends Fragment {
                 signInWithAuthCredital(phoneAuthCredential);
                 Log.d(TAG, "onVerificationCompleted:" + phoneAuthCredential);
                 Toast.makeText(getContext(),"Login Successfull",Toast.LENGTH_LONG);
+                UpdateProfileFragment loginWithPhoneAuth = new UpdateProfileFragment();
+                final Bundle bundle = new Bundle();
+                bundle.putString("phoneNumber",phoneNumber);
+                loginWithPhoneAuth.setArguments(bundle);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_main,new UpdateProfileFragment()).addToBackStack(null);
                 transaction.commit();
             }

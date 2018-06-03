@@ -1,12 +1,15 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -34,8 +37,11 @@ public class UpdateProfileFragment extends Fragment {
     EditText edt_first_name;
     @BindView(R.id.edt_second_name)
     EditText edt_second_name;
+    @BindView(R.id.btn_update)
+    Button btn_Update;
     private FirebaseAuth mAuth;
     private static final String[] paths = {"Nam", "Nữ", "Giới tính thứ 3"};
+    String phoneNumber;
 
     public UpdateProfileFragment() {
         // Required empty public constructor
@@ -53,7 +59,13 @@ public class UpdateProfileFragment extends Fragment {
                 android.R.layout.simple_spinner_item, paths);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sex_drop_down.setAdapter(adapter);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            phoneNumber = "+84" + getArguments().getString("phoneNumber");
+            System.out.println("Key phone " + phoneNumber);
+        }
         getInfo();
+        setBtn_Update();
         return v;
     }
 
@@ -63,16 +75,28 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     public void getInfo() {
-        for (UserInfo user : FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
-            if (user.getProviderId().equals("facebook.com")) {
-                System.out.println("User is signed in with Facebook");
-            }
-            if (user.getProviderId().equals("google.com")) {
-                edt_email.setText(mAuth.getCurrentUser().getEmail());
-                edt_first_name.setText(mAuth.getCurrentUser().getDisplayName());
-                edt_phone_number.setText(mAuth.getCurrentUser().getPhoneNumber());
-               
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            for (UserInfo user : FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
+                if (user.getProviderId().equals("facebook.com")) {
+                    System.out.println("User is signed in with Facebook");
+                } else if (user.getProviderId().equals("google.com")) {
+                    edt_email.setText(mAuth.getCurrentUser().getEmail());
+                    edt_first_name.setText(mAuth.getCurrentUser().getDisplayName());
+                    edt_phone_number.setText(mAuth.getCurrentUser().getPhoneNumber());
+                } else {
+                    edt_phone_number.setText(phoneNumber);
+                }
             }
         }
+
+    }
+
+    public void setBtn_Update() {
+        btn_Update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+            }
+        });
     }
 }
