@@ -37,7 +37,7 @@ public class LoginWithPhoneAuthFragment extends Fragment {
     EditText verifyCode;
     @BindView(R.id.send_verify_code)
     Button btnVerify;
-    @BindView(R.id.send_verify_code)
+    @BindView(R.id.resend_verify_code)
     Button btnResendCode;
     @BindView(R.id.time_remaning)
     TextView txtTimeRemaning;
