@@ -3,7 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="update_button">Hello blank fragment</string>
+    <string name="update_button">Update</string>
     <string name="update_title">Update Information</string>
     <string name="update_first_name">First name:</string>
     <string name="update_second_name">Second name:</string>
