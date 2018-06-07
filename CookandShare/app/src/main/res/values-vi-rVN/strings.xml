@@ -16,4 +16,6 @@
     <string name="phone_auth_resend">Gửi lại</string>
     <string name="phone_input_title">Nhập số điện thoại bạn vào đây</string>
     <string name="phone_input_send">"Gửi "</string>
+    <string name="card_view_top_post_like">Thích</string>
+    <string name="card_view_top_post_comment">Bình luận</string>
 </resources>
