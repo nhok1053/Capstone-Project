@@ -18,7 +18,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="60dp"
-            android:text="Update Profile"
+            android:text="@string/update_title"
             android:textColor="#000000"
             android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,13 +41,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
-                android:text="Họ:"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="30dp"
+                android:text="@string/update_first_name"
                 android:textSize="20dp" />
 
             <EditText
+                android:layout_alignParentRight="true"
                 android:id="@+id/edt_first_name"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/editext_border"
@@ -55,9 +57,9 @@
                 android:paddingLeft="10dp"
                 tools:layout_editor_absoluteX="126dp"
                 tools:layout_editor_absoluteY="97dp" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,15 +72,17 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
             <TextView
+                android:layout_marginStart="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="13dp"
-                android:text="Email:"
+                android:text="@string/update_email"
                 android:textSize="20dp" />
 
             <EditText
+                android:layout_alignParentRight="true"
                 android:id="@+id/edt_email"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/editext_border"
@@ -86,9 +90,9 @@
                 android:paddingLeft="10dp"
                 tools:layout_editor_absoluteX="126dp"
                 tools:layout_editor_absoluteY="97dp" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,15 +105,18 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
             <TextView
+
+                android:layout_marginStart="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="23dp"
-                android:text="Tên:"
+                android:text="@string/update_second_name"
                 android:textSize="20dp" />
 
             <EditText
+                android:layout_alignParentRight="true"
                 android:id="@+id/edt_second_name"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/editext_border"
@@ -117,11 +124,11 @@
                 android:paddingLeft="10dp"
                 tools:layout_editor_absoluteX="126dp"
                 tools:layout_editor_absoluteY="97dp" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout3"
-            android:layout_width="344dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -132,15 +139,17 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <TextView
+                android:layout_marginStart="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12dp"
-                android:text="Ngày sinh :"
+                android:text="@string/update_DOB"
                 android:textSize="20dp" />
             //date time pick edit later
             <EditText
+                android:layout_alignParentRight="true"
                 android:id="@+id/edt_date_of_birth"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/editext_border"
@@ -149,12 +158,12 @@
                 android:paddingLeft="10dp"
                 tools:layout_editor_absoluteX="126dp"
                 tools:layout_editor_absoluteY="97dp" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
@@ -164,22 +173,25 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
             <TextView
+                android:layout_marginStart="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="13dp"
-                android:text="Giới tính:"
+                android:text="@string/update_sex"
                 android:textSize="20dp" />
 
             <Spinner
+                android:layout_marginRight="15dp"
+                android:layout_alignParentRight="true"
                 android:id="@+id/drop_down_list"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="180dp"
+                android:layout_height="40dp"
                 android:background="@drawable/editext_border" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout6"
-            android:layout_width="344dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -190,15 +202,17 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
             <TextView
+                android:layout_marginStart="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12dp"
-                android:text="SĐT:   "
+                android:text="@string/update_phone_number"
                 android:textSize="20dp" />
 
             <EditText
+                android:layout_alignParentRight="true"
                 android:id="@+id/edt_phone_number_update"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/editext_border"
@@ -207,7 +221,7 @@
                 android:paddingLeft="10dp"
                 tools:layout_editor_absoluteX="126dp"
                 tools:layout_editor_absoluteY="97dp" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <Button
             android:id="@+id/btn_update"
@@ -216,8 +230,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:background="#f44336"
-            android:text="Update"
+            android:background="#00E676"
+            android:text="@string/update_button"
             android:textAlignment="center"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"

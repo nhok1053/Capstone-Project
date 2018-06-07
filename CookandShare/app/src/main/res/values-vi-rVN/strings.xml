@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cook and share</string>
+    <string name="hello_blank_fragment">Xin chào</string>
+    <string name="update_button">"Cập nhập "</string>
+    <string name="update_email">Email:</string>
+    <string name="update_first_name">Họ:</string>
+    <string name="update_second_name">"Tên: "</string>
+    <string name="update_DOB">"Ngày sinh: "</string>
+    <string name="update_sex">Giới tính:</string>
+    <string name="update_phone_number">SĐT:</string>
+    <string name="update_title">Cập nhập thông tin</string>
+    <string name="phone_auth_tittle">Nhập mã xác nhận</string>
+    <string name="phone_auth_remaining">Thời gian chờ còn :</string>
+    <string name="phone_auth_send">Gửi</string>
+    <string name="phone_auth_resend">Gửi lại</string>
+    <string name="phone_input_title">Nhập số điện thoại bạn vào đây</string>
+    <string name="phone_input_send">"Gửi "</string>
+</resources>

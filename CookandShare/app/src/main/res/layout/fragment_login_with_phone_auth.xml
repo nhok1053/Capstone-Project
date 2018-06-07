@@ -20,7 +20,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="56dp"
             android:padding="15dp"
-            android:text="Enter verify code here"
+            android:text="@string/phone_auth_tittle"
             android:textAlignment="center"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:text="Remaning time : " />
+                android:text="@string/phone_auth_remaining" />
 
             <TextView
                 android:id="@+id/time_remaning"
@@ -68,7 +68,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="40dp"
             android:background="#f44336"
-            android:text="SEND"
+            android:text="@string/phone_auth_send"
             android:textAlignment="center"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="20dp"
             android:background="#f44336"
-            android:text="RESEND Code"
+            android:text="@string/phone_auth_resend"
             android:textAlignment="center"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"

@@ -3,4 +3,19 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="update_button">Hello blank fragment</string>
+    <string name="update_title">Update Information</string>
+    <string name="update_first_name">First name:</string>
+    <string name="update_second_name">Second name:</string>
+    <string name="update_DOB">Date of Birth:</string>
+    <string name="update_sex">Sex:</string>
+    <string name="update_email">Email:</string>
+    <string name="update_phone_number">Phone:</string>
+    <string name="phone_auth_tittle">Enter verify code here</string>
+    <string name="phone_auth_remaining">Remaining time:</string>
+    <string name="phone_auth_send">Send</string>
+    <string name="phone_auth_resend">Resend</string>
+    <string name="phone_input_title">Enter your phone number here</string>
+    <string name="phone_input_send">send</string>
+
 </resources>

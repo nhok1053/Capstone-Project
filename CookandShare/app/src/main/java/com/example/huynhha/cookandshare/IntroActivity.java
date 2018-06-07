@@ -17,13 +17,14 @@ public class IntroActivity extends AppIntro {
         addSlide(IntroSlide.newInstance(R.layout.intro_slide_1));
         addSlide(IntroSlide.newInstance(R.layout.intro_slide_2));
         addSlide(IntroSlide.newInstance(R.layout.intro_slide_3));
-        addSlide(AppIntroFragment.newInstance("Title","Description",R.drawable.ic_done_white, Color.CYAN));
+        addSlide(IntroSlide.newInstance(R.layout.intro_slide_4));
         setFadeAnimation();
         SharedPreferences.Editor editor = getSharedPreferences("check", MODE_PRIVATE).edit();
-        editor.putString("firstTime","N");
+        editor.putString("firstTime", "N");
         editor.apply();
 
     }
+
     @Override
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
