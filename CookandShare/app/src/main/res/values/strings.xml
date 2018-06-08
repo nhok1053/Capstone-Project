@@ -17,6 +17,11 @@
     <string name="phone_auth_resend">Resend</string>
     <string name="phone_input_title">Enter your phone number here</string>
     <string name="phone_input_send">send</string>
+<<<<<<< HEAD
     <string name="title_activity_post_recipe">PostRecipe</string>
+=======
+    <string name="card_view_top_post_like">like</string>
+    <string name="card_view_top_post_comment">comment</string>
+>>>>>>> 6fd5a4f0b28e45b2770014ac1f02fd322961f442
 
 </resources>
