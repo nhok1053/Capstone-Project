@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PostRecipe">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/editext_border"
+                android:text="add image" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/image_border" />
+        </RelativeLayout>
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+            app:layout_cstraintStart_toStartOf="parent">
+
+            <EditText
+                android:id="@+id/recipe_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@android:color/transparent"
+                android:hint="Tên món ăn "
+                android:paddingLeft="5dp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/line_below"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/recipe_name"
+                android:layout_marginTop="8dp"
+                android:background="#9E9E9E" />
+
+            <EditText
+                android:id="@+id/recipe_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line_below"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:hint="Mô tả ngắn gọn về món ăn"
+                android:minLines="5"
+                android:paddingLeft="5dp" />
+            <RelativeLayout
+                android:background="#E0E0E0"
+                android:layout_below="@id/recipe_description"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                   android:paddingLeft="15dp"
+                    android:layout_centerInParent="true"
+                    android:textAlignment="textStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ĐỘ KHÓ VÀ THỜI GIAN THỰC HIỆN"/>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</ScrollView>

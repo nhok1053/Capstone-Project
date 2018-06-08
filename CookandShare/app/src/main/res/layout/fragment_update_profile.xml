@@ -47,6 +47,8 @@
                 android:textSize="20dp" />
 
             <EditText
+                android:maxLines="1"
+                android:imeOptions="actionNext"
                 android:layout_alignParentRight="true"
                 android:id="@+id/edt_first_name"
                 android:layout_width="180dp"
@@ -80,6 +82,7 @@
                 android:textSize="20dp" />
 
             <EditText
+                android:imeOptions="actionNext"
                 android:layout_alignParentRight="true"
                 android:id="@+id/edt_email"
                 android:layout_width="180dp"
@@ -114,6 +117,7 @@
                 android:textSize="20dp" />
 
             <EditText
+                android:imeOptions="actionNext"
                 android:layout_alignParentRight="true"
                 android:id="@+id/edt_second_name"
                 android:layout_width="180dp"
@@ -147,6 +151,7 @@
                 android:textSize="20dp" />
             //date time pick edit later
             <EditText
+                android:imeOptions="actionNext"
                 android:layout_alignParentRight="true"
                 android:id="@+id/edt_date_of_birth"
                 android:layout_width="180dp"
@@ -210,6 +215,8 @@
                 android:textSize="20dp" />
 
             <EditText
+                android:maxLines="1"
+                android:imeOptions="actionDone"
                 android:layout_alignParentRight="true"
                 android:id="@+id/edt_phone_number_update"
                 android:layout_width="180dp"

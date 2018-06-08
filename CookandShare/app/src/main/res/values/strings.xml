@@ -17,5 +17,6 @@
     <string name="phone_auth_resend">Resend</string>
     <string name="phone_input_title">Enter your phone number here</string>
     <string name="phone_input_send">send</string>
+    <string name="title_activity_post_recipe">PostRecipe</string>
 
 </resources>
