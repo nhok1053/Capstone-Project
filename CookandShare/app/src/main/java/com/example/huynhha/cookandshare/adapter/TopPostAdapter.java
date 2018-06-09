@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.huynhha.cookandshare.R;
+import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.squareup.picasso.Picasso;
 
@@ -25,7 +26,6 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
 
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
         ImageView userAvatar;
         TextView userName;
         TextView time;
@@ -72,7 +72,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     @Override
     public void onBindViewHolder(final PostViewHolder holder, int position) {
         Post post = posts.get(position);
-        Picasso.get().load(post.getUserImgUrl()).into(holder.userAvatar);
+        Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
         holder.userName.setText(post.getUserID());
         holder.time.setText(post.getTime());
         Picasso.get().load(post.getImgUrl()).into(holder.imgContent);

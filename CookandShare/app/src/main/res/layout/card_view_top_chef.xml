@@ -12,7 +12,7 @@
         android:layout_marginTop="8dp">
 
         <ImageView
-            android:id="@+id/imgViewTopChef"
+            android:id="@+id/cvTopChefImgViewTopChef"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@drawable/border_circle_image" />
