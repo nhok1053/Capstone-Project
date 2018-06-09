@@ -6,8 +6,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/cvTopPost"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,95 +20,103 @@
 
                 <ImageView
                     android:id="@+id/cvTopPostUserAvatar"
-                    android:layout_margin="8dp"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_margin="8dp"
                     android:background="@drawable/border_circle_image" />
 
                 <LinearLayout
-                    android:layout_marginTop="8dp"
                     android:layout_width="208dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/cvTopPostUserName"
-                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:text="TTL"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/cvTopPostPostTime"
-                        android:layout_marginTop="15dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:text="11:20 thu 2 6-3-2018" />
+                        android:layout_marginTop="15dp"
+                        android:text="11:20 thu 2 6-3-2018"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/cvTopPostBtnShowMore"
-                    android:layout_marginTop="8dp"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/three_dot_vertical" />
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/cvTopPostImgContent"
-                android:layout_marginTop="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="#777777"/>
-            <TextView
-                android:id="@+id/cvTopPostTvTitle"
-                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="Title"/>
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/cvTopPostTvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Title"
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/cvTopPostTvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Description"
-                android:textSize="15sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:textSize="15sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/cvTopPostTvLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/card_view_top_post_like"/>
+                    android:text="@string/card_view_top_post_like" />
+
                 <TextView
                     android:id="@+id/cvTopPostTvComment"
-                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/card_view_top_post_comment"/>
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/card_view_top_post_comment" />
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/cvTopPostBtnLike"
-                    android:layout_width="170dp"
-                    android:background="@drawable/editext_border"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/card_view_top_post_like"/>
+                    android:background="@drawable/editext_border"
+                    android:text="@string/card_view_top_post_like" />
+
                 <Button
                     android:id="@+id/cvTopPostBtnComment"
-                    android:layout_marginLeft="4dp"
-                    android:layout_width="170dp"
-                    android:background="@drawable/editext_border"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/card_view_top_post_comment"/>
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/editext_border"
+                    android:text="@string/card_view_top_post_comment" />
             </LinearLayout>
         </LinearLayout>
 

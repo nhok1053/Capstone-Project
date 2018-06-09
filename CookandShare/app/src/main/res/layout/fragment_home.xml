@@ -11,6 +11,48 @@
         android:id="@+id/fl_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="#cccccc"/>
+                <TextView
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Top Attribute"
+                    android:textSize="20sp"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvChef"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+                <TextView
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Top Recipe"
+                    android:textSize="20sp"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvRecipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
 
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/rvPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+        </ScrollView>
     </FrameLayout>
 </FrameLayout>

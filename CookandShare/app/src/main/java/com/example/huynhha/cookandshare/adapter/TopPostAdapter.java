@@ -25,32 +25,28 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
 
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.cvTopPost)
         CardView cv;
-        @BindView(R.id.cvTopPostUserAvatar)
         ImageView userAvatar;
-        @BindView(R.id.cvTopPostUserName)
         TextView userName;
-        @BindView(R.id.cvTopPostPostTime)
         TextView time;
-        @BindView(R.id.cvTopPostImgContent)
         ImageView imgContent;
-        @BindView(R.id.cvTopPostTvTitle)
         TextView title;
-        @BindView(R.id.cvTopPostTvDescription)
         TextView description;
-        @BindView(R.id.cvTopPostTvLike)
         TextView like;
-        @BindView(R.id.cvTopPostTvComment)
         TextView comment;
-        @BindView(R.id.cvTopPostBtnLike)
         Button btnLike;
-        @BindView(R.id.cvTopPostBtnComment)
         Button btnComment;
 
         public PostViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(itemView);
+            userName=itemView.findViewById(R.id.cvTopPostUserName);
+            userAvatar=itemView.findViewById(R.id.cvTopPostUserAvatar);
+            time=itemView.findViewById(R.id.cvTopPostPostTime);
+            imgContent=itemView.findViewById(R.id.cvTopPostImgContent);
+            title=itemView.findViewById(R.id.cvTopPostTvTitle);
+            description=itemView.findViewById(R.id.cvTopPostTvDescription);
+//            userName=itemView.findViewById(R.id.cvTopPostUserName);
+//            userName=itemView.findViewById(R.id.cvTopPostUserName);
         }
 
     }
@@ -74,7 +70,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+    public void onBindViewHolder(final PostViewHolder holder, int position) {
         Post post = posts.get(position);
         Picasso.get().load(post.getUserImgUrl()).into(holder.userAvatar);
         holder.userName.setText(post.getUserID());
@@ -82,8 +78,8 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Picasso.get().load(post.getImgUrl()).into(holder.imgContent);
         holder.title.setText(post.getTitle());
         holder.description.setText(post.getDescription());
-        holder.like.setText(holder.like.getText() + " :" + post.getLike().size());
-        holder.comment.setText(holder.comment.getText() + " :" + post.getComment().size());
+//        holder.like.setText(holder.like.getText() + " :" + post.getLikeNumber());
+//        holder.comment.setText(holder.comment.getText() + " :" + post.getCommentNumber());
 
     }
 
