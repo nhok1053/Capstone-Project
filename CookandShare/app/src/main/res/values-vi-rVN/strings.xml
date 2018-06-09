@@ -18,4 +18,13 @@
     <string name="phone_input_send">"Gửi "</string>
     <string name="card_view_top_post_like">Thích</string>
     <string name="card_view_top_post_comment">Bình luận</string>
+    <string name="teaspoons">thìa cà phê</string>
+    <string name="cup">cốc</string>
+    <string name="lb">lb</string>
+    <string name="g">g</string>
+    <string name="kg">kg</string>
+    <string name="egg">quả trứng</string>
+    <string name="fruit">quả</string>
+    <string name="bunchs">bó</string>
+    <string name="fast_easy">Dễ nấu</string>
 </resources>
