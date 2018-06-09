@@ -20,6 +20,23 @@
     <string name="title_activity_post_recipe">PostRecipe</string>
     <string name="card_view_top_post_like">like</string>
     <string name="card_view_top_post_comment">comment</string>
+    <string-array name="quatity">
+        <item>@string/kg</item>
+        <item>@string/g</item>
+        <item>@string/lb</item>
+        <item>@string/cup</item>
+        <item>@string/fruit</item>
+        <item>@string/bunchs</item>
+    </string-array>
+    <string name="fast_easy"><![CDATA[Fast & easy]]></string>
+    <string name="kg">kg</string>
+    <string name="g">g</string>
+    <string name="lb">lb</string>
+    <string name="cup">cups</string>
+    <string name="teaspoons">teaspoons</string>
+    <string name="egg">eggs</string>
+    <string name="fruit">fruits</string>
+    <string name="bunchs">bunchs</string>
 
 
 </resources>

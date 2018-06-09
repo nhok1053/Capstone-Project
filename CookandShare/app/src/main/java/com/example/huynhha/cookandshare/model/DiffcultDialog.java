@@ -17,13 +17,12 @@ public class DiffcultDialog extends AppCompatDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_dialog_difficult, null);
-
         alertDialog.setView(view)
                 .setTitle("Difficult").
                 setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        dismiss();
                     }
                 }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
