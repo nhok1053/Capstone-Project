@@ -37,7 +37,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         ImageView imgContent;
         @BindView(R.id.cvTopPostTvTitle)
         TextView title;
-        @BindView(R.id.cvTopPostTvComment)
+        @BindView(R.id.cvTopPostTvDescription)
         TextView description;
         @BindView(R.id.cvTopPostTvLike)
         TextView like;
