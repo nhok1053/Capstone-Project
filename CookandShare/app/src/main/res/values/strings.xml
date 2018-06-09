@@ -20,4 +20,9 @@
     <string name="title_activity_post_recipe">PostRecipe</string>
     <string name="card_view_top_post_like">like</string>
     <string name="card_view_top_post_comment">comment</string>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5d724a29deefdabdbab4329aac227d320a9cb4fa
 </resources>
