@@ -6,9 +6,22 @@
     tools:context=".fragment.PersonalFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayoutCategories"
+            style="@style/MyCustomTabText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"></android.support.design.widget.TabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPagerCategories"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"></android.support.v4.view.ViewPager>
+    </LinearLayout>
 
 </FrameLayout>
