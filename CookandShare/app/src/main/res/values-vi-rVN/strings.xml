@@ -2,14 +2,14 @@
 <resources>
     <string name="app_name">Cook and share</string>
     <string name="hello_blank_fragment">Xin chào</string>
-    <string name="update_button">"Cập nhập "</string>
-    <string name="update_email">Email:</string>
-    <string name="update_first_name">Họ:</string>
-    <string name="update_second_name">"Tên: "</string>
-    <string name="update_DOB">"Ngày sinh: "</string>
+    <string name="update_button">"Cập nhật "</string>
+    <string name="update_email">Email: </string>
+    <string name="update_first_name">Họ: </string>
+    <string name="update_second_name">Tên: </string>
+    <string name="update_DOB">Ngày sinh: </string>
     <string name="update_sex">Giới tính:</string>
     <string name="update_phone_number">SĐT:</string>
-    <string name="update_title">Cập nhập thông tin</string>
+    <string name="update_title">Cập nhật thông tin</string>
     <string name="phone_auth_tittle">Nhập mã xác nhận</string>
     <string name="phone_auth_remaining">Thời gian chờ còn :</string>
     <string name="phone_auth_send">Gửi</string>
@@ -18,6 +18,12 @@
     <string name="phone_input_send">"Gửi "</string>
     <string name="card_view_top_post_like">Thích</string>
     <string name="card_view_top_post_comment">Bình luận</string>
+    <string name="by">Được tạo bởi</string>
+    <string name="duration">Thời gian: </string>
+    <string name="ration">Số người ăn: </string>
+    <string name="material">Nguyên liệu: </string>
+    <string name="start_button">BẮT ĐẦU NẤU</string>
+    <string name="minutes">phút</string>
     <string name="teaspoons">thìa cà phê</string>
     <string name="cup">cốc</string>
     <string name="lb">lb</string>
