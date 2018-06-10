@@ -20,6 +20,12 @@
     <string name="title_activity_post_recipe">PostRecipe</string>
     <string name="card_view_top_post_like">like</string>
     <string name="card_view_top_post_comment">comment</string>
+    <string name="by">By</string>
+    <string name="duration">Duration: </string>
+    <string name="ration">Rations: </string>
+    <string name="material">Material: </string>
+    <string name="minutes">minutes</string>
+    <string name="start_button">START COOKING</string>
     <string-array name="quatity">
         <item>@string/kg</item>
         <item>@string/g</item>
