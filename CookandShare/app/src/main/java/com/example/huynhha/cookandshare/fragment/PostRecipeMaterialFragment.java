@@ -3,6 +3,7 @@ package com.example.huynhha.cookandshare.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.R;
+import com.example.huynhha.cookandshare.adapter.MaterialAdapter;
+import com.example.huynhha.cookandshare.adapter.TopRecipeAdapter;
+import com.example.huynhha.cookandshare.entity.Material;
+import com.example.huynhha.cookandshare.entity.Post;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,6 +98,7 @@ public class PostRecipeMaterialFragment extends Fragment {
     Button btn_add_material;
     @BindView(R.id.rc_material)
     RecyclerView rc_material;
+    List<Material> materials=new ArrayList<>();
     private static final String[] number_of_people = {"1","2","3","4","5","6","7","8","9","10","10+"};
     public PostRecipeMaterialFragment() {
         // Required empty public constructor
@@ -106,6 +116,31 @@ public class PostRecipeMaterialFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_people_use.setAdapter(adapter);
         return view;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        addMaterial();
+    }
+
+    public void addMaterial(){
+        btn_add_material.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                materials.add(new Material("",edt_namme_of_material.getText().toString(),edt_quatity.getText().toString()+material_quantity_type.getSelectedItem().toString(),""));
+
+                importPostMaterial();
+            }
+        });
+
+    }
+    public void importPostMaterial() {
+        LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
+        rc_material.setLayoutManager(lln);
+        MaterialAdapter materialAdapter = new MaterialAdapter(materials);
+        rc_material.setAdapter(materialAdapter);
     }
 
 }

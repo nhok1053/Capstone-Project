@@ -217,7 +217,6 @@
                     android:layout_marginRight="10dp"
                     android:background="@android:color/transparent"
                     android:hint="trứng gà"
-                    android:inputType="number"
                     android:textAlignment="center" />
             </RelativeLayout>
 
@@ -273,7 +272,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"></Spinner>
+                    android:layout_marginRight="10dp">
+
+                </Spinner>
             </RelativeLayout>
 
             <Button
