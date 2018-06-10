@@ -18,6 +18,7 @@ public class Post {
     private ArrayList<Comment> comment;
 
 
+
     public Post(String postID, String userID, String time, String imgUrl, String title,
                 String description, String userImgUrl, int like, int comment) {
         this.postID = postID;
