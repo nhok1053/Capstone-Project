@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.example.huynhha.cookandshare.R;
+
 public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostStepViewHolder> {
 
 
@@ -38,6 +40,11 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         private RelativeLayout duration_step;
         public PostStepViewHolder(View itemView) {
             super(itemView);
+            edt_description = itemView.findViewById(R.id.edt_step_description);
+            edt_tips = itemView.findViewById(R.id.step_tip);
+            edt_secret_materials = itemView.findViewById(R.id.material_tip);
+            img_step = itemView.findViewById(R.id.img_step_recipe);
+            
         }
     }
 }
