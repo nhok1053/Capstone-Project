@@ -14,8 +14,8 @@ public class Category {
         this.categoryImgUrl = categoryImgUrl;
     }
 
-    static List<Category> lst=new ArrayList<>();
-    public static List<Category> addListCategory(){
+    static ArrayList<Category> lst=new ArrayList<>();
+    public static ArrayList<Category> addListCategory(){
         lst.add(new Category("","Legend","https://i.pinimg.com/564x/31/1e/68/311e68c6bd86f051f9d116ee90c51941.jpg"));
         lst.add(new Category("","Power Core","https://i.pinimg.com/564x/8a/10/8a/8a108a478f3f25158750cdedc4001370.jpg"));
         lst.add(new Category("","Tyrande","https://i.pinimg.com/564x/5b/7f/d9/5b7fd93532746ec5918937a2d9134457.jpg"));
@@ -28,7 +28,6 @@ public class Category {
         lst.add(new Category("","Valentine","https://i.pinimg.com/564x/31/3a/7d/313a7dd6857ecba8823bb0e430945b97.jpg"));
         lst.add(new Category("","Blizzard Entertainment","https://i.pinimg.com/564x/b0/ed/1c/b0ed1ca94a5e83d2ed79e72b156df6fb.jpg"));
         lst.add(new Category("","HOTS","https://i.pinimg.com/564x/c4/45/a2/c445a287529df55a4c17c6523140d491.jpg"));
-        lst.add(new Category("","Legacy of the void","https://i.pinimg.com/564x/b7/68/08/b768089f90946291e2563065dd2fb30b.jpg"));
         return lst;
     }
     public String getCategoryID() {

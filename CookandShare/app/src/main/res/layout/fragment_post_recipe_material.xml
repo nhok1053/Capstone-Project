@@ -329,7 +329,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="10dp"
                         android:text="Breakfast" />
 
                     <CheckBox
@@ -360,7 +360,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="10dp"
                         android:text="Fast food" />
 
                     <CheckBox
@@ -391,7 +391,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="10dp"
                         android:text="Salad" />
 
                     <CheckBox
@@ -422,7 +422,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="10dp"
                         android:text="Healthy" />
 
                     <CheckBox
@@ -453,7 +453,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="10dp"
                         android:text="Dessert" />
 
                     <CheckBox
@@ -484,7 +484,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="10dp"
                         android:text="For gym" />
 
                     <CheckBox

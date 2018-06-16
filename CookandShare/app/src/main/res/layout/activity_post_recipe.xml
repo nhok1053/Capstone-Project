@@ -9,6 +9,23 @@
         android:id="@+id/fl_post_recipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.marlonmafra.android.widget.SegmentedTab
+                android:id="@+id/segmented_post_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:tabSelectedColor="@color/colorPrimary"
+                app:tabUnselectedColor="@android:color/white" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_post_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/segmented_post_recipe" />
+        </RelativeLayout>
+
     </FrameLayout>
 </RelativeLayout>
 

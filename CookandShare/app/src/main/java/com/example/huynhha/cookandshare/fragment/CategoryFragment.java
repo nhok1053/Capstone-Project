@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class CategoryFragment extends Fragment {
         segmentedTab = v.findViewById(R.id.segmentedTabCategories);
         viewPager = v.findViewById(R.id.viewPagerCategories);
         setTabLayout();
+        System.out.println("Refresh lai man hinh");
         return v;
     }
 
@@ -57,8 +59,6 @@ public class CategoryFragment extends Fragment {
         subTabAdapter.addFragment(new TipFragment(),"Tips");
         viewPager.setAdapter(subTabAdapter);
         segmentedTab.setupWithViewPager(viewPager);
-
-
     }
 
 }

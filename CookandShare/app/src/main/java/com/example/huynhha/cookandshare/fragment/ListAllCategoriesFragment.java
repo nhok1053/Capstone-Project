@@ -23,6 +23,7 @@ import java.util.ArrayList;
  */
 public class ListAllCategoriesFragment extends Fragment {
     RecyclerView rvCategories;
+    ListCategoriesAdapter listCategoriesAdapter;
 
     public ListAllCategoriesFragment() {
         // Required empty public constructor
@@ -33,17 +34,18 @@ public class ListAllCategoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v=inflater.inflate(R.layout.fragment_list_all_categories, container, false);
-        rvCategories=v.findViewById(R.id.rcListCategory);
+        View v = inflater.inflate(R.layout.fragment_list_all_categories, container, false);
+        rvCategories = v.findViewById(R.id.rcListCategory);
         importListCategories();
         return v;
     }
-    public void importListCategories() {
 
-        GridLayoutManager gln = new GridLayoutManager(this.getActivity(),2,GridLayoutManager.VERTICAL,false);
+    public void importListCategories() {
+        GridLayoutManager gln = new GridLayoutManager(this.getActivity(), 2, GridLayoutManager.VERTICAL, false);
         rvCategories.setLayoutManager(gln);
-        ListCategoriesAdapter listCategoriesAdapter = new ListCategoriesAdapter(Category.addListCategory());
+        listCategoriesAdapter = new ListCategoriesAdapter(Category.addListCategory());
         rvCategories.setAdapter(listCategoriesAdapter);
+        System.out.println("Add lai categories");
     }
 
 }
