@@ -56,7 +56,7 @@ public class CategoryFragment extends Fragment {
     private void setTabLayout() {
         SubTabAdapter subTabAdapter=new SubTabAdapter(getFragmentManager());
         subTabAdapter.addFragment(new ListAllCategoriesFragment(),"Categories");
-        subTabAdapter.addFragment(new TipFragment(),"Tips");
+        subTabAdapter.addFragment(new ListTipsFragment(),"Tips");
         viewPager.setAdapter(subTabAdapter);
         segmentedTab.setupWithViewPager(viewPager);
     }
