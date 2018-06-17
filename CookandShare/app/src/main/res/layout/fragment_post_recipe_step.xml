@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".fragment.PostRecipeStepFragment">
+<RelativeLayout
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rc_post_step"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
 
-</FrameLayout>
+    <Button
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_add_step"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rc_post_step"
+        android:background="#64DD17"
+        android:text="Thêm nguyên liệu"
+        android:textColor="#ffffff" />
+</RelativeLayout>
+
+</ScrollView>

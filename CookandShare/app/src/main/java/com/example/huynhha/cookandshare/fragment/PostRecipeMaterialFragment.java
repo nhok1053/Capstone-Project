@@ -130,11 +130,10 @@ public class PostRecipeMaterialFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 materials.add(new Material("",edt_namme_of_material.getText().toString(),edt_quatity.getText().toString()+material_quantity_type.getSelectedItem().toString(),""));
-
                 importPostMaterial();
+
             }
         });
-
     }
     public void importPostMaterial() {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());

@@ -1,6 +1,7 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;

@@ -7,14 +7,22 @@
     tools:context=".fragment.CategoryFragment">
 
     <RelativeLayout
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.marlonmafra.android.widget.SegmentedTab
+            android:layout_centerHorizontal="true"
             android:id="@+id/segmentedTabCategories"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:tabSelectedColor="@color/colorPrimary"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:tabTextColor="@color/colorPrimary"
+            app:tabBackground="@drawable/border_tab_layout"
+            app:tabSelectedColor="@android:color/white"
             app:tabUnselectedColor="@android:color/white" />
 
         <android.support.v4.view.ViewPager
