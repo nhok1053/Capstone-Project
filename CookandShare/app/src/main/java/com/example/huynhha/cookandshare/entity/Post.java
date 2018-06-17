@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
-    private int numberOfPeople;
 
+    private int numberOfPeople;
     private String postID;
     private String userID;
     private String userImgUrl;

@@ -9,7 +9,6 @@ import com.example.huynhha.cookandshare.adapter.SubTabAdapter;
 import com.example.huynhha.cookandshare.fragment.ListAllCategoriesFragment;
 import com.example.huynhha.cookandshare.fragment.PostRecipeMaterialFragment;
 import com.example.huynhha.cookandshare.fragment.PostRecipeStepFragment;
-import com.example.huynhha.cookandshare.fragment.TipFragment;
 import com.marlonmafra.android.widget.SegmentedTab;
 
 public class PostRecipe extends AppCompatActivity {
@@ -21,6 +20,7 @@ public class PostRecipe extends AppCompatActivity {
         setContentView(R.layout.activity_post_recipe);
         segmentedTab = findViewById(R.id.segmented_post_recipe);
         viewPager = findViewById(R.id.view_post_recipe);
+        getSupportActionBar().hide();
         setTabLayout();
     }
     private void setTabLayout() {
