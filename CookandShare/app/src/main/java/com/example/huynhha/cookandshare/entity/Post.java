@@ -13,15 +13,15 @@ public class Post {
     private String title;
     private String description;
     private String time;
-    private String imgUrl;
-    private int likeNumber;
-    private int commentNumber;
+    private String urlImage;
+    private int like;
+    private int comment;
+
     private List<Material> materials;
     private List<PostStep> postSteps;
 
 
-
-    public Post(int numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int likeNumber, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
+    public Post(int numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
         this.numberOfPeople = numberOfPeople;
         this.postID = postID;
         this.userID = userID;
@@ -29,9 +29,9 @@ public class Post {
         this.title = title;
         this.description = description;
         this.time = time;
-        this.imgUrl = imgUrl;
-        this.likeNumber = likeNumber;
-        this.commentNumber = commentNumber;
+        this.urlImage = imgUrl;
+        this.like = like;
+        this.comment = commentNumber;
         this.materials = materials;
         this.postSteps = postSteps;
     }
@@ -41,11 +41,11 @@ public class Post {
         this.postID = postID;
         this.userID = userID;
         this.time = time;
-        this.imgUrl = imgUrl;
+        this.urlImage = imgUrl;
         this.title = title;
         this.description = description;
-        this.likeNumber = like;
-        this.commentNumber = comment;
+        this.like = like;
+        this.comment = comment;
         this.userImgUrl = userImgUrl;
     }
 
@@ -53,7 +53,7 @@ public class Post {
     }
 
     public Post(String title, String imgUrl) {
-        this.imgUrl = imgUrl;
+        this.urlImage = imgUrl;
         this.title = title;
     }
 
@@ -69,14 +69,6 @@ public class Post {
         topRecipes.add(new Post("Com Daily", "https://scontent.fhan2-2.fna.fbcdn.net/v/t1.0-9/32266817_1640435629403125_2580005151267880960_n.jpg?_nc_cat=0&_nc_eui2=AeF22n98RxaiMOBYKYVrGWKlcSjizGZttQhoQ4ZpV2p6rZ0ECKs0scIf9a7UuSJgiqW2NtNPqs0KQyZ-1GPzsP_jf_qYhtCJS6UGInl5rwaJgA&oh=c5f7e6a41c8a1cc5bb27c679bd02275e&oe=5BAAF8E2"));
         topRecipes.add(new Post("Bun HNP", "https://scontent.fhan2-2.fna.fbcdn.net/v/t1.0-9/32156189_942555652592909_4170791957452292096_n.jpg?_nc_cat=0&_nc_eui2=AeHSuJx5xxePv9IyEK5FnU3o-e2BlqDmMfnhhCVj71klbO91bHVuuqy8guwkvd2gvYaG8bTfEozj_GNJyH5jmM0W5R9rXHSCCqDL0jEkwaGMDg&oh=c1c36cadac0a43e7aeba65a0e17c27d0&oe=5BAB3EF1"));
         return topRecipes;
-    }
-
-    public static List<Post> initData() {
-        posts.add(new Post("Post0001", "MiideviL", "6-9-2018", "https://i.pinimg.com/564x/5b/7f/d9/5b7fd93532746ec5918937a2d9134457.jpg", "Recipe 001",
-                "Mon dau tien", "https://i.pinimg.com/564x/a8/d4/a3/a8d4a3d0225f5e3def397f257b07a155.jpg", 10, 10));
-        posts.add(new Post("Post0001", "MiideviL", "6-9-2018", "http://media-cache-ec0.pinimg.com/1200x/0e/80/07/0e8007ccbb7441c8058573e80b2efd1e.jpg", "Recipe 002",
-                "Mon thu hai", "https://i.pinimg.com/564x/05/35/9d/05359d0c37e375e650f30c9798313696.jpg", 10, 10));
-        return posts;
     }
 
 
@@ -112,12 +104,12 @@ public class Post {
         this.time = time;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getUrlImage() {
+        return urlImage;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 
     public String getTitle() {
@@ -136,25 +128,26 @@ public class Post {
         this.description = description;
     }
 
-    public int getLikeNumber() {
-        return likeNumber;
+    public int getLike() {
+        return like;
     }
 
-    public void setLikeNumber(int likeNumber) {
-        this.likeNumber = likeNumber;
+    public void setLike(int like) {
+        this.like = like;
     }
 
-    public int getCommentNumber() {
-        return commentNumber;
+    public int getComment() {
+        return comment;
     }
 
-    public void setCommentNumber(int commentNumber) {
-        this.commentNumber = commentNumber;
+    public void setComment(int comment) {
+        this.comment = comment;
     }
 
     public int getNumberOfPeople() {
         return numberOfPeople;
     }
+
     public void setNumberOfPeople(int numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
     }

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         btn_add_recipe = findViewById(R.id.btn_add_recipe);
-        appIntro();
+//        appIntro();
         setTabLayout();
         addRecipe();
     }
