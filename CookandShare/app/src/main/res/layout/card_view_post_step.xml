@@ -123,39 +123,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp" />
                 </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/rl_time_step"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_below="@id/rl_tip">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="8dp"
-                        android:text="- Thời gian thực hiện "
-                        android:textAlignment="textStart"
-                        android:textColor="#000000"
-                        android:textSize="18dp" />
-
-                    <TextView
-                        android:id="@+id/tv_step_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:text="0p"
-                        android:textColor="#FF6D00"
-                        android:textSize="18dp" />
-                </RelativeLayout>
                 <ImageView
                     android:id="@+id/img_delete_step"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="15dp"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/rl_time_step"
+                    android:layout_below="@id/rl_tip"
                     android:src="@drawable/recyclebin"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
