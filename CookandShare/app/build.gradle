@@ -8,6 +8,7 @@ android {
         applicationId "com.example.huynhha.cookandshare"
         minSdkVersion 19
         targetSdkVersion 27
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -24,11 +25,16 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:multidex:1.0.3'
+
+
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.github.apl-devs:appintro:v4.2.0'
     implementation 'com.android.support:support-v4:27.0.2'
     implementation 'com.google.firebase:firebase-auth:15.0.0'
+
     //noinspection GradleCompatible
+
     implementation 'com.google.firebase:firebase-firestore:17.0.1'
     implementation 'com.marlonmafra.android.widget:segmented-tab:1.0.0'
     implementation 'com.google.android.gms:play-services-auth:15.0.0'

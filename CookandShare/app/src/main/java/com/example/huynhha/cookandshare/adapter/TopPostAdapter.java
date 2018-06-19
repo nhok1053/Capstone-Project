@@ -45,8 +45,8 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             imgContent=itemView.findViewById(R.id.cvTopPostImgContent);
             title=itemView.findViewById(R.id.cvTopPostTvTitle);
             description=itemView.findViewById(R.id.cvTopPostTvDescription);
-//            userName=itemView.findViewById(R.id.cvTopPostUserName);
-//            userName=itemView.findViewById(R.id.cvTopPostUserName);
+            like=itemView.findViewById(R.id.cvTopPostTvLike);
+            comment=itemView.findViewById(R.id.cvTopPostTvComment);
         }
 
     }
@@ -75,18 +75,15 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
         holder.userName.setText(post.getUserID());
         holder.time.setText(post.getTime());
-        Picasso.get().load(post.getImgUrl()).into(holder.imgContent);
+        Picasso.get().load(post.getUrlImage()).into(holder.imgContent);
         holder.title.setText(post.getTitle());
         holder.description.setText(post.getDescription());
-//        holder.like.setText(holder.like.getText() + " :" + post.getLikeNumber());
-//        holder.comment.setText(holder.comment.getText() + " :" + post.getCommentNumber());
-
+        holder.like.setText( "Like :" + post.getLike());
+        holder.comment.setText( "Comment :" + post.getComment());
     }
 
     @Override
     public int getItemCount() {
         return posts.size();
     }
-
-
 }

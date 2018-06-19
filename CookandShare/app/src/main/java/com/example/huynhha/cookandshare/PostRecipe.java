@@ -15,6 +15,9 @@ import com.example.huynhha.cookandshare.adapter.SubTabAdapter;
 import com.example.huynhha.cookandshare.fragment.ListAllCategoriesFragment;
 import com.example.huynhha.cookandshare.fragment.PostRecipeMaterialFragment;
 import com.example.huynhha.cookandshare.fragment.PostRecipeStepFragment;
+
+import com.example.huynhha.cookandshare.fragment.ListTipsFragment;
+
 import com.marlonmafra.android.widget.SegmentedTab;
 
 import java.io.FileNotFoundException;

@@ -49,7 +49,7 @@ public class TopRecipeAdapter extends RecyclerView.Adapter<TopRecipeAdapter.Post
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Post recipe = topRecipes.get(position);
-        Picasso.get().load(recipe.getImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.imgTopRecipe);
+        Picasso.get().load(recipe.getUrlImage()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.imgTopRecipe);
         holder.tvTopRecipe.setText(recipe.getTitle());
     }
 
