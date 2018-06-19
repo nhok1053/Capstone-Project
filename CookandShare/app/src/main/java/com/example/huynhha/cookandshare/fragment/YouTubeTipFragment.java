@@ -12,10 +12,10 @@ import com.example.huynhha.cookandshare.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TipFragment extends Fragment {
+public class YouTubeTipFragment extends Fragment {
 
 
-    public TipFragment() {
+    public YouTubeTipFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,7 @@ public class TipFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tip, container, false);
+        return inflater.inflate(R.layout.fragment_you_tube_tip, container, false);
     }
 
 }

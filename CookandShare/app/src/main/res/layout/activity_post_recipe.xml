@@ -5,10 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PostRecipe">
-    <FrameLayout
-        android:id="@+id/fl_post_recipe"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/post_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/btn_close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_add_close"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/btn_close"
+                android:textColor="#ffffff"
+                android:text="Create recipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"/>
+            <Button
+                android:layout_marginRight="10dp"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/btn_add_recipe"
+                android:background="@drawable/ic_add_check"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:layout_below="@+id/post_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UnknownId">
+        <com.marlonmafra.android.widget.SegmentedTab
+            android:id="@+id/segmented_post_recipe"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:tabTextColor="@color/colorPrimary"
+            app:tabBackground="@drawable/border_tab_layout"
+            app:tabSelectedColor="@android:color/white"
+            app:tabUnselectedColor="@android:color/white"/>
+
+        <android.support.v4.view.ViewPager
+            android:layout_below="@+id/segmented_post_recipe"
+            android:id="@+id/view_post_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
 </RelativeLayout>
 

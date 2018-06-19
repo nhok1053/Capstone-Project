@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.PersonalFragment">
+    tools:context=".fragment.YouTubeTipFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <FrameLayout
-        android:id="@+id/fl_category"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

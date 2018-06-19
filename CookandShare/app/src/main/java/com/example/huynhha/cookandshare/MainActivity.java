@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.adapter.PagerAdapter;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+    Button btn_add_recipe;
     private AppBarLayout appBarLayout;
     private int[] tabIcons = {
             R.drawable.ic_home,
@@ -40,10 +43,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         ButterKnife.bind(this);
-        appIntro();
+        btn_add_recipe = findViewById(R.id.btn_add_recipe);
+//        appIntro();
         setTabLayout();
+        addRecipe();
     }
-
+    public void addRecipe(){
+        btn_add_recipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,PostRecipe.class);
+                startActivity(intent);
+            }
+        });
+    }
     private void setTabLayout() {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         //adding fragment

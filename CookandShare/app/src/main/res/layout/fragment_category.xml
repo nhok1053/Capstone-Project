@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.CategoryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <FrameLayout
-        android:id="@+id/fl_category"
+    <RelativeLayout
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </FrameLayout>
+        <com.marlonmafra.android.widget.SegmentedTab
+            android:layout_centerHorizontal="true"
+            android:id="@+id/segmentedTabCategories"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:tabTextColor="@color/colorPrimary"
+            app:tabBackground="@drawable/border_tab_layout"
+            app:tabSelectedColor="@android:color/white"
+            app:tabUnselectedColor="@android:color/white" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPagerCategories"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/segmentedTabCategories" />
+    </RelativeLayout>
 
 </FrameLayout>
