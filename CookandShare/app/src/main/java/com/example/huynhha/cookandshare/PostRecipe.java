@@ -44,9 +44,9 @@ public class PostRecipe extends AppCompatActivity {
 
         postRecipeStepFragment = new PostRecipeStepFragment();
         postRecipeMaterialFragment = new PostRecipeMaterialFragment();
-        PostRecipeTabLayoutAdapter postRecipeTabLayoutAdapter=new PostRecipeTabLayoutAdapter(getSupportFragmentManager());
-        postRecipeTabLayoutAdapter.addFragment(postRecipeMaterialFragment,"1. Materials");
-        postRecipeTabLayoutAdapter.addFragment(postRecipeStepFragment,"2. Step");
+        PostRecipeTabLayoutAdapter postRecipeTabLayoutAdapter = new PostRecipeTabLayoutAdapter(getSupportFragmentManager());
+        postRecipeTabLayoutAdapter.addFragment(postRecipeMaterialFragment, "1. Materials");
+        postRecipeTabLayoutAdapter.addFragment(postRecipeStepFragment, "2. Step");
 
         viewPager.setAdapter(postRecipeTabLayoutAdapter);
         segmentedTab.setupWithViewPager(viewPager);
@@ -56,7 +56,7 @@ public class PostRecipe extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("check1", "onActivityResult: ");
-        postRecipeStepFragment.onActivityResult(requestCode,resultCode,data);
-}
+        postRecipeStepFragment.onActivityResult(requestCode, resultCode, data);
+    }
 
 }
