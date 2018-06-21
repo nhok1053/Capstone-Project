@@ -1,7 +1,13 @@
 package com.example.huynhha.cookandshare.adapter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +25,15 @@ import java.util.List;
 
 public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostStepViewHolder> {
     private List<PostStep> postSteps;
+    private Context context;
+    private static final int RESULT_LOAD_IMAGE = 1;
 
 
-    public PostStepAdapter(List<PostStep> postSteps) {
+    public PostStepAdapter(Context context, List<PostStep> postSteps) {
+        this.context = context;
         this.postSteps = postSteps;
     }
+
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
@@ -38,8 +48,11 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
 
     @Override
     public void onBindViewHolder(@NonNull PostStepAdapter.PostStepViewHolder holder, int position) {
-            PostStep postStep = postSteps.get(position);
-            holder.txt_step.setText(""+position);
+        PostStep postStep = postSteps.get(position);
+        holder.txt_step.setText("" + position);
+        holder.edt_description.setText(postStep.getDescription().toString());
+        System.out.println("Holder" + holder.edt_description.getText().toString());
+
     }
 
     @Override
@@ -57,6 +70,7 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         private ImageView img_delete_image;
         private ImageView img_delete_step;
         private RelativeLayout duration_step;
+
         public PostStepViewHolder(View itemView) {
             super(itemView);
             edt_description = itemView.findViewById(R.id.edt_step_description);
@@ -74,7 +88,68 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
                     notifyItemRemoved(getAdapterPosition());
                 }
             });
+            edt_description.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    System.out.println("Text change");
+                    postSteps.get(getAdapterPosition()).setDescription(edt_description.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            edt_tips.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    postSteps.get(getAdapterPosition()).setDescription(edt_tips.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            edt_secret_materials.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    postSteps.get(getAdapterPosition()).setSecret_material(edt_secret_materials.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            btn_add_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openGallery();
+                }
+            });
         }
+    }
+
+    public void openGallery() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        ((Activity) context).startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
     }
 
 }

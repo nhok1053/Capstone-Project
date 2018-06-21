@@ -1,10 +1,12 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +42,7 @@ public class PostRecipeStepFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_post_recipe_step, container, false);
         rc_postStep = view.findViewById(R.id.rc_post_step);
         btn_add_step = view.findViewById(R.id.btn_add_step);
-        postSteps.add(new PostStep());
+        postSteps.add(new PostStep("","","","","",""));
         importPostStep();
         addStep();
         return view;
@@ -50,16 +52,23 @@ public class PostRecipeStepFragment extends Fragment {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rc_postStep.setNestedScrollingEnabled(false);
         rc_postStep.setLayoutManager(lln);
-        PostStepAdapter postStepAdapter = new PostStepAdapter(postSteps);
+        PostStepAdapter postStepAdapter = new PostStepAdapter(getActivity(),postSteps);
         rc_postStep.setAdapter(postStepAdapter);
     }
     public void addStep(){
         btn_add_step.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postSteps.add(new PostStep());
+                postSteps.add(new PostStep("","","","","",""));
                 importPostStep();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Test 1", "onActivityResult: "+requestCode+"   "+resultCode+ "");
+
     }
 }
