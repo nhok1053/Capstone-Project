@@ -51,7 +51,8 @@ public class PostRecipe extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("check1", "onActivityResult: ");
+        Log.d("check1", "onActivityResult: "+data);
+        System.out.println(data.getStringExtra("position")+"  check position");
         postRecipeStepFragment.onActivityResult(requestCode,resultCode,data);
 }
 }
