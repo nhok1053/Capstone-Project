@@ -1,6 +1,7 @@
 package com.example.huynhha.cookandshare.entity;
 
 public class PostStep {
+    private String uri;
     private String imgURL;
     private String numberOfStep;
     private String description;
@@ -17,7 +18,25 @@ public class PostStep {
         this.imgURL = imgURL;
     }
 
+    public PostStep(String uri, String imgURL, String numberOfStep, String description, String time_duration, String tips, String secret_material) {
+        this.uri = uri;
+        this.imgURL = imgURL;
+        this.numberOfStep = numberOfStep;
+        this.description = description;
+        this.time_duration = time_duration;
+        this.tips = tips;
+        this.secret_material = secret_material;
+    }
+
     public PostStep() {
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getImgURL() {
