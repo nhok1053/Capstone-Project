@@ -1,7 +1,9 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.R;
@@ -25,6 +28,7 @@ import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.Post;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -98,8 +102,9 @@ public class PostRecipeMaterialFragment extends Fragment {
     Button btn_add_material;
     @BindView(R.id.rc_material)
     RecyclerView rc_material;
-    List<Material> materials=new ArrayList<>();
-    private static final String[] number_of_people = {"1","2","3","4","5","6","7","8","9","10","10+"};
+    List<Material> materials = new ArrayList<>();
+    private static final String[] number_of_people = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "10+"};
+
     public PostRecipeMaterialFragment() {
         // Required empty public constructor
     }
@@ -115,6 +120,7 @@ public class PostRecipeMaterialFragment extends Fragment {
                 android.R.layout.simple_spinner_item, number_of_people);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_people_use.setAdapter(adapter);
+        pickTime();
         return view;
     }
 
@@ -123,18 +129,20 @@ public class PostRecipeMaterialFragment extends Fragment {
     public void onStart() {
         super.onStart();
         addMaterial();
+
     }
 
-    public void addMaterial(){
+    public void addMaterial() {
         btn_add_material.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                materials.add(new Material("",edt_namme_of_material.getText().toString(),edt_quatity.getText().toString()+material_quantity_type.getSelectedItem().toString(),""));
+                materials.add(new Material("", edt_namme_of_material.getText().toString(), edt_quatity.getText().toString() + material_quantity_type.getSelectedItem().toString(), ""));
                 importPostMaterial();
 
             }
         });
     }
+
     public void importPostMaterial() {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rc_material.setLayoutManager(lln);
@@ -142,4 +150,18 @@ public class PostRecipeMaterialFragment extends Fragment {
         rc_material.setAdapter(materialAdapter);
     }
 
+    public void pickTime() {
+        tv_time_cook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        tv_time_cook.setText(i + " hour " + i1 + " minute");
+                    }
+                }, 0, 0, true);
+                timePickerDialog.show();
+            }
+        });
+    }
 }

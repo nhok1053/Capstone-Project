@@ -27,6 +27,7 @@ public class TopRecipeAdapter extends RecyclerView.Adapter<TopRecipeAdapter.Post
             imgTopRecipe = itemView.findViewById(R.id.cvTopRecipeImgViewTopRecipe);
         }
     }
+
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,7 +50,7 @@ public class TopRecipeAdapter extends RecyclerView.Adapter<TopRecipeAdapter.Post
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Post recipe = topRecipes.get(position);
-        Picasso.get().load(recipe.getUrlImage()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.imgTopRecipe);
+        Picasso.get().load(recipe.getUrlImage()).fit().centerCrop().into(holder.imgTopRecipe);
         holder.tvTopRecipe.setText(recipe.getTitle());
     }
 
@@ -57,6 +58,4 @@ public class TopRecipeAdapter extends RecyclerView.Adapter<TopRecipeAdapter.Post
     public int getItemCount() {
         return topRecipes.size();
     }
-
-
 }

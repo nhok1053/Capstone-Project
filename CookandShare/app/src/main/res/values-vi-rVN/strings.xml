@@ -33,4 +33,6 @@
     <string name="fruit">quả</string>
     <string name="bunchs">bó</string>
     <string name="fast_easy">Dễ nấu</string>
+    <string name="hour">giờ</string>
+    <string name="minute">phút</string>
 </resources>

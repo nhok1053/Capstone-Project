@@ -17,6 +17,7 @@ import com.marlonmafra.android.widget.SegmentedTab;
 public class PostRecipe extends AppCompatActivity {
     SegmentedTab segmentedTab;
     ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +27,12 @@ public class PostRecipe extends AppCompatActivity {
         getSupportActionBar().hide();
         setTabLayout();
     }
+
     private void setTabLayout() {
-        PostRecipeTabLayoutAdapter postRecipeTabLayoutAdapter=new PostRecipeTabLayoutAdapter(getSupportFragmentManager());
-        postRecipeTabLayoutAdapter.addFragment(new PostRecipeMaterialFragment(),"1. Materials");
-        postRecipeTabLayoutAdapter.addFragment(new PostRecipeStepFragment(),"2. Step");
+        PostRecipeTabLayoutAdapter postRecipeTabLayoutAdapter = new PostRecipeTabLayoutAdapter(getSupportFragmentManager());
+        postRecipeTabLayoutAdapter.addFragment(new PostRecipeMaterialFragment(), "1. Materials");
+        postRecipeTabLayoutAdapter.addFragment(new PostRecipeStepFragment(), "2. Step");
         viewPager.setAdapter(postRecipeTabLayoutAdapter);
         segmentedTab.setupWithViewPager(viewPager);
     }
-
 }
