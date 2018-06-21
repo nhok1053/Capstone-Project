@@ -17,6 +17,7 @@ import com.example.huynhha.cookandshare.fragment.CategoryFragment;
 import com.example.huynhha.cookandshare.fragment.HomeFragment;
 import com.example.huynhha.cookandshare.fragment.NotificationFragment;
 import com.example.huynhha.cookandshare.fragment.PersonalFragment;
+import com.google.android.youtube.player.YouTubePlayerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

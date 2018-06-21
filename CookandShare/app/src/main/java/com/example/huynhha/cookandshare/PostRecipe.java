@@ -26,8 +26,10 @@ import java.io.InputStream;
 public class PostRecipe extends AppCompatActivity {
     SegmentedTab segmentedTab;
     ViewPager viewPager;
+
     private PostRecipeStepFragment postRecipeStepFragment;
     private PostRecipeMaterialFragment postRecipeMaterialFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,9 @@ public class PostRecipe extends AppCompatActivity {
         getSupportActionBar().hide();
         setTabLayout();
     }
+
     private void setTabLayout() {
+
         postRecipeStepFragment = new PostRecipeStepFragment();
         postRecipeMaterialFragment = new PostRecipeMaterialFragment();
         PostRecipeTabLayoutAdapter postRecipeTabLayoutAdapter=new PostRecipeTabLayoutAdapter(getSupportFragmentManager());
@@ -55,4 +59,5 @@ public class PostRecipe extends AppCompatActivity {
         System.out.println(data.getStringExtra("position")+"  check position");
         postRecipeStepFragment.onActivityResult(requestCode,resultCode,data);
 }
+
 }
