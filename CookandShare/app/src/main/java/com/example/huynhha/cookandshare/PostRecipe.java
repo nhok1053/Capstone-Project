@@ -59,5 +59,4 @@ public class PostRecipe extends AppCompatActivity {
         System.out.println(data.getStringExtra("position") + "  check position");
         postRecipeStepFragment.onActivityResult(requestCode, resultCode, data);
     }
-
 }

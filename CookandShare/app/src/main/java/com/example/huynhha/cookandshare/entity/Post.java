@@ -21,7 +21,9 @@ public class Post {
     private List<PostStep> postSteps;
 
 
-    public Post(int numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
+    public Post(int numberOfPeople, String postID, String userID, String userImgUrl, String title,
+                String description, String time, String imgUrl, int like, int commentNumber,
+                List<Material> materials, List<PostStep> postSteps) {
         this.numberOfPeople = numberOfPeople;
         this.postID = postID;
         this.userID = userID;

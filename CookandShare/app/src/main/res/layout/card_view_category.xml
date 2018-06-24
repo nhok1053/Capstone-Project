@@ -9,19 +9,22 @@
     app:cardCornerRadius="1dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="162dp"
-        android:layout_height="195dp"
+        android:layout_width="164dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
+        android:paddingRight="12dp"
         android:orientation="vertical">
 
         <ImageView
+            android:background="#111111"
             android:id="@+id/cvCategoryCategoryImg"
             android:layout_width="match_parent"
-            android:layout_height="170dp" />
+            android:layout_height="148dp" />
 
         <TextView
+            android:text="description"
             android:id="@+id/cvCategoryCategoryName"
             android:layout_width="match_parent"
             android:layout_height="25dp"
