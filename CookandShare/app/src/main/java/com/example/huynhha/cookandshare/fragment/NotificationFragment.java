@@ -28,7 +28,7 @@ public class NotificationFragment extends Fragment {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_notification, container, false);
         android.support.v4.app.FragmentTransaction ft=getActivity().getSupportFragmentManager().beginTransaction();
-        PostRecipeMaterialFragment prmf=new PostRecipeMaterialFragment();
+        LoginFragment prmf=new LoginFragment();
         ft.replace(R.id.fl_notifycation,prmf);
         ft.addToBackStack(null);
         ft.commit();

@@ -24,6 +24,9 @@ import android.widget.TextView;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.PostStep;
+import com.example.huynhha.cookandshare.fragment.PostRecipeStepFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,9 +34,9 @@ import java.util.List;
 public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostStepViewHolder> {
     private List<PostStep> postSteps;
     private Context context;
-    private static final int RESULT_LOAD_IMAGE = 1;
+    private static final int RESULT_LOAD_IMAGE = 2;
     private OnItemStepClick onItemStepClick;
-
+    private OnPostSend onPostSend;
     public void setOnItemStepClick(OnItemStepClick onItemStepClick) {
         this.onItemStepClick = onItemStepClick;
     }
@@ -42,7 +45,9 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         this.context = context;
         this.postSteps = postSteps;
     }
-
+    public void setOnPostSend(OnPostSend onPostSend){
+        this.onPostSend = onPostSend;
+    }
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -70,7 +75,6 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 ((Activity) context).startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
-
             }
         });
         if(postStep.getUri()!=null){
@@ -78,8 +82,8 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(((Activity)context).getContentResolver(),uri);
-                bitmap = getResizedBitmap(bitmap,540,960);
-                holder.btn_add_image.setEnabled(false);
+                bitmap = getResizedBitmap(bitmap,960,540);
+                holder.btn_add_image.setVisibility(View.INVISIBLE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -189,7 +193,22 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
 
                 }
             });
+            txt_step.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                postSteps.get(getAdapterPosition()).setNumberOfStep(txt_step.getText().toString());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
         }
     }
 
@@ -197,5 +216,10 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         void onClick(int postion);
     }
 
-
+    public interface OnPostSend{
+        void onClick(List<PostStep> postStep);
+    }
+    public List<PostStep> getPostSteps(){
+        return postSteps;
+    }
 }
