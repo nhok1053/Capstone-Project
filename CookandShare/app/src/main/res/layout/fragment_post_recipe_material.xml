@@ -49,7 +49,6 @@
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
             <EditText
-                android:focusable="false"
                 android:id="@+id/edt_recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +68,6 @@
                 android:background="#9E9E9E" />
 
             <EditText
-                android:focusable="false"
                 android:id="@+id/edt_recipe_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,7 +210,6 @@
                     android:textSize="18dp" />
 
                 <EditText
-                    android:focusable="false"
                     android:id="@+id/edt_name_of_material"
                     android:layout_width="250dp"
                     android:layout_height="50dp"
@@ -240,7 +237,6 @@
                     android:textSize="18dp" />
 
                 <EditText
-                    android:focusable="false"
                     android:id="@+id/edt_quatity"
                     android:layout_width="250dp"
                     android:layout_height="50dp"

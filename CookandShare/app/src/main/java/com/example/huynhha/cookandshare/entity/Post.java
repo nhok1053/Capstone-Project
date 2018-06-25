@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
+    
+    
 
-    private int numberOfPeople;
+    private String numberOfPeople;
     private String postID;
     private String userID;
     private String userImgUrl;
@@ -16,14 +18,12 @@ public class Post {
     private String urlImage;
     private int like;
     private int comment;
-
+    private String postTime;
     private List<Material> materials;
     private List<PostStep> postSteps;
 
+    public Post(String postTime,String numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
 
-    public Post(int numberOfPeople, String postID, String userID, String userImgUrl, String title,
-                String description, String time, String imgUrl, int like, int commentNumber,
-                List<Material> materials, List<PostStep> postSteps) {
         this.numberOfPeople = numberOfPeople;
         this.postID = postID;
         this.userID = userID;
@@ -36,6 +36,7 @@ public class Post {
         this.comment = commentNumber;
         this.materials = materials;
         this.postSteps = postSteps;
+        this.postTime = postTime;
     }
 
     public Post(String postID, String userID, String time, String imgUrl, String title,
@@ -145,14 +146,7 @@ public class Post {
     public void setComment(int comment) {
         this.comment = comment;
     }
-
-    public int getNumberOfPeople() {
-        return numberOfPeople;
-    }
-
-    public void setNumberOfPeople(int numberOfPeople) {
-        this.numberOfPeople = numberOfPeople;
-    }
+    
 
     public List<Material> getMaterials() {
         return materials;
@@ -168,5 +162,20 @@ public class Post {
 
     public void setPostSteps(List<PostStep> postSteps) {
         this.postSteps = postSteps;
+    }
+
+    public String getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(String postTime) {
+        this.postTime = postTime;
+    }
+    public String getNumberOfPeople() {
+        return numberOfPeople;
+    }
+
+    public void setNumberOfPeople(String numberOfPeople) {
+        this.numberOfPeople = numberOfPeople;
     }
 }

@@ -1,8 +1,15 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +34,7 @@ import com.example.huynhha.cookandshare.adapter.TopRecipeAdapter;
 import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.Post;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -104,7 +112,9 @@ public class PostRecipeMaterialFragment extends Fragment {
     RecyclerView rc_material;
     List<Material> materials = new ArrayList<>();
     private static final String[] number_of_people = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "10+"};
-
+    private Context context;
+    private static final int RESULT_LOAD_IMAGE = 3;
+    private Uri uri;
     public PostRecipeMaterialFragment() {
         // Required empty public constructor
     }
@@ -121,6 +131,7 @@ public class PostRecipeMaterialFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_people_use.setAdapter(adapter);
         pickTime();
+        btnAddImageListener();
         return view;
     }
 
@@ -164,4 +175,137 @@ public class PostRecipeMaterialFragment extends Fragment {
             }
         });
     }
+    public void btnAddImageListener(){
+        btn_add_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+
+            }
+        });
+    }
+    public void openGallery(){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        getActivity().startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        uri = data.getData();
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
+            bitmap = getResizedBitmap(bitmap,960,540);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Check data ImG: "+requestCode+" "+resultCode);
+        img_recipe.setImageBitmap(bitmap);
+    }
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
+    }
+
+    //get data
+    public List<Material> getMaterial(){
+        return materials;
+    }
+    public String getDescription(){
+        String description = edt_recipe_description.getText().toString();
+        return description;
+    }
+    public String getRecipeTitle(){
+        String title = edt_recipe_name.getText().toString();
+        return title;
+    }
+    public String getDuration(){
+        String duration = tv_time_cook.getText().toString();
+        return duration;
+    }
+    public String getRecipeDifficult(){
+        String difficult = "easy";
+        return difficult;
+    }
+    public String getNumberOfPeople(){
+        String numberPeople = spinner_people_use.getSelectedItem().toString();
+        return numberPeople;
+    }
+    public Uri getImageUri(){
+        return uri;
+    }
+    public List getCategory(){
+        List<Integer> list = new ArrayList();
+        System.out.println("checkbox" + cb_breakfast.isChecked());
+        if(cb_breakfast.isChecked()==true){
+            System.out.println("checkbox" + cb_breakfast.isChecked());
+            list.add(1);
+        }
+        if (cb_healthy.isChecked()){
+            list.add(2);
+        }
+        if (cb_diet.isChecked()){
+            list.add(3);
+        }
+        if(cb_dessert.isChecked()){
+            list.add(4);
+        }
+        if(cb_salad.isChecked()){
+            list.add(5);
+        }
+        if(cb_noodle.isChecked()){
+            list.add(6);
+        }
+        if (cb_hotpot.isChecked()){
+            list.add(7);
+        }
+        if (cb_for_kid.isChecked()){
+            list.add(8);
+        }
+        if (cb_lunch.isChecked()){
+            list.add(9);
+        }
+        if (cb_vegetable.isChecked()){
+            list.add(10);
+        }
+        if (cb_cookie.isChecked()){
+            list.add(11);
+        }
+        if (cb_drink.isChecked()){
+            list.add(12);
+        }
+        if (cb_fast_food.isChecked()){
+            list.add(13);
+        }
+        if (cb_dinner.isChecked()){
+            list.add(14);
+        }
+        if (cb_sauce.isChecked()){
+            list.add(15);
+        }
+        if (cb_for_gym.isChecked()){
+            list.add(16);
+        }
+        if (cb_soup.isChecked()){
+            list.add(17);
+        }
+        if (cb_fast_and_easy.isChecked()){
+            list.add(18);
+        }
+        return list;
+    }
+
 }
