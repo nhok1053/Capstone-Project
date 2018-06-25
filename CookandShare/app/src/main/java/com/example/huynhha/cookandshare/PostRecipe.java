@@ -65,7 +65,7 @@ public class PostRecipe extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().hide();
         setTabLayout();
-        setPostListener("BAKA", "5342012");
+        setPostListener("DEMO", "5342012");
         closeActivity();
     }
 
@@ -130,6 +130,7 @@ public class PostRecipe extends AppCompatActivity {
             public void onClick(View v) {
                 postSteps = postRecipeStepFragment.a();
                 startPushing(postID);
+
             }
         });
     }
@@ -175,9 +176,12 @@ public class PostRecipe extends AppCompatActivity {
                         postSteps.get(count).setImgURL(uri.toString());
                         count++;
                         if (count < (postSteps.size())) {
+
                             pushStepImageToFireStorage(postId);
+                            System.out.println("Count"+count);
                         }
                         if(count == postSteps.size()){
+                            System.out.println("Count"+count);
                             post.setPostID(postId);
                             post.setTitle(postRecipeMaterialFragment.getRecipeTitle());
                             post.setDescription(postRecipeMaterialFragment.getDescription());
@@ -209,6 +213,8 @@ public class PostRecipe extends AppCompatActivity {
             public void onSuccess(DocumentReference documentReference) {
                 Log.d("Posted", "onSuccess: ");
                 progressDialog.dismiss();
+                Toast.makeText(PostRecipe.this, "Post Recipe Success", Toast.LENGTH_SHORT).show();
+                PostRecipe.this.finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
