@@ -175,7 +175,8 @@ public class PostRecipe extends AppCompatActivity {
                         Log.d("Uploaded", "onSuccess: " + uri.toString());
                         postSteps.get(count).setImgURL(uri.toString());
                         count++;
-                        if (count < (postSteps.size() )) {
+                        if (count < (postSteps.size())) {
+
                             pushStepImageToFireStorage(postId);
                             System.out.println("Count"+count);
                         }

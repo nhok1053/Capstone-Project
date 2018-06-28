@@ -50,6 +50,7 @@ public class CategoryFragment extends Fragment {
         return v;
     }
 
+
     private void setupTabIcons() {
         segmentedTab.getTabAt(0).setIcon(tabIcons[0]);
         segmentedTab.getTabAt(1).setIcon(tabIcons[1]);
