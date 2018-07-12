@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     Button btn_add_recipe;
+    Button btn_seach;
     private AppBarLayout appBarLayout;
     private int[] tabIcons = {
             R.drawable.ic_home,
@@ -58,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         btn_add_recipe = findViewById(R.id.btn_add_recipe);
+        btn_seach = findViewById(R.id.btn_search);
 //        appIntro();
         sharePrefIntro();
         setTabLayout();
         addRecipe();
+        searchAction();
     }
 
     public void addRecipe() {
@@ -69,6 +72,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, PostRecipe.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void searchAction(){
+        btn_seach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,Search.class);
                 startActivity(intent);
             }
         });

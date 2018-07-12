@@ -45,6 +45,7 @@
     <string name="bunchs">bunchs</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
+    <string name="search">Search</string>
 
 
 </resources>

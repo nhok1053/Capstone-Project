@@ -21,6 +21,7 @@
         </activity>
         <activity android:name=".IntroActivity" />
         <activity android:name=".PostRecipe" />
+        <activity android:name=".Search" />
         <activity android:name=".YoutubeActivity"></activity>
     </application>
 
