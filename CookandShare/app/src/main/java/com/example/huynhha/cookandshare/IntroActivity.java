@@ -1,11 +1,13 @@
 package com.example.huynhha.cookandshare;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.example.huynhha.cookandshare.fragment.LoginFragment;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
@@ -34,7 +36,9 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
-        finish();
+        Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
+      startActivity(intent);
+
     }
 
     @Override

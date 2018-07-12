@@ -107,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
-    //    private void appIntro() {
+
+//    private void appIntro() {
 //        SharedPreferences prefs = getSharedPreferences("check", MODE_PRIVATE);
 //        String restoredText = prefs.getString("firstTime", null);
 //        Toast.makeText(this, restoredText, LENGTH_LONG).show();
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(intent);
 //        }
 //    }
+
     private void sharePrefIntro() {
         SharedPreferences sp = getSharedPreferences("check", MODE_PRIVATE);
         if (!sp.getBoolean("first", false)) {
