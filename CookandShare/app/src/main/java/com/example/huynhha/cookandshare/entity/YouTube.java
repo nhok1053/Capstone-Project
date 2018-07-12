@@ -54,6 +54,8 @@ public class YouTube {
         this.youtubeUrl = youtubeUrl;
     }
 
+    public static YouTube youTubeFix=new YouTube();
+
     static ArrayList<YouTube> lst = new ArrayList<>();
 
     public static ArrayList<YouTube> addListYoutube() {
