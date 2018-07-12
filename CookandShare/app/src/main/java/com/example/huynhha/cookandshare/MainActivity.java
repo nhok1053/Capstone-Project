@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         btn_add_recipe = findViewById(R.id.btn_add_recipe);
 //        appIntro();
+        sharePrefIntro();
         setTabLayout();
         addRecipe();
     }
@@ -90,13 +91,24 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
-    private void appIntro() {
-        SharedPreferences prefs = getSharedPreferences("check", MODE_PRIVATE);
-        String restoredText = prefs.getString("firstTime", null);
-        Toast.makeText(this, restoredText, LENGTH_LONG).show();
-        if (restoredText != "N") {
-            Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+//    private void appIntro() {
+//        SharedPreferences prefs = getSharedPreferences("check", MODE_PRIVATE);
+//        String restoredText = prefs.getString("firstTime", null);
+//        Toast.makeText(this, restoredText, LENGTH_LONG).show();
+//        if (restoredText != "N") {
+//            Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+//            startActivity(intent);
+//        }
+//    }
+    private void sharePrefIntro(){
+        SharedPreferences sp = getSharedPreferences("check", MODE_PRIVATE);
+        if (!sp.getBoolean("first", false)) {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean("first", true);
+            editor.apply();
+            Intent intent = new Intent(this, IntroActivity.class); // Call the AppIntro java class
             startActivity(intent);
         }
+
     }
 }

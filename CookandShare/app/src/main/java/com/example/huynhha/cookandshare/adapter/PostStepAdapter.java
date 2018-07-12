@@ -66,8 +66,8 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         PostStep postStep = postSteps.get(position);
         holder.txt_step.setText(""+ (position+1));
         holder.edt_description.setText(postStep.getDescription().toString());
-        holder.edt_tips.setText(postStep.getTips().toString());
-        holder.edt_secret_materials.setText(postStep.getSecret_material().toString());
+//        holder.edt_tips.setText(postStep.getTips().toString());
+//        holder.edt_secret_materials.setText(postStep.getSecret_material().toString());
         holder.btn_add_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,8 +130,8 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         public PostStepViewHolder(View itemView) {
             super(itemView);
             edt_description = itemView.findViewById(R.id.edt_step_description);
-            edt_tips = itemView.findViewById(R.id.step_tip);
-            edt_secret_materials = itemView.findViewById(R.id.material_tip);
+           // edt_tips = itemView.findViewById(R.id.step_tip);
+            //edt_secret_materials = itemView.findViewById(R.id.material_tip);
             img_step = itemView.findViewById(R.id.img_step_recipe);
             btn_add_image = itemView.findViewById(R.id.btn_step_add_image);
             img_delete_image = itemView.findViewById(R.id.img_delete_image_step);
@@ -161,38 +161,38 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
 
                 }
             });
-            edt_tips.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    postSteps.get(getAdapterPosition()).setTips(edt_tips.getText().toString());
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-            edt_secret_materials.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    postSteps.get(getAdapterPosition()).setSecret_material(edt_secret_materials.getText().toString());
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
+//            edt_tips.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                    postSteps.get(getAdapterPosition()).setTips(edt_tips.getText().toString());
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//
+//                }
+//            });
+//            edt_secret_materials.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                    postSteps.get(getAdapterPosition()).setSecret_material(edt_secret_materials.getText().toString());
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//
+//                }
+//            });
             txt_step.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {

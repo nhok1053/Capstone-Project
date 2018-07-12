@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+
 import com.example.huynhha.cookandshare.adapter.PostRecipeTabLayoutAdapter;
 import com.example.huynhha.cookandshare.adapter.PostStepAdapter;
 import com.example.huynhha.cookandshare.entity.Post;
@@ -22,6 +23,8 @@ import com.example.huynhha.cookandshare.fragment.PostRecipeStepFragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,6 +38,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -65,7 +69,8 @@ public class PostRecipe extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().hide();
         setTabLayout();
-        setPostListener("DEMO", "5342012");
+        String uuid = UUID.randomUUID().toString().replace("-","");
+        setPostListener(uuid, uuid);
         closeActivity();
     }
 
@@ -191,9 +196,14 @@ public class PostRecipe extends AppCompatActivity {
                             post.setComment(0);
                             post.setLike(0);
                             post.setNumberOfPeople("0");
-                            post.setUserID("ABC");
+                            try{
+                                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+                                post.setUserID(currentFirebaseUser.getDisplayName());
+                                post.setUserImgUrl(currentFirebaseUser.getPhotoUrl().toString());
+                            }catch (Exception e){
+                                System.out.println(e);
+                            }
                             post.setPostSteps(postSteps);
-                            post.setUserImgUrl("https://scontent.fhan2-4.fna.fbcdn.net/v/t1.0-1/c88.0.320.320/p320x320/35463605_1682475131865841_3974700887636443136_n.jpg?_nc_cat=0&oh=6d4cc0b34e318224a8315aba45371e42&oe=5BAE91DF");
                             loadData(post);
                         }
                     }
