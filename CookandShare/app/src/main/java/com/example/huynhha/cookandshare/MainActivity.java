@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.ic_personal
     };
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,19 +61,22 @@ public class MainActivity extends AppCompatActivity {
         btn_add_recipe = findViewById(R.id.btn_add_recipe);
         btn_seach = findViewById(R.id.btn_search);
 //        appIntro();
+        sharePrefIntro();
         setTabLayout();
         addRecipe();
         searchAction();
     }
-    public void addRecipe(){
+
+    public void addRecipe() {
         btn_add_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,PostRecipe.class);
+                Intent intent = new Intent(MainActivity.this, PostRecipe.class);
                 startActivity(intent);
             }
         });
     }
+
     public void searchAction(){
         btn_seach.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setTabLayout() {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         //adding fragment
@@ -102,12 +107,24 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
-    private void appIntro() {
-        SharedPreferences prefs = getSharedPreferences("check", MODE_PRIVATE);
-        String restoredText = prefs.getString("firstTime", null);
-        Toast.makeText(this, restoredText, LENGTH_LONG).show();
-        if (restoredText != "N") {
-            Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+
+//    private void appIntro() {
+//        SharedPreferences prefs = getSharedPreferences("check", MODE_PRIVATE);
+//        String restoredText = prefs.getString("firstTime", null);
+//        Toast.makeText(this, restoredText, LENGTH_LONG).show();
+//        if (restoredText != "N") {
+//            Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+//            startActivity(intent);
+//        }
+//    }
+
+    private void sharePrefIntro() {
+        SharedPreferences sp = getSharedPreferences("check", MODE_PRIVATE);
+        if (!sp.getBoolean("first", false)) {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean("first", true);
+            editor.apply();
+            Intent intent = new Intent(this, IntroActivity.class); // Call the AppIntro java class
             startActivity(intent);
         }
     }

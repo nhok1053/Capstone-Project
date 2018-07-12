@@ -133,7 +133,7 @@ public class LoginFragment extends Fragment {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getContext(),"Login Successfull",Toast.LENGTH_LONG);
-                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_main,new UpdateProfileFragment()).addToBackStack(null);
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login,new UpdateProfileFragment()).addToBackStack(null);
                             transaction.commit();
                         } else {
                             // If sign in fails, display a message to the user.
