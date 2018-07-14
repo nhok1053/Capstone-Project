@@ -13,6 +13,7 @@ public class Post {
     private String userID;
     private String userImgUrl;
     private String title;
+    private String titleLower;
     private String description;
     private String time;
     private String urlImage;
@@ -46,6 +47,20 @@ public class Post {
         this.time = time;
         this.urlImage = imgUrl;
         this.title = title;
+        this.description = description;
+        this.like = like;
+        this.comment = comment;
+        this.userImgUrl = userImgUrl;
+    }
+
+    public Post(String postID, String userID, String time, String imgUrl, String title,String titleLower,
+                String description, String userImgUrl, int like, int comment) {
+        this.postID = postID;
+        this.userID = userID;
+        this.time = time;
+        this.urlImage = imgUrl;
+        this.title = title;
+        this.titleLower = titleLower;
         this.description = description;
         this.like = like;
         this.comment = comment;
@@ -93,6 +108,12 @@ public class Post {
 
     public String getTime() {
         return time;
+    }
+
+    public String getTitleLower(){ return titleLower; }
+
+    public void setTitleLower(String titleLower) {
+        this.titleLower = titleLower;
     }
 
     public String getUserImgUrl() {
