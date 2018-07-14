@@ -42,7 +42,6 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="10dp"
-
                 android:layout_marginTop="10dp"
                 android:background="@android:drawable/ic_menu_search" />
         </RelativeLayout>
@@ -53,7 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UnknownId">
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/result_list"
             android:layout_width="match_parent"
