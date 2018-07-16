@@ -31,9 +31,15 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class ListAllCategoriesFragment extends Fragment {
+
     RecyclerView rvCategories;
     ListCategoriesAdapter listCategoriesAdapter;
     private ArrayList<Category> categories;
+    int categoryID;
+    String categoryName;
+    String categoryUrlImg;
+    ArrayList<String> postID;
+
     public ListAllCategoriesFragment() {
         // Required empty public constructor
     }
@@ -45,7 +51,7 @@ public class ListAllCategoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_list_all_categories, container, false);
         rvCategories = v.findViewById(R.id.rcListCategory);
-        categories=new ArrayList<>();
+        categories = new ArrayList<>();
         importListCategories();
         return v;
     }
@@ -59,10 +65,14 @@ public class ListAllCategoriesFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                            Category category = new Category(Integer.parseInt(documentSnapshot.get("categoryID").toString()), documentSnapshot.get("categoryName").toString(), documentSnapshot.get("categoryUrlImage").toString());
+                            categoryID = Integer.parseInt(documentSnapshot.get("categoryID").toString());
+                            categoryName = documentSnapshot.get("categoryName").toString();
+                            categoryUrlImg = documentSnapshot.get("categoryUrlImage").toString();
+                            postID = (ArrayList<String>) documentSnapshot.get("postID");
+                            Category category = new Category(categoryID, categoryName, categoryUrlImg, postID);
                             categories.add(category);
                         }
-                        listCategoriesAdapter = new ListCategoriesAdapter(categories);
+                        listCategoriesAdapter = new ListCategoriesAdapter(getActivity(), categories);
                         rvCategories.setAdapter(listCategoriesAdapter);
                     }
 

@@ -17,6 +17,8 @@ import com.example.huynhha.cookandshare.adapter.PagerAdapter;
 import com.example.huynhha.cookandshare.entity.YouTube;
 import com.example.huynhha.cookandshare.fragment.CategoryFragment;
 import com.example.huynhha.cookandshare.fragment.HomeFragment;
+import com.example.huynhha.cookandshare.fragment.ListAllCategoriesFragment;
+import com.example.huynhha.cookandshare.fragment.ListTipsFragment;
 import com.example.huynhha.cookandshare.fragment.NotificationFragment;
 import com.example.huynhha.cookandshare.fragment.PersonalFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private int[] tabIcons = {
             R.drawable.ic_home,
             R.drawable.ic_categories,
+            R.drawable.ic_home,
             R.drawable.notificaton_icon,
             R.drawable.ic_personal
     };
@@ -91,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         //adding fragment
         pagerAdapter.addFragment(new HomeFragment(), "");
-        pagerAdapter.addFragment(new CategoryFragment(), "");
+        pagerAdapter.addFragment(new ListAllCategoriesFragment(), "");
+        pagerAdapter.addFragment(new ListTipsFragment(), "");
         pagerAdapter.addFragment(new NotificationFragment(), "");
         pagerAdapter.addFragment(new PersonalFragment(), "");
         viewPager.setAdapter(pagerAdapter);
@@ -105,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        tabLayout.getTabAt(4).setIcon(tabIcons[4]);
     }
 
 

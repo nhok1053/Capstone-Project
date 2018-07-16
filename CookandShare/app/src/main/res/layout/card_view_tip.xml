@@ -10,7 +10,7 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="160dp"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
@@ -24,7 +24,7 @@
         <TextView
             android:id="@+id/cvTipTitle"
             android:layout_width="match_parent"
-            android:layout_height="25.5dp"
+            android:layout_height="wrap_content"
             android:textSize="15sp" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

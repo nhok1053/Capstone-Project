@@ -7,6 +7,14 @@ public class Category {
     private int categoryID;
     private String categoryName;
     private String categoryImgUrl;
+    private ArrayList<String> postCategory;
+
+    public Category(int categoryID, String categoryName, String categoryImgUrl, ArrayList<String> postCategory) {
+        this.categoryID = categoryID;
+        this.categoryName = categoryName;
+        this.categoryImgUrl = categoryImgUrl;
+        this.postCategory = postCategory;
+    }
 
     public Category(int categoryID, String categoryName, String categoryImgUrl) {
         this.categoryID = categoryID;
@@ -14,7 +22,7 @@ public class Category {
         this.categoryImgUrl = categoryImgUrl;
     }
 
-//    static ArrayList<Category> lst=new ArrayList<>();
+    //    static ArrayList<Category> lst=new ArrayList<>();
 //    public static ArrayList<Category> addListCategory(){
 //        lst.add(new Category("","Legend","https://i.pinimg.com/564x/31/1e/68/311e68c6bd86f051f9d116ee90c51941.jpg"));
 //        lst.add(new Category("","Power Core","https://i.pinimg.com/564x/8a/10/8a/8a108a478f3f25158750cdedc4001370.jpg"));
@@ -30,6 +38,14 @@ public class Category {
 //        lst.add(new Category("","HOTS","https://i.pinimg.com/564x/c4/45/a2/c445a287529df55a4c17c6523140d491.jpg"));
 //        return lst;
 //    }
+    public ArrayList<String> getPostCategory() {
+        return postCategory;
+    }
+
+    public void setPostCategory(ArrayList<String> postCategory) {
+        this.postCategory = postCategory;
+    }
+
     public int getCategoryID() {
         return categoryID;
     }
