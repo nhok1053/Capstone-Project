@@ -24,8 +24,8 @@
             android:layout_height="148dp" />
 
         <TextView
-            android:text="description"
             android:gravity="center"
+            android:text="Mô tả"
             android:id="@+id/cvCategoryCategoryName"
             android:layout_width="match_parent"
             android:layout_height="25dp"
