@@ -9,6 +9,7 @@ public class User {
     private String phone;
     private String sex;
     private String firstName;
+    private String firstNameLower;
     private String secondName;
     private String dateOfBirth;
     private List<String> postID;
@@ -61,13 +62,31 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public User(String userID, String imgUrl, String phone, String sex, String firstName, String secondName, String dateOfBirth,List<String> postID) {
+    public String getFirstNameLower() {
+        return firstNameLower;
+    }
+
+    public void setFirstNameLower(String firstNameLower) {
+        this.firstNameLower = firstNameLower;
+    }
+
+    public User(String userID, String imgUrl, String phone, String sex, String firstName, String secondName, String dateOfBirth, List<String> postID) {
         this.postID = postID;
         this.userID = userID;
         this.imgUrl = imgUrl;
         this.phone = phone;
         this.sex = sex;
         this.firstName = firstName;
+        this.secondName = secondName;
+        this.dateOfBirth = dateOfBirth;
+    }
+    public User(String userID, String imgUrl, String phone, String sex, String firstName,String firstNameLower, String secondName, String dateOfBirth) {
+        this.userID = userID;
+        this.imgUrl = imgUrl;
+        this.phone = phone;
+        this.sex = sex;
+        this.firstName = firstName;
+        this.firstNameLower = firstNameLower;
         this.secondName = secondName;
         this.dateOfBirth = dateOfBirth;
     }
