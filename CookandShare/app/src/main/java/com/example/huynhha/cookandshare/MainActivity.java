@@ -2,6 +2,7 @@ package com.example.huynhha.cookandshare;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -13,10 +14,22 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.adapter.PagerAdapter;
+import com.example.huynhha.cookandshare.entity.YouTube;
 import com.example.huynhha.cookandshare.fragment.CategoryFragment;
 import com.example.huynhha.cookandshare.fragment.HomeFragment;
 import com.example.huynhha.cookandshare.fragment.NotificationFragment;
 import com.example.huynhha.cookandshare.fragment.PersonalFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     Button btn_add_recipe;
+    Button btn_seach;
     private AppBarLayout appBarLayout;
     private int[] tabIcons = {
             R.drawable.ic_home,
@@ -36,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.notificaton_icon,
             R.drawable.ic_personal
     };
+    public static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +59,34 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         btn_add_recipe = findViewById(R.id.btn_add_recipe);
+        btn_seach = findViewById(R.id.btn_search);
 //        appIntro();
+        sharePrefIntro();
         setTabLayout();
         addRecipe();
+        searchAction();
     }
-    public void addRecipe(){
+
+    public void addRecipe() {
         btn_add_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,PostRecipe.class);
+                Intent intent = new Intent(MainActivity.this, PostRecipe.class);
                 startActivity(intent);
             }
         });
     }
+
+    public void searchAction(){
+        btn_seach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,Search.class);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void setTabLayout() {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         //adding fragment
@@ -77,12 +107,24 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
-    private void appIntro() {
-        SharedPreferences prefs = getSharedPreferences("check", MODE_PRIVATE);
-        String restoredText = prefs.getString("firstTime", null);
-        Toast.makeText(this, restoredText, LENGTH_LONG).show();
-        if (restoredText != "N") {
-            Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+
+//    private void appIntro() {
+//        SharedPreferences prefs = getSharedPreferences("check", MODE_PRIVATE);
+//        String restoredText = prefs.getString("firstTime", null);
+//        Toast.makeText(this, restoredText, LENGTH_LONG).show();
+//        if (restoredText != "N") {
+//            Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+//            startActivity(intent);
+//        }
+//    }
+
+    private void sharePrefIntro() {
+        SharedPreferences sp = getSharedPreferences("check", MODE_PRIVATE);
+        if (!sp.getBoolean("first", false)) {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean("first", true);
+            editor.apply();
+            Intent intent = new Intent(this, IntroActivity.class); // Call the AppIntro java class
             startActivity(intent);
         }
     }

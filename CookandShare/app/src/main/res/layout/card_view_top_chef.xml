@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvTopChef"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp">
-
-        <ImageView
-            android:id="@+id/cvTopChefImgViewTopChef"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/border_circle_image" />
-    </android.support.v7.widget.CardView>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cvTopChef"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:padding="8dp"
+    android:clickable="true"
+    android:background="#fafafa"
+    android:foreground="?android:attr/selectableItemBackground">
+<RelativeLayout
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/cvTopChefImgViewTopChef"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/border_circle_image" />
 </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

@@ -67,7 +67,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="by ...."
+                    android:hint="bởi ...."
                     android:textSize="20dp"/>
             </RelativeLayout>
             <RelativeLayout
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:hint="description"/>
+                android:hint="Miêu tả món ăn"/>
             <LinearLayout
                 android:id="@+id/linearLayout8"
                 android:layout_width="match_parent"

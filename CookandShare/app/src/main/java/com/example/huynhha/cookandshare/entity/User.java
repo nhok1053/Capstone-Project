@@ -6,12 +6,81 @@ import java.util.List;
 public class User {
     private String userID;
     private String imgUrl;
+    private String phone;
+    private String sex;
+    private String firstName;
+    private String secondName;
+    private String dateOfBirth;
+    private List<String> postID;
+
+    public List<String> getPostID() {
+        return postID;
+    }
+
+    public void setPostID(List<String> postID) {
+        this.postID = postID;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public User(String userID, String imgUrl, String phone, String sex, String firstName, String secondName, String dateOfBirth,List<String> postID) {
+        this.postID = postID;
+        this.userID = userID;
+        this.imgUrl = imgUrl;
+        this.phone = phone;
+        this.sex = sex;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public User(String userID, String imgUrl) {
         this.userID = userID;
         this.imgUrl = imgUrl;
     }
 public static List<User> users=new ArrayList<>();
+
+    public User() {
+    }
+
     public static List<User> initDataToTopAttribute(){
         users.add(new User("Ha san","https://scontent.fhan2-2.fna.fbcdn.net/v/t1.0-9/33605805_1656496591130362_9070517127202471936_n.jpg?_nc_cat=0&_nc_eui2=AeFR81MC2UMzwqUqn0Oi6xoHRAtG-eaQ4k7f53sfzSb_1qRH9FDWaoPd1qOtutOwwI7w8ePGjDlulh5pZhIA_6w7QmfygGA1cr-FNvJMgqF4CQ&oh=715f268ec8e23259b96e90ac79cd4a8d&oe=5BAF23ED"));
         users.add(new User("Hien san","https://scontent.fhan2-2.fna.fbcdn.net/v/t1.0-9/35026631_1982375735217473_4818617744612130816_n.jpg?_nc_cat=0&_nc_eui2=AeFOgwwd7JL2waACVWVaSGedsCyVne8vIfd-lTbORTV0LOI9sqrUOeB5SXlLf36mwYvEIJe7Et3Y7P2CE0ni86n6FP-6Jb4nLWHzOuN7L9Iuow&oh=07943ffbf47d212aba921861eaeec918&oe=5BB86A05"));
