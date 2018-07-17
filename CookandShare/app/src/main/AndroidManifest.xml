@@ -24,7 +24,9 @@
         <activity android:name=".YoutubeActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".Search" />
-        <activity android:name=".PostDetails"></activity>
+        <activity android:name=".PostDetails" />
+        <activity android:name=".PostActivity"
+            android:parentActivityName=".MainActivity" ></activity>
     </application>
 
 </manifest>

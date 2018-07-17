@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:background="#ffffff"
-                        android:text="Add image" />
+                        android:text="Thêm ảnh" />
 
                     <ImageView
                         android:id="@+id/img_delete_image_step"

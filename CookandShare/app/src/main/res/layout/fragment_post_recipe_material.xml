@@ -348,7 +348,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="Breakfast" />
+                        android:text="Bữa sáng" />
 
                     <CheckBox
                         android:id="@+id/cb_lunch"
@@ -356,7 +356,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Lunch" />
+                        android:text="Bữa trưa" />
 
                     <CheckBox
                         android:id="@+id/cb_dinner"
@@ -364,7 +364,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Dinner" />
+                        android:text="Bữa tối" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -379,7 +379,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="Fast food" />
+                        android:text="Thức ăn nhanh" />
 
                     <CheckBox
                         android:id="@+id/cb_vegetable"
@@ -387,7 +387,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Vegetable" />
+                        android:text="Rau, quả..." />
 
                     <CheckBox
                         android:id="@+id/cb_drink"
@@ -395,7 +395,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Drink" />
+                        android:text="Đồ uống" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -418,7 +418,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Sauce" />
+                        android:text="Nước xốt" />
 
                     <CheckBox
                         android:id="@+id/cb_cookie"
@@ -426,7 +426,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Cookie" />
+                        android:text="Bánh quy" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -441,7 +441,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="Healthy" />
+                        android:text="Sức khỏe" />
 
                     <CheckBox
                         android:id="@+id/cb_noodle"
@@ -449,7 +449,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Noodle" />
+                        android:text="Mỳ, bún, phở..." />
 
                     <CheckBox
                         android:id="@+id/cb_hotpot"
@@ -457,7 +457,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Hot Pot" />
+                        android:text="Lẩu" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -472,7 +472,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="Dessert" />
+                        android:text="Tráng miệng" />
 
                     <CheckBox
                         android:id="@+id/cb_soup"
@@ -480,7 +480,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Soup" />
+                        android:text="Súp" />
 
                     <CheckBox
                         android:id="@+id/cb_for_kid"
@@ -488,7 +488,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="For kid" />
+                        android:text="Dành cho trẻ em" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -503,7 +503,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="For gym" />
+                        android:text="Dành cho Gymer" />
 
                     <CheckBox
                         android:id="@+id/cb_diet"
@@ -511,7 +511,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="Diet" />
+                        android:text="Ăn kiêng" />
 
                     <CheckBox
                         android:id="@+id/cb_fast_and_easy"

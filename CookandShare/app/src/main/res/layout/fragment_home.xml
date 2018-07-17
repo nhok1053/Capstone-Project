@@ -26,7 +26,7 @@
                     android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Top Attribute"
+                    android:text="Top đầu bếp"
                     android:textSize="20sp"/>
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvChef"
@@ -37,7 +37,7 @@
                     android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Top Recipe"
+                    android:text="Top công thức nấu ăn"
                     android:textSize="20sp"/>
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvRecipe"

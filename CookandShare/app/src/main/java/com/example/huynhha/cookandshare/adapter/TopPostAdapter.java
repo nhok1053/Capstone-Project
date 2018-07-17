@@ -75,7 +75,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
         holder.userName.setText(post.getUserID());
         holder.time.setText(post.getTime());
-        Picasso.get().load(post.getUrlImage()).into(holder.imgContent);
+        Picasso.get().load(post.getUrlImage()).resize(650,0).into(holder.imgContent);
         holder.title.setText(post.getTitle());
         holder.description.setText(post.getDescription());
         holder.like.setText( "Like :" + post.getLike());

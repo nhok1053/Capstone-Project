@@ -35,7 +35,7 @@
                         android:id="@+id/cvTopRecipeTvTopRecipeLike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" Like"
+                        android:text="Thích"
                         android:textColor="#ffffff" />
                     <TextView
                         android:layout_marginTop="4dp"
@@ -44,7 +44,7 @@
                         android:id="@+id/cvTopRecipeTvTopRecipeComment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Comment "
+                        android:text="Bình luận "
                         android:textColor="#ffffff" />
                 </LinearLayout>
 
@@ -61,6 +61,6 @@
             android:textColor="#111111"
             android:layout_below="@+id/rl_top_recipe"
             android:elegantTextHeight="true"
-            android:text=" Name " />
+            android:text=" Tên " />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

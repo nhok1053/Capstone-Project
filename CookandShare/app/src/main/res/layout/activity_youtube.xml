@@ -25,7 +25,7 @@
                 android:layout_centerInParent="true"
                 android:layout_toRightOf="@+id/btnYoutubeClose"
                 android:textColor="#ffffff"
-                android:text="Tips"
+                android:text="Mẹo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"/>
