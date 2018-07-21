@@ -14,16 +14,18 @@ import com.example.huynhha.cookandshare.BuildConfig;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.adapter.PagerAdapter;
 
+import butterknife.BindView;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PersonalFragment extends Fragment {
 
-
     public PersonalFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
@@ -31,7 +33,7 @@ public class PersonalFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_personal, container, false);
 //        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_category, new UpdateProfileFragment());
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_category, new YouTubeTipFragment());
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_personal, new ProfileFragment());
         transaction.commit();
         return v;
     }

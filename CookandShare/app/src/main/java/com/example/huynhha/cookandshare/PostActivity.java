@@ -1,5 +1,6 @@
 package com.example.huynhha.cookandshare;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
 public class PostActivity extends AppCompatActivity {
     @BindView(R.id.rvPostActivity)
     RecyclerView rvPost;
-
+Context ctx;
     String postID, userID, time, imgUrl, title, description, userImgUrl;
     int like, comment;
     TopPostAdapter postAdapter;
@@ -38,6 +39,7 @@ public class PostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         ButterKnife.bind(this);
+        ctx=this;
         postCategorys = getIntent().getStringArrayListExtra("categorypost");
         posts = new ArrayList<>();
         importTopPost();
@@ -66,7 +68,12 @@ public class PostActivity extends AppCompatActivity {
                                 Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment);
                                 posts.add(post);
                             }
-                            postAdapter = new TopPostAdapter(posts);
+
+
+
+
+
+                            postAdapter = new TopPostAdapter(ctx,posts);
                             rvPost.setAdapter(postAdapter);
                         }
 
@@ -77,6 +84,5 @@ public class PostActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
 }

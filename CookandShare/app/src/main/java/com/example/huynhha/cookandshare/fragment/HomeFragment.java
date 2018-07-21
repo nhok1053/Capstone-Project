@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment {
                             Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment);
                             posts.add(post);
                         }
-                        postAdapter = new TopPostAdapter(posts);
+                        postAdapter = new TopPostAdapter(getActivity(),posts);
                         rvPost.setAdapter(postAdapter);
                     }
 

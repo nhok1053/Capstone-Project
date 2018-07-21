@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostViewHolder> {
-
+    Context ctx;
+    private ArrayList<Post> posts;
+    public TopPostAdapter(Context ctx, ArrayList<Post> posts) {
+        this.ctx = ctx;
+        this.posts = posts;
+    }
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView userAvatar;
@@ -39,23 +46,23 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
 
         public PostViewHolder(View itemView) {
             super(itemView);
-            userName=itemView.findViewById(R.id.cvTopPostUserName);
-            userAvatar=itemView.findViewById(R.id.cvTopPostUserAvatar);
-            time=itemView.findViewById(R.id.cvTopPostPostTime);
-            imgContent=itemView.findViewById(R.id.cvTopPostImgContent);
-            title=itemView.findViewById(R.id.cvTopPostTvTitle);
-            description=itemView.findViewById(R.id.cvTopPostTvDescription);
-            like=itemView.findViewById(R.id.cvTopPostTvLike);
-            comment=itemView.findViewById(R.id.cvTopPostTvComment);
+            userName = itemView.findViewById(R.id.cvTopPostUserName);
+            userAvatar = itemView.findViewById(R.id.cvTopPostUserAvatar);
+            time = itemView.findViewById(R.id.cvTopPostPostTime);
+            imgContent = itemView.findViewById(R.id.cvTopPostImgContent);
+            title = itemView.findViewById(R.id.cvTopPostTvTitle);
+            description = itemView.findViewById(R.id.cvTopPostTvDescription);
+            like = itemView.findViewById(R.id.cvTopPostTvLike);
+            comment = itemView.findViewById(R.id.cvTopPostTvComment);
         }
 
     }
 
-    private ArrayList<Post> posts;
 
-    public TopPostAdapter(ArrayList<Post> posts) {
-        this.posts = posts;
-    }
+
+//    public TopPostAdapter(ArrayList<Post> posts) {
+//        this.posts = posts;
+//    }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -75,11 +82,13 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
         holder.userName.setText(post.getUserID());
         holder.time.setText(post.getTime());
-        Picasso.get().load(post.getUrlImage()).resize(650,0).into(holder.imgContent);
+        DisplayMetrics displayMetrics = ctx.getResources().getDisplayMetrics();
+        int pxWidth = displayMetrics.widthPixels;
+        Picasso.get().load(post.getUrlImage()).resize(pxWidth, 0).into(holder.imgContent);
         holder.title.setText(post.getTitle());
-        holder.description.setText(post.getDescription());
-        holder.like.setText( "Like :" + post.getLike());
-        holder.comment.setText( "Comment :" + post.getComment());
+        holder.description.setText(post.getDescription()); 
+        holder.like.setText(post.getLike()+" "+holder.like.getText());
+        holder.comment.setText(post.getComment()+" "+holder.comment.getText());
     }
 
     @Override
