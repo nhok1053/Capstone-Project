@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/fl_comment"
+    android:layout_height="match_parent"
+    tools:context=".fragment.CommentFragment">
+
+   <android.support.v7.widget.RecyclerView
+       android:id="@+id/rc_comment"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+   </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:padding="8dp"
+            android:id="@+id/edt_comment"
+            android:maxLines="10"
+            android:layout_margin="8dp"
+            android:background="@drawable/editext_border"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_send_comment"
+            android:text="Gửi"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_width="90dp"
+            android:layout_height="40dp" />
+    </LinearLayout>
+</FrameLayout>

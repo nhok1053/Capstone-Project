@@ -1,6 +1,8 @@
 package com.example.huynhha.cookandshare.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.entity.Post;
@@ -37,6 +40,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Button btnLike;
         Button btnComment;
 
+
         public PostViewHolder(View itemView) {
             super(itemView);
             userName=itemView.findViewById(R.id.cvTopPostUserName);
@@ -50,10 +54,11 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         }
 
     }
-
+    Context context;
     private ArrayList<Post> posts;
 
-    public TopPostAdapter(ArrayList<Post> posts) {
+    public TopPostAdapter(ArrayList<Post> posts,Context context) {
+        this.context = context;
         this.posts = posts;
     }
 
@@ -71,7 +76,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
 
     @Override
     public void onBindViewHolder(final PostViewHolder holder, int position) {
-        Post post = posts.get(position);
+        final Post post = posts.get(position);
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
         holder.userName.setText(post.getUserID());
         holder.time.setText(post.getTime());
@@ -80,6 +85,16 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         holder.description.setText(post.getDescription());
         holder.like.setText( "Like :" + post.getLike());
         holder.comment.setText( "Comment :" + post.getComment());
+        holder.imgContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,PostDetails.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("postID",post.getPostID());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

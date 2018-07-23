@@ -181,7 +181,6 @@ public class PostRecipe extends AppCompatActivity {
                         postSteps.get(count).setImgURL(uri.toString());
                         count++;
                         if (count < (postSteps.size())) {
-
                             pushStepImageToFireStorage(postId);
                             System.out.println("Count"+count);
                         }
@@ -198,7 +197,8 @@ public class PostRecipe extends AppCompatActivity {
                             post.setNumberOfPeople("0");
                             try{
                                 FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-                                post.setUserID(currentFirebaseUser.getDisplayName());
+                                post.setUserID(currentFirebaseUser.getUid());
+                                post.setUserName(currentFirebaseUser.getDisplayName());
                                 post.setUserImgUrl(currentFirebaseUser.getPhotoUrl().toString());
                             }catch (Exception e){
                                 System.out.println(e);

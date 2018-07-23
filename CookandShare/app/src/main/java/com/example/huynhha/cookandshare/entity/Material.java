@@ -13,6 +13,10 @@ public class Material {
         this.type = type;
     }
 
+    public Material() {
+
+    }
+
     public String getMaterialID() {
         return materialID;
     }

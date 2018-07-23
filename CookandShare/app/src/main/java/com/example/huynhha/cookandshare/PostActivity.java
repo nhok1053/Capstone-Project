@@ -1,5 +1,6 @@
 package com.example.huynhha.cookandshare;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,11 +31,12 @@ public class PostActivity extends AppCompatActivity {
     ArrayList<Post> posts;
     ArrayList<String> postCategorys;
     private CollectionReference notebookRef = MainActivity.db.collection("Post");
-
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        context =this;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         ButterKnife.bind(this);
@@ -66,7 +68,8 @@ public class PostActivity extends AppCompatActivity {
                                 Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment);
                                 posts.add(post);
                             }
-                            postAdapter = new TopPostAdapter(posts);
+
+                            postAdapter = new TopPostAdapter(posts,context);
                             rvPost.setAdapter(postAdapter);
                         }
 
