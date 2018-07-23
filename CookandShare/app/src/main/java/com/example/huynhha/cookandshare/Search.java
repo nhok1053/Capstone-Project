@@ -1,9 +1,12 @@
 package com.example.huynhha.cookandshare;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,7 +45,7 @@ public class Search extends AppCompatActivity {
     SegmentedTab segmentedTab;
     ViewPager viewPager;
     Button btn_close_activity;
-    Button btn_search, btn_title,btn_user,btn_tag,btn_material;
+    Button btn_title,btn_user,btn_tag,btn_material;
     private List<Post> postsList;
     private List<Post> postListData;
     private List<User> userList;
@@ -70,7 +73,6 @@ public class Search extends AppCompatActivity {
         progressDialog =new ProgressDialog(this);
         setContentView(R.layout.activity_search);
         btn_close_activity = findViewById(R.id.btn_close);
-        btn_search = findViewById(R.id.btn_search);
         btn_title = findViewById(R.id.btn_title);
         btn_user = findViewById(R.id.btn_user);
         btn_tag =findViewById(R.id.btn_tag);
@@ -106,30 +108,28 @@ public class Search extends AppCompatActivity {
     }
 
     public void searchButtonActivity(){
-        btn_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String searchText = mSearchField.getText().toString();
-                //mResultList.setAdapter(usersListAdapter);
-                firestoreUserSearch(searchText);
 
-            }
-        });
         btn_title.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
                 strCheckBtnClickValue = "Title";
                 mResultList.setAdapter(postsListAdapter);
                 String searchText = mSearchField.getText().toString();
+                setButtonBackground();
+                btn_title.setBackground(getDrawable(R.drawable.button_background_grey));
                 firestorePostSearch(searchText);
 
             }
         });
         btn_user.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NewApi")
             @Override
             public void onClick(View view) {
                 strCheckBtnClickValue = "User";
                 mResultList.setAdapter(usersListAdapter);
+                setButtonBackground();
+                btn_user.setBackground(getDrawable(R.drawable.button_background_grey));
                 String searchText = mSearchField.getText().toString();
                 firestoreUserSearch(searchText);
             }
@@ -243,6 +243,16 @@ public class Search extends AppCompatActivity {
             }
         }
     }
+
+    @SuppressLint("NewApi")
+    public void setButtonBackground(){
+        btn_title.setBackground(getDrawable(R.drawable.button_background));
+        btn_material.setBackground(getDrawable(R.drawable.button_background));
+        btn_tag.setBackground(getDrawable(R.drawable.button_background));
+        btn_user.setBackground(getDrawable(R.drawable.button_background));
+    }
+
+
 
 
     private void searchTextFieldChange(){

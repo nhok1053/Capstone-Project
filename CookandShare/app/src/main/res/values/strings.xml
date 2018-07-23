@@ -46,6 +46,9 @@
     <string name="hour">hour</string>
     <string name="minute">minute</string>
     <string name="search">Search</string>
+    <string name="title">Title</string>đề
+    <string name="user">People</string>
+    <string name="ingredient">Ingredient</string>
 
 
 </resources>
