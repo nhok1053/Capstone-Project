@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostViewHolder> {
-
-
+    private ArrayList<Post> posts;
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView userAvatar;
         TextView userName;
@@ -43,20 +44,20 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
 
         public PostViewHolder(View itemView) {
             super(itemView);
-            userName=itemView.findViewById(R.id.cvTopPostUserName);
-            userAvatar=itemView.findViewById(R.id.cvTopPostUserAvatar);
-            time=itemView.findViewById(R.id.cvTopPostPostTime);
-            imgContent=itemView.findViewById(R.id.cvTopPostImgContent);
-            title=itemView.findViewById(R.id.cvTopPostTvTitle);
-            description=itemView.findViewById(R.id.cvTopPostTvDescription);
-            like=itemView.findViewById(R.id.cvTopPostTvLike);
-            comment=itemView.findViewById(R.id.cvTopPostTvComment);
+            userName = itemView.findViewById(R.id.cvTopPostUserName);
+            userAvatar = itemView.findViewById(R.id.cvTopPostUserAvatar);
+            time = itemView.findViewById(R.id.cvTopPostPostTime);
+            imgContent = itemView.findViewById(R.id.cvTopPostImgContent);
+            title = itemView.findViewById(R.id.cvTopPostTvTitle);
+            description = itemView.findViewById(R.id.cvTopPostTvDescription);
+            like = itemView.findViewById(R.id.cvTopPostTvLike);
+            comment = itemView.findViewById(R.id.cvTopPostTvComment);
         }
 
     }
-    Context context;
-    private ArrayList<Post> posts;
 
+    Context context;
+    //private ArrayList<Post> posts;
     public TopPostAdapter(ArrayList<Post> posts,Context context) {
         this.context = context;
         this.posts = posts;
@@ -80,7 +81,9 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
         holder.userName.setText(post.getUserID());
         holder.time.setText(post.getTime());
-        Picasso.get().load(post.getUrlImage()).resize(650,0).into(holder.imgContent);
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        int pxWidth = displayMetrics.widthPixels;
+        Picasso.get().load(post.getUrlImage()).resize(pxWidth, 0).into(holder.imgContent);
         holder.title.setText(post.getTitle());
         holder.description.setText(post.getDescription());
         holder.like.setText( "Like :" + post.getLike());
@@ -95,6 +98,8 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                 context.startActivity(intent);
             }
         });
+//        holder.like.setText(post.getLike()+" "+holder.like.getText());
+//        holder.comment.setText(post.getComment()+" "+holder.comment.getText());
     }
 
     @Override
