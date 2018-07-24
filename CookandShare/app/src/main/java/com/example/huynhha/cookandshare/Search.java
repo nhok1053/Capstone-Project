@@ -84,7 +84,7 @@ public class Search extends AppCompatActivity {
         postListData = new ArrayList<>();
         userList = new ArrayList<>();
         userListData = new ArrayList<>();
-        postsListAdapter = new PostsListAdapter(postsList);
+        postsListAdapter = new PostsListAdapter(postsList,this);
         usersListAdapter = new UsersListAdapter(userList);
         mResultList.setHasFixedSize(true);
         mResultList.setLayoutManager(new LinearLayoutManager(this));
