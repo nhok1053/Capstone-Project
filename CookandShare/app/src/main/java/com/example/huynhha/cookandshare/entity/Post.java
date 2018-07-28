@@ -80,7 +80,15 @@ public class Post {
         this.userImgUrl = userImgUrl;
     }
 
-    public Post(String postID, String userID, String time, String imgUrl, String title,String titleLower,
+    public Post(String userName, String postID, String userID, String title, String urlImage) {
+        this.userName = userName;
+        this.postID = postID;
+        this.userID = userID;
+        this.title = title;
+        this.urlImage = urlImage;
+    }
+
+    public Post(String postID, String userID, String time, String imgUrl, String title, String titleLower,
                 String description, String userImgUrl, int like, int comment) {
         this.postID = postID;
         this.userID = userID;

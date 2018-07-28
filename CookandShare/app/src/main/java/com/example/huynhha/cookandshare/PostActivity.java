@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
+import com.example.huynhha.cookandshare.adapter.CategoryPostAdapter;
 import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,24 +27,30 @@ public class PostActivity extends AppCompatActivity {
     @BindView(R.id.rvPostActivity)
     RecyclerView rvPost;
 
-    String postID, userID, time, imgUrl, title, description, userImgUrl;
+    String postID, userID, time, imgUrl, title, description, userImgUrl, userName;
     int like, comment;
-    TopPostAdapter postAdapter;
+    CategoryPostAdapter postAdapter;
     ArrayList<Post> posts;
     ArrayList<String> postCategorys;
     private CollectionReference notebookRef = MainActivity.db.collection("Post");
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        context =this;
+        context = this;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         ButterKnife.bind(this);
-        postCategorys = getIntent().getStringArrayListExtra("categorypost");
         posts = new ArrayList<>();
+        postCategorys = getIntent().getStringArrayListExtra("categorypost");
         importTopPost();
+        if ((postCategorys != null)) {
+            importTopPost();
+        } else {
+            Toast.makeText(this, "Không có món ăn nào trong danh sách này", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void importTopPost() {
@@ -58,18 +66,13 @@ public class PostActivity extends AppCompatActivity {
                             for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                 postID = documentSnapshot.get("postID").toString();
                                 userID = documentSnapshot.get("time").toString();
-                                time = documentSnapshot.get("time").toString();
                                 imgUrl = documentSnapshot.get("urlImage").toString();
                                 title = documentSnapshot.get("title").toString();
-                                description = documentSnapshot.get("description").toString();
-                                userImgUrl = documentSnapshot.get("userImgUrl").toString();
-                                like = Integer.parseInt(documentSnapshot.get("like").toString());
-                                comment = Integer.parseInt(documentSnapshot.get("comment").toString());
-                                Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment);
+                                userName = documentSnapshot.get("userName").toString();
+                                Post post = new Post(userName, postID, userID, title, imgUrl);
                                 posts.add(post);
                             }
-
-                            postAdapter = new TopPostAdapter(posts,context);
+                            postAdapter = new CategoryPostAdapter(posts, context);
                             rvPost.setAdapter(postAdapter);
                         }
 
