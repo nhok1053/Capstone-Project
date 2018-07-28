@@ -47,7 +47,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment{
     @BindView(R.id.rvChef)
     RecyclerView rvChef;
     @BindView(R.id.rvRecipe)
@@ -65,6 +65,8 @@ public class HomeFragment extends Fragment {
     ArrayList<Post> posts;
     private CollectionReference notebookRef = MainActivity.db.collection("Post");
 
+    private OnFragmentCall onFragmentCall;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,7 +79,6 @@ public class HomeFragment extends Fragment {
         rvRecipe = v.findViewById(R.id.rvRecipe);
         posts = new ArrayList<>();
         ButterKnife.bind(v);
-
         importTopPost();
         importTopAttribute();
         importTopRecipes();
@@ -113,6 +114,12 @@ public class HomeFragment extends Fragment {
                             posts.add(post);
                         }
                         postAdapter = new TopPostAdapter(posts,getContext());
+                        postAdapter.setOnAdapterClick(new TopPostAdapter.OnAdapterClick() {
+                            @Override
+                            public void OnCommentClicked(String postId) {
+                                onFragmentCall.onCommentClicked(postId);
+                            }
+                        });
                         rvPost.setAdapter(postAdapter);
                     }
 
@@ -140,4 +147,11 @@ public class HomeFragment extends Fragment {
         rvRecipe.setAdapter(postAdapter);
     }
 
+    public interface OnFragmentCall{
+        void onCommentClicked(String postID);
+    }
+
+    public void setOnFragmentCall(OnFragmentCall onFragmentCall) {
+        this.onFragmentCall = onFragmentCall;
+    }
 }

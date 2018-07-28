@@ -1,9 +1,11 @@
 package com.example.huynhha.cookandshare.adapter;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +22,7 @@ import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.entity.Post;
+import com.example.huynhha.cookandshare.fragment.CommentFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,6 +33,7 @@ import butterknife.ButterKnife;
 
 public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostViewHolder> {
     private ArrayList<Post> posts;
+    private OnAdapterClick onAdapterClick;
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView userAvatar;
         TextView userName;
@@ -40,6 +45,8 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         TextView comment;
         Button btnLike;
         Button btnComment;
+        View view2;
+        FrameLayout fl_comment;
 
 
         public PostViewHolder(View itemView) {
@@ -52,6 +59,8 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             description = itemView.findViewById(R.id.cvTopPostTvDescription);
             like = itemView.findViewById(R.id.cvTopPostTvLike);
             comment = itemView.findViewById(R.id.cvTopPostTvComment);
+            btnComment = itemView.findViewById(R.id.cvTopPostBtnComment);
+            view2 = itemView.findViewById(R.id.checkFragment);
         }
 
     }
@@ -98,6 +107,13 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                 context.startActivity(intent);
             }
         });
+        holder.btnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onAdapterClick.OnCommentClicked(post.getPostID().toString());
+            }
+        });
+
 //        holder.like.setText(post.getLike()+" "+holder.like.getText());
 //        holder.comment.setText(post.getComment()+" "+holder.comment.getText());
     }
@@ -105,5 +121,13 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     @Override
     public int getItemCount() {
         return posts.size();
+    }
+
+    public interface OnAdapterClick{
+        void OnCommentClicked(String postId);
+    }
+
+    public void setOnAdapterClick(OnAdapterClick onAdapterClick) {
+        this.onAdapterClick = onAdapterClick;
     }
 }

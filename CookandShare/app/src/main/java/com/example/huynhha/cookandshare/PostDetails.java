@@ -129,7 +129,6 @@ public class PostDetails extends AppCompatActivity {
         for (int i= 0;i<list1.size();i++){
             String quatity = list1.get(i).getQuantity();
             String name = list1.get(i).getMaterialName();
-            //System.out.println("Check name " +quatity + " "+name);
             str += "  - "+quatity+" "+name+"\n";
         }
         txt_material.setText(str);
@@ -140,9 +139,5 @@ public class PostDetails extends AppCompatActivity {
         progressDialog.show();
         setData(post);
     }
-    public List<Material> castToListMaterial(List list){
-        List<Material> materials = new ArrayList<>();
-        List list1 = new ArrayList();
-        return materials;
-    }
+
 }
