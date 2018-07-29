@@ -75,7 +75,6 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.View
         public ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-
             nameText = (TextView) mView.findViewById(R.id.name_text);
             descriptionText = (TextView) mView.findViewById(R.id.description_text);
             imageView = (ImageView) mView.findViewById(R.id.image_data);

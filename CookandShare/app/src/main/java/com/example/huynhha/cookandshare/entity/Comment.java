@@ -4,14 +4,12 @@ public class Comment {
     private String userID;
     private String userName;
     private String userImgUrl;
-    private String commentTime;
     private String commentContent;
 
-    public Comment(String userID, String userName, String userImgUrl, String commentTime, String commentContent) {
+    public Comment(String userID, String userName, String userImgUrl, String commentContent) {
         this.userID = userID;
         this.userName = userName;
         this.userImgUrl = userImgUrl;
-        this.commentTime = commentTime;
         this.commentContent = commentContent;
     }
 
@@ -42,13 +40,7 @@ public class Comment {
         this.userImgUrl = userImgUrl;
     }
 
-    public String getCommentTime() {
-        return commentTime;
-    }
 
-    public void setCommentTime(String commentTime) {
-        this.commentTime = commentTime;
-    }
 
     public String getCommentContent() {
         return commentContent;

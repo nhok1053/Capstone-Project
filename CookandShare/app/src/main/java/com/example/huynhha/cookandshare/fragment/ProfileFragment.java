@@ -122,6 +122,7 @@ public class ProfileFragment extends Fragment {
                             posts.add(post);
                         }
                         PersonalAllPostAdapter personalAllPostAdapter = new PersonalAllPostAdapter(posts, getActivity());
+
                         rvImgPost.setAdapter(personalAllPostAdapter);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

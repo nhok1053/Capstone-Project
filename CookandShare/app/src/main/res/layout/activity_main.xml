@@ -82,5 +82,10 @@
 
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
-
+    <View
+        android:clickable="true"
+        android:id="@+id/checkFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </View>
 </FrameLayout>
