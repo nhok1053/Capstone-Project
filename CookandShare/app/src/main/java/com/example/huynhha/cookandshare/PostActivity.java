@@ -45,7 +45,6 @@ public class PostActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         posts = new ArrayList<>();
         postCategorys = getIntent().getStringArrayListExtra("categorypost");
-        importTopPost();
         if ((postCategorys != null)) {
             importTopPost();
         } else {

@@ -58,6 +58,8 @@ public class ProfileFragment extends Fragment {
     Button btnGoMarket;
     @BindView(R.id.btnProfileFavorite)
     Button btnFavorite;
+    @BindView(R.id.btnProfileSetting)
+    Button btnSetting;
     @BindView(R.id.rvProfileImgPost)
     RecyclerView rvImgPost;
     private String postID;
@@ -81,6 +83,7 @@ public class ProfileFragment extends Fragment {
         posts = new ArrayList<>();
         userInfo();
         importTopPost();
+        settingClick();
         return v;
     }
 
@@ -125,6 +128,19 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception e) {
                 System.out.println(e.getMessage());
+            }
+        });
+    }
+
+    public void settingClick() {
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                SettingFragment sf = new SettingFragment();
+                ft.replace(R.id.fl_profile, sf);
+                ft.addToBackStack(null);
+                ft.commit();
             }
         });
     }
