@@ -1,12 +1,10 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +17,6 @@ import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.adapter.PersonalAllPostAdapter;
-import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,46 +38,42 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
-    @BindView(R.id.profileUserAvatar)
+public class ViewProfileFragment extends Fragment {
+    @BindView(R.id.btnViewProfileClose)
+    Button btnClose;
+    @BindView(R.id.imgViewProfileUserAvatar)
     ImageView imgAvatar;
-    @BindView(R.id.profileUserNumberFollowing)
+    @BindView(R.id.txtViewProfileUserNumberFollowing)
     TextView txtNumberFollowing;
-    @BindView(R.id.txtProfileUserFollowing)
+    @BindView(R.id.txtViewProfileUserFollowing)
     TextView txtFollowing;
-    @BindView(R.id.profileUserNumberPost)
+    @BindView(R.id.txtViewProfileUserNumberPost)
     TextView txtNumberAllPost;
-    @BindView(R.id.txtProfileUserPost)
+    @BindView(R.id.txtViewProfileUserPost)
     TextView txtAllPost;
-    @BindView(R.id.profileUserNumberFollower)
+    @BindView(R.id.txtViewProfileUserNumberFollower)
     TextView txtNumberFollower;
-    @BindView(R.id.txtProfileUserFollower)
+    @BindView(R.id.txtViewProfileUserFollower)
     TextView txtFollower;
-    @BindView(R.id.profileUserName)
+    @BindView(R.id.txtViewProfileUserName)
     TextView txtUsername;
-    @BindView(R.id.profileUserDateOfBirth)
+    @BindView(R.id.txtViewProfileUserDateOfBirth)
     TextView txtUserDateOfBirth;
-    @BindView(R.id.btnProfileUpdateProfile)
-    Button btnUpdate;
-    @BindView(R.id.btnProfileCookbook)
-    Button btnCookbook;
-    @BindView(R.id.btnProfileGoMarket)
-    Button btnGoMarket;
-    @BindView(R.id.btnProfileFavorite)
-    Button btnFavorite;
-    @BindView(R.id.btnProfileSetting)
-    Button btnSetting;
-    @BindView(R.id.rvProfileImgPost)
+    @BindView(R.id.btnViewProfileFollow)
+    Button btnFollow;
+    @BindView(R.id.rvViewProfileImgPost)
     RecyclerView rvImgPost;
     private String postID;
     private String userID;
     private String imgUrl;
+    private String getUserID;
     ArrayList<Post> posts;
     private CollectionReference notebookRefUser = MainActivity.db.collection("User");
     private CollectionReference notebookRefPost = MainActivity.db.collection("Post");
     private String currentUser = "4SqPgH6eUIYqzT5mKIUXw0hbqSy1";
 
-    public ProfileFragment() {
+
+    public ViewProfileFragment() {
         // Required empty public constructor
     }
 
@@ -89,20 +82,26 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        View v = inflater.inflate(R.layout.fragment_view_profile, container, false);
         ButterKnife.bind(this, v);
         posts = new ArrayList<>();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            getUserID = bundle.getString("userID");
+        } else {
+            getUserID = "";
+        }
         userInfo();
-        importTopPost();
         countPost();
+        importTopPost();
         clickAllPost(txtAllPost);
         clickAllPost(txtNumberAllPost);
-        settingClick();
+        close();
         return v;
     }
 
     private void countPost() {
-        notebookRefPost.whereEqualTo("userID", currentUser).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        notebookRefPost.whereEqualTo("userID", getUserID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 txtNumberAllPost.setText(queryDocumentSnapshots.size() + "");
@@ -111,13 +110,16 @@ public class ProfileFragment extends Fragment {
     }
 
     public void userInfo() {
-        notebookRefUser.whereEqualTo("userID", currentUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        notebookRefUser.whereEqualTo("userID", getUserID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (DocumentSnapshot documentSnapshot : task.getResult()) {
                     Picasso.get().load(documentSnapshot.get("imgUrl").toString()).transform(new RoundedTransformation()).fit().centerCrop().into(imgAvatar);
                     txtUsername.setText(documentSnapshot.get("firstName").toString());
                     txtUserDateOfBirth.setText(documentSnapshot.get("dateOfBirth").toString());
+                    if (currentUser.equals(getUserID.trim())) {
+                        btnFollow.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -132,7 +134,7 @@ public class ProfileFragment extends Fragment {
         rvImgPost.setNestedScrollingEnabled(false);
         GridLayoutManager gln = new GridLayoutManager(this.getActivity(), 2, GridLayoutManager.VERTICAL, false);
         rvImgPost.setLayoutManager(gln);
-        notebookRefPost.whereEqualTo("userID", currentUser)
+        notebookRefPost.whereEqualTo("userID", getUserID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -146,6 +148,7 @@ public class ProfileFragment extends Fragment {
                         }
                         PersonalAllPostAdapter personalAllPostAdapter = new PersonalAllPostAdapter(posts, getActivity());
                         rvImgPost.setAdapter(personalAllPostAdapter);
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -154,16 +157,11 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
-    public void settingClick() {
-        btnSetting.setOnClickListener(new View.OnClickListener() {
+    private void close(){
+        btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                SettingFragment sf = new SettingFragment();
-                ft.replace(R.id.fl_profile, sf);
-                ft.addToBackStack(null);
-                ft.commit();
+//                getActivity().finish();
             }
         });
     }
@@ -176,4 +174,3 @@ public class ProfileFragment extends Fragment {
         });
     }
 }
-

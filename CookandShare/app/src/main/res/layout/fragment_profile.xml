@@ -1,194 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fl_profile"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="#fff"
     tools:context=".fragment.ProfileFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/profileUserAvatar"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp" />
-
-                <LinearLayout
-                    android:layout_width="85dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="3dp">
-
-                    <TextView
-                        android:id="@+id/profileUserNumberFollowing"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="50" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Theo dõi" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="85dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="3dp">
-
-                    <TextView
-                        android:id="@+id/profileUserNumberPost"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="50" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Bài đăng" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="3dp">
-
-                    <TextView
-                        android:id="@+id/profileUserNumberFollower"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="50" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Được theo dõi" />
-                </LinearLayout>
-            </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="8dp">
 
                 <LinearLayout
-                    android:layout_width="172dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/profileUserName"
+                    <ImageView
+                        android:id="@+id/profileUserAvatar"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp" />
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="3dp">
+
+                        <TextView
+                            android:id="@+id/profileUserNumberFollowing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="50"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtProfileUserFollowing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Theo dõi" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="3dp">
+
+                        <TextView
+                            android:id="@+id/profileUserNumberPost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="50"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtProfileUserPost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Bài đăng" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="To Tien Luc"
-                        android:textSize="17sp" />
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="3dp">
 
-                    <TextView
-                        android:id="@+id/profileUserDateOfBirth"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="23/04/1996" />
+                        <TextView
+                            android:id="@+id/profileUserNumberFollower"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="50"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
+                        <TextView
+                            android:id="@+id/txtProfileUserFollower"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Được theo dõi" />
+                    </LinearLayout>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnProfileUpdateProfile"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/editext_border"
-                    android:text="Sửa Thông Tin" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="172dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/profileUserName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="To Tien Luc"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/profileUserDateOfBirth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="23/04/1996" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnProfileUpdateProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/editext_border"
+                            android:text="Sửa Thông Tin" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="3dp"
+                    android:background="#cccccc" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btnProfileCookbook"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        android:paddingLeft="5dp"
+                        android:text="Cookbook"
+                        android:textAlignment="viewStart" />
+
+                    <Button
+                        android:id="@+id/btnProfileGoMarket"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        android:paddingLeft="5dp"
+                        android:text="Đi chợ"
+                        android:textAlignment="viewStart" />
+
+                    <Button
+                        android:id="@+id/btnProfileFavorite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        android:paddingLeft="5dp"
+                        android:text="Yêu thích"
+                        android:textAlignment="viewStart" />
+
+                    <Button
+                        android:id="@+id/btnProfileSetting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        android:paddingLeft="5dp"
+                        android:text="Thiết lập"
+                        android:textAlignment="viewStart" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="3dp"
+                    android:background="#cccccc" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvProfileImgPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="3dp"
-                android:background="#cccccc" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/btnProfileCookbook"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#fff"
-                    android:paddingLeft="5dp"
-                    android:text="Cookbook"
-                    android:textAlignment="viewStart" />
-
-                <Button
-                    android:id="@+id/btnProfileGoMarket"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#fff"
-                    android:paddingLeft="5dp"
-                    android:text="Đi chợ"
-                    android:textAlignment="viewStart" />
-
-                <Button
-                    android:id="@+id/btnProfileFavorite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#fff"
-                    android:paddingLeft="5dp"
-                    android:text="Yêu thích"
-                    android:textAlignment="viewStart" />
-
-                <Button
-                    android:id="@+id/btnProfileSetting"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#fff"
-                    android:paddingLeft="5dp"
-                    android:text="Thiết lập"
-                    android:textAlignment="viewStart" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="3dp"
-                android:background="#cccccc" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvProfileImgPost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </android.support.v7.widget.RecyclerView>
         </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
-
+    </ScrollView>
+</FrameLayout>

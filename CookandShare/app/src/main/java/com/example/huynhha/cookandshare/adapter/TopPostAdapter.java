@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -23,6 +24,8 @@ import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.example.huynhha.cookandshare.fragment.CommentFragment;
+import com.example.huynhha.cookandshare.fragment.ProfileFragment;
+import com.example.huynhha.cookandshare.fragment.ViewProfileFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,6 +37,8 @@ import butterknife.ButterKnife;
 public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostViewHolder> {
     private ArrayList<Post> posts;
     private OnAdapterClick onAdapterClick;
+    Context context;
+
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView userAvatar;
         TextView userName;
@@ -49,7 +54,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         FrameLayout fl_comment;
 
 
-        public PostViewHolder(View itemView) {
+        public PostViewHolder(final View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.cvTopPostUserName);
             userAvatar = itemView.findViewById(R.id.cvTopPostUserAvatar);
@@ -62,12 +67,11 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             btnComment = itemView.findViewById(R.id.cvTopPostBtnComment);
             view2 = itemView.findViewById(R.id.checkFragment);
         }
-
     }
 
-    Context context;
+
     //private ArrayList<Post> posts;
-    public TopPostAdapter(ArrayList<Post> posts,Context context) {
+    public TopPostAdapter(ArrayList<Post> posts, Context context) {
         this.context = context;
         this.posts = posts;
     }
@@ -88,6 +92,19 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     public void onBindViewHolder(final PostViewHolder holder, int position) {
         final Post post = posts.get(position);
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
+        holder.userAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.support.v4.app.FragmentTransaction ft = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("userID", post.getUserID());
+                ViewProfileFragment profileFragment = new ViewProfileFragment();
+                profileFragment.setArguments(bundle);
+                ft.replace(R.id.fl_main, profileFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
         holder.userName.setText(post.getUserID());
         holder.time.setText(post.getTime());
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -95,14 +112,14 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Picasso.get().load(post.getUrlImage()).resize(pxWidth, 0).into(holder.imgContent);
         holder.title.setText(post.getTitle());
         holder.description.setText(post.getDescription());
-        holder.like.setText( "Like :" + post.getLike());
-        holder.comment.setText( "Comment :" + post.getComment());
+        holder.like.setText("Like :" + post.getLike());
+        holder.comment.setText("Comment :" + post.getComment());
         holder.imgContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,PostDetails.class);
+                Intent intent = new Intent(context, PostDetails.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("postID",post.getPostID());
+                bundle.putString("postID", post.getPostID());
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
@@ -123,7 +140,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         return posts.size();
     }
 
-    public interface OnAdapterClick{
+    public interface OnAdapterClick {
         void OnCommentClicked(String postId);
     }
 
