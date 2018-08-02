@@ -67,6 +67,13 @@ public class Post {
         this.urlImage = urlImage;
     }
 
+    public Post(String postID, String title, String urlImage, String postTime) {
+        this.postID = postID;
+        this.title = title;
+        this.urlImage = urlImage;
+        this.postTime = postTime;
+    }
+
     public Post(String postID, String userID, String time, String imgUrl, String title,
                 String description, String userImgUrl, int like, int comment) {
         this.postID = postID;

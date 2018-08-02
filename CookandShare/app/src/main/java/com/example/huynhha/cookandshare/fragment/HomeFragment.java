@@ -154,4 +154,5 @@ public class HomeFragment extends Fragment{
     public void setOnFragmentCall(OnFragmentCall onFragmentCall) {
         this.onFragmentCall = onFragmentCall;
     }
+
 }

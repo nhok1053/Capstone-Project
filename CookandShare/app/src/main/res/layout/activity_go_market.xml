@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GoMarketActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar_back_materialDetails"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ff9800">
+
+        <Button
+            android:id="@+id/go_market_back_main"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Cook and share"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rc_go_market"
+        android:layout_width="356dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar_back_materialDetails"
+        tools:layout_editor_absoluteX="2dp"
+        tools:ignore="MissingConstraints">
+
+
+    </android.support.v7.widget.RecyclerView>
+    <FrameLayout
+    android:id="@+id/fl_go_market"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>

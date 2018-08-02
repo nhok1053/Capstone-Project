@@ -51,6 +51,7 @@ public class LoginWithPhoneAuthFragment extends Fragment {
     private PhoneAuthProvider mPhoneAuthProvider;
     private FirebaseAuth firebaseAuth;
 
+
     public LoginWithPhoneAuthFragment() {
         // Required empty public constructor
     }
@@ -124,7 +125,7 @@ public class LoginWithPhoneAuthFragment extends Fragment {
                 final Bundle bundle = new Bundle();
                 bundle.putString("phoneNumber",phoneNumber);
                 loginWithPhoneAuth.setArguments(bundle);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_main,new UpdateProfileFragment()).addToBackStack(null);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login,new UpdateProfileFragment()).addToBackStack(null);
                 transaction.commit();
             }
 

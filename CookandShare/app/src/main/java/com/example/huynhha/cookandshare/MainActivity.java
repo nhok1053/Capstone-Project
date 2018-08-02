@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentCall {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentCall,CommentFragment.onCloseClick {
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
@@ -99,9 +99,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         //adding fragment
         HomeFragment homeFragment = new HomeFragment();
+        CommentFragment commentFragment = new CommentFragment();
+        commentFragment.setOnCloseClick(this);
         homeFragment.setOnFragmentCall(this);
         pagerAdapter.addFragment(homeFragment, "");
-
         pagerAdapter.addFragment(new ListAllCategoriesFragment(), "");
         pagerAdapter.addFragment(new ListTipsFragment(), "");
         pagerAdapter.addFragment(new NotificationFragment(), "");
@@ -151,6 +152,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         view.setVisibility(View.VISIBLE);
         bundle.putString("postID",postID);
         transaction.commit();
+    }
 
+    @Override
+    public void onCloseCommentClick() {
+        view.setVisibility(View.GONE);
+        System.out.println("Tat roi nha");
     }
 }

@@ -1,18 +1,25 @@
 package com.example.huynhha.cookandshare;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.Post;
+import com.example.huynhha.cookandshare.model.DBContext;
+import com.example.huynhha.cookandshare.model.DBHelper;
+import com.example.huynhha.cookandshare.model.MaterialDBHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -25,11 +32,17 @@ import com.rey.material.widget.ProgressView;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class PostDetails extends AppCompatActivity {
     private static final String TAG = "Loi";
@@ -52,21 +65,24 @@ public class PostDetails extends AppCompatActivity {
     private Button btn_start_cooking;
     public Post post = new Post();
     private ProgressDialog progressDialog;
+    private List<Material> list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_post_details);
-        progressDialog =new ProgressDialog(this);
-        String postID =getIntent().getExtras().getString("postID");
+        progressDialog = new ProgressDialog(this);
+        String postID = getIntent().getExtras().getString("postID");
         setUp();
         storageReference = FirebaseStorage.getInstance().getReference();
         getData(postID);
-
+        saveDataGoMarket();
 
     }
-    public void setUp(){
+
+    public void setUp() {
         btn_back = findViewById(R.id.btn_back);
         btn_favourite = findViewById(R.id.btn_add_favourite);
         btn_go_market = findViewById(R.id.btn_add_go_market);
@@ -81,9 +97,11 @@ public class PostDetails extends AppCompatActivity {
         txt_material = findViewById(R.id.tv_material_details);
         rc_list_recipe = findViewById(R.id.rc_list_recipe);
         btn_start_cooking = findViewById(R.id.start_cooking);
+
     }
-    public Post getData(String postID){
-        postRef.whereEqualTo("postID",postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+    public Post getData(String postID) {
+        postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -93,18 +111,18 @@ public class PostDetails extends AppCompatActivity {
                         post.setUserID(document.get("userID").toString());
                         post.setUserName(document.get("userName").toString());
                         post.setNumberOfPeople(document.get("numberOfPeople").toString());
-                        post.setDescription(document.get("description").toString() );
+                        post.setDescription(document.get("description").toString());
                         post.setDifficult(document.get("difficult").toString());
-                        List<Material> list = new ArrayList<>();
-                        List<Map<String,Object>> list1 = (List<Map<String, Object>>) document.get("materials");
-                        for (int i= 0; i<list1.size();i++){
+                        list = new ArrayList<>();
+                        List<Map<String, Object>> list1 = (List<Map<String, Object>>) document.get("materials");
+                        for (int i = 0; i < list1.size(); i++) {
                             Material material = new Material();
                             material.setMaterialName(list1.get(i).get("materialName").toString());
                             material.setQuantity(list1.get(i).get("quantity").toString());
                             list.add(material);
                         }
-                        Log.d(TAG, "onComplete: "+list1.get(0).get("materialName").toString());
-                        System.out.println("Quatity"+list1.get(0).toString());
+                        Log.d(TAG, "onComplete: " + list1.get(0).get("materialName").toString());
+                        System.out.println("Quatity" + list1.get(0).toString());
                         post.setMaterials(list);
                         startLoading(post);
                     }
@@ -116,28 +134,88 @@ public class PostDetails extends AppCompatActivity {
         return post;
     }
 
-    public void setData(Post post){
-        String str ="";
-        Picasso.get().load(post.getUrlImage()).resize(650,0).into(recipe_detail_image);
+    public void setData(Post post) {
+        String str = "";
+        Picasso.get().load(post.getUrlImage()).resize(650, 0).into(recipe_detail_image);
         name_of_food.setText(post.getTitle().toString());
         create_by_name.setText(post.getUserName().toString());
         ratingBar.setNumStars(post.getNumberOfRate());
         txt_recipe_description.setText(post.getDescription().toString());
         txt_difficult.setText(post.getDifficult().toString());
         txt_number_of_people_eat_details.setText(post.getNumberOfPeople().toString());
-        List<Material> list1= post.getMaterials();
-        for (int i= 0;i<list1.size();i++){
+        List<Material> list1 = post.getMaterials();
+        for (int i = 0; i < list1.size(); i++) {
             String quatity = list1.get(i).getQuantity();
             String name = list1.get(i).getMaterialName();
-            str += "  - "+quatity+" "+name+"\n";
+            str += "  - " + quatity + " " + name + "\n";
         }
         txt_material.setText(str);
         progressDialog.dismiss();
     }
+
     private void startLoading(Post post) {
         progressDialog.setTitle("Đang tải ...");
         progressDialog.show();
         setData(post);
     }
 
+    private void saveDataGoMarket() {
+        btn_go_market.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveData();
+
+                // db.delete(String tableName, String whereClause, String[] whereArgs);
+                // If whereClause is null, it will delete all rows.
+//                    DBHelper mDbHelper = new DBHelper(getApplicationContext());
+//                    MaterialDBHelper materialDBHelper = new MaterialDBHelper(getApplicationContext());
+//                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+//                    SQLiteDatabase db1 = materialDBHelper.getWritableDatabase();
+//
+//                    db1.delete(DBContext.MaterialDB.TABLE_NAME, null, null);
+//                    db.delete(DBContext.FeedEntry.TABLE_NAME, null, null);
+//                System.out.println("DELETE SUCCCESS");
+
+            }
+        });
+    }
+
+    public void saveData() {
+
+        DBHelper mDbHelper = new DBHelper(getApplicationContext());
+        MaterialDBHelper materialDBHelper = new MaterialDBHelper(getApplicationContext());
+        // Gets the data repository in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SQLiteDatabase db1 = materialDBHelper.getWritableDatabase();
+        DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        String date = df.format(Calendar.getInstance().getTime());
+
+// Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(DBContext.FeedEntry.COLUMN_NAME_OF_RECIPE, post.getTitle());
+        values.put(DBContext.FeedEntry.COLUMN_IMG_URL, post.getUrlImage());
+        values.put(DBContext.FeedEntry.COLUMN_TIME, date);
+        System.out.println(values);
+
+
+// Insert the new row, returning the primary key value of the new row
+
+        long newRowId = db.insert(DBContext.FeedEntry.TABLE_NAME, null, values);
+
+        for (int i = 0; i < list.size(); i++) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DBContext.MaterialDB.COLUMN_ID, String.valueOf(newRowId));
+            contentValues.put(DBContext.MaterialDB.COLUMN_NAME_OF_MATERIAL, list.get(i).getMaterialName().toString());
+            contentValues.put(DBContext.MaterialDB.COLUMN_QUANTITY, list.get(i).getQuantity().toString());
+            contentValues.put(DBContext.MaterialDB.COLUMN_CHECK, "0");
+            long rowMaterials = db1.insert(DBContext.MaterialDB.TABLE_NAME, null, contentValues);
+            System.out.println("So 2 : " + rowMaterials);
+            System.out.println("Ten Nguyen Lieu " + list.get(i).getMaterialName().toString());
+            System.out.println(contentValues.toString());
+
+        }
+        System.out.println("So : " + newRowId);
+        Toast.makeText(this, "Lưu thành công ", Toast.LENGTH_SHORT).show();
+
+    }
 }

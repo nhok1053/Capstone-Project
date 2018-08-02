@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context=".fragment.GoMarketDetails">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"></View>
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar_back_materialDetails"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ff9800">
+
+        <Button
+            android:id="@+id/go_market_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Cook and share"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+        <Button
+            android:id="@+id/add_save_go_market"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="120dp"
+            android:background="@drawable/ic_add_check"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+    </android.support.v7.widget.Toolbar>
+        <LinearLayout
+            android:elevation="5dp"
+            android:id="@+id/ln_go_market"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/toolBar_back_materialDetails"
+            >
+
+            <ImageView
+                android:id="@+id/recipe_image_goMarket"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/txt_name_go_market"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mon an"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/date_add_go_market"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_name_go_market"
+                    android:layout_marginTop="8dp"
+                    android:text="asas"
+                    android:textStyle="italic" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="4dp"
+            android:id="@+id/rc_market_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/ln_go_market"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+
+</RelativeLayout>

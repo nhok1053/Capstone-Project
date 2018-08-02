@@ -2,6 +2,7 @@ package com.example.huynhha.cookandshare.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.huynhha.cookandshare.GoMarketActivity;
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
@@ -81,6 +83,7 @@ public class ProfileFragment extends Fragment {
         posts = new ArrayList<>();
         userInfo();
         importTopPost();
+        setBtnGoMarket();
         return v;
     }
 
@@ -126,6 +129,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception e) {
                 System.out.println(e.getMessage());
+            }
+        });
+    }
+    public void setBtnGoMarket(){
+        btnGoMarket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GoMarketActivity.class);
+                startActivity(intent);
             }
         });
     }

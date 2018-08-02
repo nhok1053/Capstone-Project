@@ -5,12 +5,27 @@ public class Material {
     private String materialName;
     private String quantity;
     private String type;
+    private String checkGoMarket;
+
+    public String isCheckGoMarket() {
+        return checkGoMarket;
+    }
+
+    public void setCheckGoMarket(String checkGoMarket) {
+        this.checkGoMarket = checkGoMarket;
+    }
 
     public Material(String materialID, String materialName, String quantity, String type) {
         this.materialID = materialID;
         this.materialName = materialName;
         this.quantity = quantity;
         this.type = type;
+    }
+
+    public Material(String materialName, String quantity, String checkGoMarket) {
+        this.materialName = materialName;
+        this.quantity = quantity;
+        this.checkGoMarket = checkGoMarket;
     }
 
     public Material() {

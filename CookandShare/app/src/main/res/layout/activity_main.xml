@@ -74,7 +74,12 @@
 
             </android.support.v4.view.ViewPager>
         </LinearLayout>
-
+        <View
+            android:clickable="true"
+            android:id="@+id/checkFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </View>
         <FrameLayout
             android:id="@+id/fl_main"
             android:layout_width="match_parent"
@@ -82,10 +87,5 @@
 
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
-    <View
-        android:clickable="true"
-        android:id="@+id/checkFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </View>
+
 </FrameLayout>

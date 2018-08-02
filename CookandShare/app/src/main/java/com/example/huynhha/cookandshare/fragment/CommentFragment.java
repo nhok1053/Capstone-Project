@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.adapter.CommentAdapter;
+import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.entity.Comment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,13 +49,15 @@ public class CommentFragment extends Fragment {
     private ImageView img_exit;
     private CommentAdapter commentAdapter;
     private ArrayList<Comment> list;
-    private String postID ="DEMO";
+    private String postID = "DEMO";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
-    private String documentID ="";
+    private String documentID = "";
     private CollectionReference postRef = db.collection("Comment");
-    private List<Map<String,Object>> list1;
+    private List<Map<String, Object>> list1;
     private View view2;
+    private onCloseClick onCloseClick;
+
     public CommentFragment() {
         // Required empty public constructor
     }
@@ -69,30 +72,35 @@ public class CommentFragment extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference();
         loadComment(postID);
         addComment();
+
         closeFragment();
         return v;
     }
-    public void closeFragment(){
-            img_exit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().onBackPressed();
-                }
-            });
-           }
-    public void loadComment(String postID){
+
+    public void closeFragment() {
+        img_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCloseClick.onCloseCommentClick();
+                getActivity().onBackPressed();
+                System.out.println("T dang bi bam day");
+            }
+        });
+    }
+
+    public void loadComment(String postID) {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rc_comment.setLayoutManager(lln);
-        MainActivity.db.collection( "Comment").whereEqualTo("postID",postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        MainActivity.db.collection("Comment").whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         list = new ArrayList<>();
-                        System.out.println("ID :"+document.getId());
+                        System.out.println("ID :" + document.getId());
                         documentID = document.getId();
                         list1 = (List<Map<String, Object>>) document.get("comment");
-                        for (int i = 0; i<list1.size();i++){
+                        for (int i = 0; i < list1.size(); i++) {
                             Comment comment = new Comment();
                             comment.setUserID(list1.get(i).get("userID").toString());
                             comment.setUserImgUrl(list1.get(i).get("userImgUrl").toString());
@@ -101,7 +109,7 @@ public class CommentFragment extends Fragment {
                             list.add(comment);
                         }
                         System.out.println(list.toString());
-                        commentAdapter = new CommentAdapter(list,getContext());
+                        commentAdapter = new CommentAdapter(list, getContext());
 
                     }
                     rc_comment.setAdapter(commentAdapter);
@@ -115,36 +123,46 @@ public class CommentFragment extends Fragment {
         });
 
     }
-    public void addComment(){
+
+    public void addComment() {
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String comment = edt_comment.getText().toString();
                 Comment comment1 = new Comment();
-                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                 comment1.setUserName(currentFirebaseUser.getDisplayName().toString());
                 comment1.setUserImgUrl(currentFirebaseUser.getPhotoUrl().toString());
                 comment1.setUserID(currentFirebaseUser.getUid().toString());
                 comment1.setCommentContent(comment);
                 list.add(comment1);
                 //list1.add((Map<String, Object>) comment1);
-                Map<String,Object> updateMap = new HashMap<>();
-                updateMap.put("userName",currentFirebaseUser.getDisplayName().toString());
-                updateMap.put("userImgUrl",currentFirebaseUser.getPhotoUrl().toString());
-                updateMap.put("userID",currentFirebaseUser.getUid().toString());
-                updateMap.put("commentContent",comment);
+                Map<String, Object> updateMap = new HashMap<>();
+                updateMap.put("userName", currentFirebaseUser.getDisplayName().toString());
+                updateMap.put("userImgUrl", currentFirebaseUser.getPhotoUrl().toString());
+                updateMap.put("userID", currentFirebaseUser.getUid().toString());
+                updateMap.put("commentContent", comment);
                 list1.add(updateMap);
-                db.collection("Comment").document(documentID).update("comment",list1);
+                db.collection("Comment").document(documentID).update("comment", list1);
                 edt_comment.setText("");
-                commentAdapter = new CommentAdapter(list,getContext());
+                commentAdapter = new CommentAdapter(list, getContext());
                 rc_comment.setAdapter(commentAdapter);
             }
         });
     }
-    public void setUpData(View view){
+
+    public void setUpData(View view) {
         img_exit = view.findViewById(R.id.btn_close_comment);
         edt_comment = view.findViewById(R.id.edt_comment);
         btn_comment = view.findViewById(R.id.btn_send_comment);
         rc_comment = view.findViewById(R.id.rc_comment);
-       }
+    }
+
+    public interface onCloseClick {
+        void onCloseCommentClick();
+    }
+
+    public void setOnCloseClick(CommentFragment.onCloseClick onCloseClick) {
+        this.onCloseClick = onCloseClick;
+    }
 }
