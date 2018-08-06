@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.huynhha.cookandshare.FavouriteActivity;
 import com.example.huynhha.cookandshare.GoMarketActivity;
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
@@ -101,6 +102,7 @@ public class ProfileFragment extends Fragment {
         clickAllPost(txtAllPost);
         clickAllPost(txtNumberAllPost);
         settingClick();
+        setBtnFavorite();
         return v;
     }
 
@@ -189,5 +191,17 @@ public class ProfileFragment extends Fragment {
                 System.out.println(e.getMessage());
             }
         });
-    }}
+    }
+    private void setBtnFavorite(){
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FavouriteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+}
 

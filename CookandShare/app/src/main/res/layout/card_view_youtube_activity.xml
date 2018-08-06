@@ -7,19 +7,21 @@
     android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <ImageView
+            android:layout_marginRight="8dp"
             android:id="@+id/imgYoutubeVideo"
             android:layout_width="200dp"
             android:layout_height="112.5dp" />
 
         <TextView
             android:id="@+id/tvYoutubeDes"
-            android:layout_width="160dp"
+            android:layout_width="132dp"
             android:layout_height="112.5dp"
             android:text="Description" />
     </LinearLayout>

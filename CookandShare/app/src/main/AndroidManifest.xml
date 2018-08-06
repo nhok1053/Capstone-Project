@@ -28,9 +28,9 @@
         <activity
             android:name=".PostActivity"
             android:parentActivityName=".MainActivity" />
-    <activity android:name=".GoMarketActivity">
-
-    </activity>
+        <activity android:name=".GoMarketActivity" />
+        <activity android:name=".FavouriteActivity" />
+        <activity android:name=".CookbookActivty"></activity>
     </application>
 
 </manifest>
