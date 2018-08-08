@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -70,6 +73,7 @@ public class ViewProfileFragment extends Fragment {
     ArrayList<Post> posts;
     private CollectionReference notebookRefUser = MainActivity.db.collection("User");
     private CollectionReference notebookRefPost = MainActivity.db.collection("Post");
+    private CollectionReference notebookRefFollow = MainActivity.db.collection("Follow");
     private String currentUser = "4SqPgH6eUIYqzT5mKIUXw0hbqSy1";
 
 
@@ -93,9 +97,15 @@ public class ViewProfileFragment extends Fragment {
         }
         userInfo();
         countPost();
+        countFollowingFollower("following", txtNumberFollowing);
+        countFollowingFollower("follower", txtNumberFollower);
         importTopPost();
         clickAllPost(txtAllPost);
         clickAllPost(txtNumberAllPost);
+        clickFollowing(txtFollowing);
+        clickFollowing(txtNumberFollowing);
+        clickFowller(txtFollower);
+        clickFowller(txtNumberFollower);
         close();
         return v;
     }
@@ -107,6 +117,19 @@ public class ViewProfileFragment extends Fragment {
                 txtNumberAllPost.setText(queryDocumentSnapshots.size() + "");
             }
         });
+    }
+
+    private void countFollowingFollower(final String s, final TextView tv) {
+        notebookRefFollow.whereEqualTo("userID", getUserID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                            tv.setText(((List<Map<String, Object>>) documentSnapshot.get(s)).size() + "");
+                        }
+                    }
+                });
     }
 
     public void userInfo() {
@@ -157,15 +180,52 @@ public class ViewProfileFragment extends Fragment {
             }
         });
     }
-    private void close(){
+
+    private void clickFollowing(TextView tv) {
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.support.v4.app.FragmentTransaction ft = (getActivity()).getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("attribute", "following");
+                bundle.putString("getUserID",getUserID);
+                ListFollowingFragment listFollowingFragment = new ListFollowingFragment();
+                listFollowingFragment.setArguments(bundle);
+                ft.replace(R.id.fl_main, listFollowingFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+    }
+
+    private void clickFowller(TextView tv) {
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.support.v4.app.FragmentTransaction ft = (getActivity()).getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("attribute", "follower");
+                bundle.putString("getUserID",getUserID);
+                ListFollowingFragment listFollowingFragment = new ListFollowingFragment();
+                listFollowingFragment.setArguments(bundle);
+                ft.replace(R.id.fl_main, listFollowingFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+    }
+
+    private void close() {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                getActivity().finish();
+//                getActivity().dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
             }
         });
     }
-    private void clickAllPost(TextView tv){
+
+    private void clickAllPost(TextView tv) {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
