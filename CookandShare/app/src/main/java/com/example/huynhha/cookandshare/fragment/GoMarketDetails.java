@@ -58,11 +58,19 @@ public class GoMarketDetails extends Fragment {
         getData();
         setData();
         saveData();
-
+        setBtnGoMarketClose();
         return v;
 
     }
 
+    public void  setBtnGoMarketClose(){
+        btn_go_market_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeFragment(goMarketDetails);
+            }
+        });
+    }
     public void saveData() {
         btn_add_save_go_market.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,9 +113,9 @@ public class GoMarketDetails extends Fragment {
     public void removeFragment(Fragment fragment){
         android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         fragmentTransaction.remove(fragment);
         fragmentTransaction.commit();
+
     }
     public void setData() {
         String name = getArguments().getString("name");

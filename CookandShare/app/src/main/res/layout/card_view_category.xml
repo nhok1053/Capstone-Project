@@ -18,7 +18,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:background="#111111"
+            android:background="#FACBAC"
             android:id="@+id/cvCategoryCategoryImg"
             android:layout_width="match_parent"
             android:layout_height="148dp" />

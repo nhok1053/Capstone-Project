@@ -31,6 +31,7 @@ public class GoMarketActivity extends AppCompatActivity {
     private ArrayList<Post> posts;
     private ListMarketRecipeAdapter listMarketRecipeAdapter;
     private Context context;
+    private Button go_market_back_main;
 
 
     @Override
@@ -39,10 +40,11 @@ public class GoMarketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_go_market);
         getSupportActionBar().hide();
         rcGoMarket = findViewById(R.id.rc_go_market);
-
+        go_market_back_main = findViewById(R.id.go_market_back_main);
         context=this;
         getData();
         setMarketAdapter();
+        setClose();
     }
 
     public void setMarketAdapter() {
@@ -51,6 +53,14 @@ public class GoMarketActivity extends AppCompatActivity {
         listMarketRecipeAdapter = new ListMarketRecipeAdapter(posts,context);
         rcGoMarket.setAdapter(listMarketRecipeAdapter);
 
+    }
+    public void setClose(){
+        go_market_back_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void getData() {
