@@ -6,63 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".YoutubeActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/youtubeToolbar"
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:id="@+id/youtubePlayer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <Button
-                android:id="@+id/btnYoutubeClose"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:onClick="closeYoutubeActivity"
-                android:background="@drawable/ic_add_close"/>
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_centerInParent="true"
-                android:layout_toRightOf="@+id/btnYoutubeClose"
-                android:textColor="#ffffff"
-                android:text="Mẹo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"/>
-        </RelativeLayout>
-
-    </android.support.v7.widget.Toolbar>
-
-    <LinearLayout
-        android:layout_alignTop="@+id/youtubeToolbar"
-        android:paddingTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical">
-
-        <com.google.android.youtube.player.YouTubePlayerView
-            android:id="@+id/youtubePlayer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:textSize="20sp"/>
-        <TextView
-            android:background="#cccccc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Video Moi Nhat"
-            android:textSize="25sp"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvYoutubeActivity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
-
-
-
+        android:layout_height="match_parent" />
 </RelativeLayout>

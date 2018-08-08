@@ -1,13 +1,11 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +19,6 @@ import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.adapter.PersonalAllPostAdapter;
-import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,6 +31,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -80,6 +79,7 @@ public class ProfileFragment extends Fragment {
     ArrayList<Post> posts;
     private CollectionReference notebookRefUser = MainActivity.db.collection("User");
     private CollectionReference notebookRefPost = MainActivity.db.collection("Post");
+    private CollectionReference notebookRefFollow = MainActivity.db.collection("Follow");
     private String currentUser = "4SqPgH6eUIYqzT5mKIUXw0hbqSy1";
 
     public ProfileFragment() {
@@ -98,8 +98,14 @@ public class ProfileFragment extends Fragment {
         importTopPost();
         setBtnGoMarket();
         countPost();
+        countFollowingFollower("following", txtNumberFollowing);
+        countFollowingFollower("follower", txtNumberFollower);
         clickAllPost(txtAllPost);
         clickAllPost(txtNumberAllPost);
+        clickFollowing(txtFollowing);
+        clickFollowing(txtNumberFollowing);
+        clickFowller(txtFollower);
+        clickFowller(txtNumberFollower);
         settingClick();
         return v;
     }
@@ -126,6 +132,39 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+
+    private void clickFollowing(TextView tv) {
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.support.v4.app.FragmentTransaction ft = (getActivity()).getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("attribute", "following");
+                ListFollowingFragment listFollowingFragment = new ListFollowingFragment();
+                listFollowingFragment.setArguments(bundle);
+                ft.replace(R.id.fl_main, listFollowingFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+    }
+
+    private void clickFowller(TextView tv) {
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.support.v4.app.FragmentTransaction ft = (getActivity()).getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("attribute", "follower");
+                ListFollowingFragment listFollowingFragment = new ListFollowingFragment();
+                listFollowingFragment.setArguments(bundle);
+                ft.replace(R.id.fl_main, listFollowingFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+    }
+
     private void countPost() {
         notebookRefPost.whereEqualTo("userID", currentUser).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -133,6 +172,19 @@ public class ProfileFragment extends Fragment {
                 txtNumberAllPost.setText(queryDocumentSnapshots.size() + "");
             }
         });
+    }
+
+    private void countFollowingFollower(final String s, final TextView tv) {
+        notebookRefFollow.whereEqualTo("userID", currentUser)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                            tv.setText(((List<Map<String, Object>>) documentSnapshot.get(s)).size() + "");
+                        }
+                    }
+                });
     }
 
     public void setBtnGoMarket() {
@@ -189,5 +241,6 @@ public class ProfileFragment extends Fragment {
                 System.out.println(e.getMessage());
             }
         });
-    }}
+    }
+}
 

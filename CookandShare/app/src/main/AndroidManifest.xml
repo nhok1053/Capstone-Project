@@ -12,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,16 +24,18 @@
         </activity>
         <activity android:name=".IntroActivity" />
         <activity android:name=".PostRecipe" />
-        <activity android:name=".YoutubeActivity" />
+        <activity
+            android:name=".YoutubeActivity"
+            android:screenOrientation="landscape" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".Search" />
         <activity android:name=".PostDetails" />
         <activity
             android:name=".PostActivity"
             android:parentActivityName=".MainActivity" />
-    <activity android:name=".GoMarketActivity">
+        <activity android:name=".GoMarketActivity">
 
-    </activity>
+        </activity>
     </application>
 
 </manifest>
