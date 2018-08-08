@@ -30,7 +30,8 @@
             android:parentActivityName=".MainActivity" />
         <activity android:name=".GoMarketActivity" />
         <activity android:name=".FavouriteActivity" />
-        <activity android:name=".CookbookActivty"></activity>
+        <activity android:name=".CookbookActivty" />
+        <activity android:name=".CookingActitvity"></activity>
     </application>
 
 </manifest>

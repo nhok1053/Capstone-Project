@@ -2,6 +2,7 @@ package com.example.huynhha.cookandshare;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -82,8 +83,20 @@ public class PostDetails extends AppCompatActivity {
         getData(postID);
         saveDataGoMarket();
         setFavourite();
+        setBtnStartCooking();
     }
+    public void setBtnStartCooking(){
+        btn_start_cooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String postID = getIntent().getExtras().getString("postID");
+                Intent intent = new Intent(PostDetails.this,CookingActitvity.class);
+                intent.putExtra("postIDStep",postID);
+                startActivity(intent);
+            }
+        });
 
+    }
     public void setUp() {
         btn_back = findViewById(R.id.btn_back);
         btn_favourite = findViewById(R.id.btn_add_favourite);

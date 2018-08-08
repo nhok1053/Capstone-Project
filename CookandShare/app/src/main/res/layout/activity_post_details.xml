@@ -243,6 +243,8 @@ sasassa"
             android:src="@drawable/ic_cart" />
     </RelativeLayout>
     <Button
+        android:textSize="18sp"
+        android:textColor="#ffffff"
         android:id="@+id/start_cooking"
         android:layout_width="252dp"
         android:layout_height="50dp"
@@ -252,6 +254,7 @@ sasassa"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Bắt đầu nấu"
+        android:background="#64DD17"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="@+id/scrollView2"
         app:layout_constraintStart_toStartOf="@+id/scrollView2" />

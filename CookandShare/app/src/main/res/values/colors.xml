@@ -6,4 +6,6 @@
     <color name="color_edit_text">#80bebebe</color>
     <color name="moi">#018786</color>
     <color name="cardBackground">#f9ac30</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorTransparent">#cccccc</color>
 </resources>
