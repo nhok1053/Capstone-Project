@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.adapter.PagerAdapter;
+import com.example.huynhha.cookandshare.entity.Comment;
 import com.example.huynhha.cookandshare.entity.YouTube;
 import com.example.huynhha.cookandshare.fragment.CategoryFragment;
 import com.example.huynhha.cookandshare.fragment.CommentFragment;
@@ -23,6 +24,7 @@ import com.example.huynhha.cookandshare.fragment.ListAllCategoriesFragment;
 import com.example.huynhha.cookandshare.fragment.ListTipsFragment;
 import com.example.huynhha.cookandshare.fragment.NotificationFragment;
 import com.example.huynhha.cookandshare.fragment.PersonalFragment;
+import com.example.huynhha.cookandshare.fragment.ProfileFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -106,9 +108,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         pagerAdapter.addFragment(new ListAllCategoriesFragment(), "");
         pagerAdapter.addFragment(new ListTipsFragment(), "");
         pagerAdapter.addFragment(new NotificationFragment(), "");
-        pagerAdapter.addFragment(new PersonalFragment(), "");
+        pagerAdapter.addFragment(new ProfileFragment(), "");
         viewPager.setAdapter(pagerAdapter);
-
+        viewPager.setOffscreenPageLimit(5);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
         System.out.println("App id : " + BuildConfig.APPLICATION_ID);
@@ -147,10 +149,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 
     @Override
     public void onCommentClicked(String postID) {
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().add(R.id.fl_main,new CommentFragment()).addToBackStack(null);
+        CommentFragment commentFragment = new CommentFragment();
         Bundle bundle = new Bundle();
-        view.setVisibility(View.VISIBLE);
         bundle.putString("postID",postID);
+        commentFragment.setArguments(bundle);
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().add(R.id.fl_main,commentFragment).addToBackStack(null);
         transaction.commit();
     }
 
