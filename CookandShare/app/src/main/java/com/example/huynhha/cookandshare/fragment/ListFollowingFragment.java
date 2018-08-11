@@ -42,7 +42,7 @@ public class ListFollowingFragment extends Fragment {
     String getAttribute;
     private ArrayList<User> users;
     private List<Map<String, Object>> list1;
-String getUserID;
+    String getUserID;
 
     public ListFollowingFragment() {
         // Required empty public constructor
@@ -59,10 +59,10 @@ String getUserID;
         Bundle bundle = getArguments();
         if (bundle != null) {
             getAttribute = bundle.getString("attribute");
-            if(bundle.getString("getUserID")!=null){
-                getUserID=bundle.getString("getUserID");
-            }else {
-                getUserID=currentUser;
+            if (bundle.getString("getUserID") != null) {
+                getUserID = bundle.getString("getUserID");
+            } else {
+                getUserID = currentUser;
             }
         }
 

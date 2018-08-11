@@ -157,6 +157,14 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/editext_border"
                         android:text="Theo dõi" />
+
+                    <Button
+                        android:id="@+id/btnViewProfileUnFollow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/editext_border"
+                        android:text="Hủy theo dõi"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
 
