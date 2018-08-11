@@ -22,6 +22,7 @@ import com.example.huynhha.cookandshare.adapter.CommentAdapter;
 import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.entity.Comment;
 import com.example.huynhha.cookandshare.entity.NotificationDetails;
+import com.example.huynhha.cookandshare.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -60,6 +61,7 @@ public class CommentFragment extends Fragment {
     private String documentID = "";
     private CollectionReference postRef = db.collection("Comment");
     private CollectionReference notiRef = db.collection("Notification");
+    private CollectionReference userRef = db.collection("User");
     private List<Map<String, Object>> list1;
     private List<Map<String, Object>> listNoti;
     private ArrayList<NotificationDetails> listNotiDetails;
@@ -69,7 +71,8 @@ public class CommentFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private String documentNoti = "";
     private String postID = "";
-
+    private int count =0;
+    private String userID;
     public CommentFragment() {
         // Required empty public constructor
     }
@@ -84,8 +87,11 @@ public class CommentFragment extends Fragment {
         commentFragment = this;
         list = new ArrayList<>();
         list1 = new ArrayList<>();
+        listNoti = new ArrayList<>();
+        listNotiDetails = new ArrayList<>();
         storageReference = FirebaseStorage.getInstance().getReference();
         postID = getArguments().getString("postID");
+        userID = getArguments().getString("userID");
         addComment();
         loadComment(postID);
         closeFragment();
@@ -181,19 +187,29 @@ public class CommentFragment extends Fragment {
                 edt_comment.setText("");
                 commentAdapter = new CommentAdapter(list, getContext());
                 rc_comment.setAdapter(commentAdapter);
+                getNotification();
             }
+
         });
+
+
     }
 
     public void getNotification() {
         firebaseAuth = FirebaseAuth.getInstance();
         String currentUser = firebaseAuth.getUid().toString();
-        notiRef.whereEqualTo("userID", currentUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        if(currentUser.equals(userID)){
+            System.out.println("Nothing");
+        }else{
+        System.out.println("UserID " + userID);
+        notiRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
+
                         documentNoti = document.getId();
+                        System.out.println("documentNoti: "+documentID);
                         try {
                             listNoti = (List<Map<String, Object>>) document.get("notification");
                         } catch (Exception e) {
@@ -212,8 +228,17 @@ public class CommentFragment extends Fragment {
                                 notificationDetails.setUserName(listNoti.get(i).get("userName").toString());
                                 notificationDetails.setUserID(listNoti.get(i).get("userID").toString());
                                 listNotiDetails.add(notificationDetails);
+                                count++;
                             }
                         }
+
+                        if(listNoti==null){
+                            addNoti(documentNoti);
+                        }
+                        else if(count== listNoti.size()){
+                            addNoti(documentNoti);
+                        }
+
                     }
 
                 }
@@ -223,16 +248,46 @@ public class CommentFragment extends Fragment {
             public void onFailure(@NonNull Exception e) {
 
             }
-        });
+        });}
     }
 
-    public void addNoti() {
-        String currentUser = firebaseAuth.getUid().toString();
+    public void addNoti(final String documentID) {
         DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-        String date = df.format(Calendar.getInstance().getTime());
-        Map<String, Object> updateNoti = new HashMap<>();
-        updateNoti.put("postID", postID);
-        updateNoti.put("time",date);
+        final String date = df.format(Calendar.getInstance().getTime());
+        userRef.whereEqualTo("userID",userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        Map<String, Object> updateNoti = new HashMap<>();
+                        updateNoti.put("postID", postID);
+                        updateNoti.put("time", date);
+                        updateNoti.put("type", 1);
+                        updateNoti.put("userID", userID);
+                        updateNoti.put("userUrlImage", documentSnapshot.get("imgUrl"));
+                        updateNoti.put("userName", documentSnapshot.get("firstName"));
+                        updateNoti.put("content", documentSnapshot.get("firstName")+ " đã bình luận vào bài viết của bạn");
+                        if(listNoti==null){
+                            listNoti = new ArrayList<>();
+                            listNoti.add(updateNoti);
+                        }else{
+                            listNoti.add(updateNoti);
+                        }
+
+                        notiRef.document(documentID).update("notification", listNoti);
+                        Toast.makeText(getContext(), "Add Noti Success", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
 
     }
 

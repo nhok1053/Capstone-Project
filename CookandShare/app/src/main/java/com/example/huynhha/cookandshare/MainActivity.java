@@ -148,10 +148,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 
 
     @Override
-    public void onCommentClicked(String postID) {
+    public void onCommentClicked(String postID,String userID) {
         CommentFragment commentFragment = new CommentFragment();
         Bundle bundle = new Bundle();
         bundle.putString("postID",postID);
+        bundle.putString("userID",userID);
         commentFragment.setArguments(bundle);
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().add(R.id.fl_main,commentFragment).addToBackStack(null);
         transaction.commit();

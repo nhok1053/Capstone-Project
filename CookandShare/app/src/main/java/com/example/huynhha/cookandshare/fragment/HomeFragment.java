@@ -116,8 +116,8 @@ public class HomeFragment extends Fragment{
                         postAdapter = new TopPostAdapter(posts,getContext());
                         postAdapter.setOnAdapterClick(new TopPostAdapter.OnAdapterClick() {
                             @Override
-                            public void OnCommentClicked(String postId) {
-                                onFragmentCall.onCommentClicked(postId);
+                            public void OnCommentClicked(String postId,String userID) {
+                                onFragmentCall.onCommentClicked(postId,userID);
                             }
                         });
                         rvPost.setAdapter(postAdapter);
@@ -148,7 +148,7 @@ public class HomeFragment extends Fragment{
     }
 
     public interface OnFragmentCall{
-        void onCommentClicked(String postID);
+        void onCommentClicked(String postID,String userID);
     }
 
     public void setOnFragmentCall(OnFragmentCall onFragmentCall) {
