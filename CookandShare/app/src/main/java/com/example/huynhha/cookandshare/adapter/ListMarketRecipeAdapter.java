@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 public class ListMarketRecipeAdapter extends RecyclerView.Adapter<RecyclerViewHolder>{
     private ArrayList<Post> posts;
-    private ItemClickListener itemClickListener;
     private Context context;
 
     @NonNull
@@ -104,7 +103,7 @@ class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        itemClickListener.onClick(v,getAdapterPosition(),false);
+            itemClickListener.onClick(v,getAdapterPosition(),false);
     }
 
     @Override

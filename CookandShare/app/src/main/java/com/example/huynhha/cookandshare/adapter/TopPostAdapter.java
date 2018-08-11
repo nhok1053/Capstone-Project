@@ -120,6 +120,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                 Intent intent = new Intent(context, PostDetails.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("postID", post.getPostID());
+
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
@@ -127,7 +128,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         holder.btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onAdapterClick.OnCommentClicked(post.getPostID().toString());
+                onAdapterClick.OnCommentClicked(post.getPostID().toString(),post.getUserID().toString());
             }
         });
 
@@ -141,7 +142,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     }
 
     public interface OnAdapterClick {
-        void OnCommentClicked(String postId);
+        void OnCommentClicked(String postId,String userID);
     }
 
     public void setOnAdapterClick(OnAdapterClick onAdapterClick) {

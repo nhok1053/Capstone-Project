@@ -14,12 +14,15 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.adapter.CommentAdapter;
 import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.entity.Comment;
+import com.example.huynhha.cookandshare.entity.NotificationDetails;
+import com.example.huynhha.cookandshare.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -32,7 +35,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,15 +55,24 @@ public class CommentFragment extends Fragment {
     private ImageView img_exit;
     private CommentAdapter commentAdapter;
     private ArrayList<Comment> list;
-    private String postID = "DEMO";
+    //private String postID = "DEMO";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
     private String documentID = "";
     private CollectionReference postRef = db.collection("Comment");
+    private CollectionReference notiRef = db.collection("Notification");
+    private CollectionReference userRef = db.collection("User");
     private List<Map<String, Object>> list1;
+    private List<Map<String, Object>> listNoti;
+    private ArrayList<NotificationDetails> listNotiDetails;
     private View view2;
     private onCloseClick onCloseClick;
-
+    public CommentFragment commentFragment;
+    private FirebaseAuth firebaseAuth;
+    private String documentNoti = "";
+    private String postID = "";
+    private int count =0;
+    private String userID;
     public CommentFragment() {
         // Required empty public constructor
     }
@@ -69,10 +84,16 @@ public class CommentFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_comment, container, false);
         setUpData(v);
+        commentFragment = this;
+        list = new ArrayList<>();
+        list1 = new ArrayList<>();
+        listNoti = new ArrayList<>();
+        listNotiDetails = new ArrayList<>();
         storageReference = FirebaseStorage.getInstance().getReference();
-        loadComment(postID);
+        postID = getArguments().getString("postID");
+        userID = getArguments().getString("userID");
         addComment();
-
+        loadComment(postID);
         closeFragment();
         return v;
     }
@@ -81,11 +102,17 @@ public class CommentFragment extends Fragment {
         img_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCloseClick.onCloseCommentClick();
-                getActivity().onBackPressed();
-                System.out.println("T dang bi bam day");
+                removeFragment(commentFragment);
             }
         });
+    }
+
+    public void removeFragment(Fragment fragment) {
+        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+
     }
 
     public void loadComment(String postID) {
@@ -96,23 +123,31 @@ public class CommentFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        list = new ArrayList<>();
                         System.out.println("ID :" + document.getId());
                         documentID = document.getId();
-                        list1 = (List<Map<String, Object>>) document.get("comment");
-                        for (int i = 0; i < list1.size(); i++) {
-                            Comment comment = new Comment();
-                            comment.setUserID(list1.get(i).get("userID").toString());
-                            comment.setUserImgUrl(list1.get(i).get("userImgUrl").toString());
-                            comment.setUserName(list1.get(i).get("userName").toString());
-                            comment.setCommentContent(list1.get(i).get("commentContent").toString());
-                            list.add(comment);
+                        try {
+                            list1 = (List<Map<String, Object>>) document.get("comment");
+                        } catch (Exception e) {
+                            System.out.println(e);
                         }
-                        System.out.println(list.toString());
-                        commentAdapter = new CommentAdapter(list, getContext());
+                        if (list1 == null) {
+                            Toast.makeText(getContext(), "Chưa có bình luận nào.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            for (int i = 0; i < list1.size(); i++) {
+                                Comment comment = new Comment();
+                                comment.setUserID(list1.get(i).get("userID").toString());
+                                comment.setUserImgUrl(list1.get(i).get("userImgUrl").toString());
+                                comment.setUserName(list1.get(i).get("userName").toString());
+                                comment.setCommentContent(list1.get(i).get("commentContent").toString());
+                                list.add(comment);
+                            }
+                            System.out.println(list.toString());
+                            commentAdapter = new CommentAdapter(list, getContext());
+
+                        }
+                        rc_comment.setAdapter(commentAdapter);
 
                     }
-                    rc_comment.setAdapter(commentAdapter);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -142,13 +177,118 @@ public class CommentFragment extends Fragment {
                 updateMap.put("userImgUrl", currentFirebaseUser.getPhotoUrl().toString());
                 updateMap.put("userID", currentFirebaseUser.getUid().toString());
                 updateMap.put("commentContent", comment);
-                list1.add(updateMap);
+                if (list1 != null) {
+                    list1.add(updateMap);
+                } else {
+                    list1 = new ArrayList<>();
+                    list1.add(updateMap);
+                }
                 db.collection("Comment").document(documentID).update("comment", list1);
                 edt_comment.setText("");
                 commentAdapter = new CommentAdapter(list, getContext());
                 rc_comment.setAdapter(commentAdapter);
+                getNotification();
+            }
+
+        });
+
+
+    }
+
+    public void getNotification() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        String currentUser = firebaseAuth.getUid().toString();
+        if(currentUser.equals(userID)){
+            System.out.println("Nothing");
+        }else{
+        System.out.println("UserID " + userID);
+        notiRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        documentNoti = document.getId();
+                        System.out.println("documentNoti: "+documentID);
+                        try {
+                            listNoti = (List<Map<String, Object>>) document.get("notification");
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
+                        if (listNoti == null) {
+                            System.out.println("Khong co noti");
+                        } else {
+                            for (int i = 0; i < listNoti.size(); i++) {
+                                NotificationDetails notificationDetails = new NotificationDetails();
+                                notificationDetails.setType(listNoti.get(i).get("type").toString());
+                                notificationDetails.setUserUrlImage(listNoti.get(i).get("userUrlImage").toString());
+                                notificationDetails.setPostID(listNoti.get(i).get("postID").toString());
+                                notificationDetails.setTime(listNoti.get(i).get("time").toString());
+                                notificationDetails.setContent(listNoti.get(i).get("content").toString());
+                                notificationDetails.setUserName(listNoti.get(i).get("userName").toString());
+                                notificationDetails.setUserID(listNoti.get(i).get("userID").toString());
+                                listNotiDetails.add(notificationDetails);
+                                count++;
+                            }
+                        }
+
+                        if(listNoti==null){
+                            addNoti(documentNoti);
+                        }
+                        else if(count== listNoti.size()){
+                            addNoti(documentNoti);
+                        }
+
+                    }
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });}
+    }
+
+    public void addNoti(final String documentID) {
+        DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        final String date = df.format(Calendar.getInstance().getTime());
+        userRef.whereEqualTo("userID",userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        Map<String, Object> updateNoti = new HashMap<>();
+                        updateNoti.put("postID", postID);
+                        updateNoti.put("time", date);
+                        updateNoti.put("type", 1);
+                        updateNoti.put("userID", userID);
+                        updateNoti.put("userUrlImage", documentSnapshot.get("imgUrl"));
+                        updateNoti.put("userName", documentSnapshot.get("firstName"));
+                        updateNoti.put("content", documentSnapshot.get("firstName")+ " đã bình luận vào bài viết của bạn");
+                        if(listNoti==null){
+                            listNoti = new ArrayList<>();
+                            listNoti.add(updateNoti);
+                        }else{
+                            listNoti.add(updateNoti);
+                        }
+
+                        notiRef.document(documentID).update("notification", listNoti);
+                        Toast.makeText(getContext(), "Add Noti Success", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
             }
         });
+
+
+
     }
 
     public void setUpData(View view) {

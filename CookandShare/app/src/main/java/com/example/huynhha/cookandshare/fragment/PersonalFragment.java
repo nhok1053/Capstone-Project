@@ -33,8 +33,8 @@ public class PersonalFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_personal, container, false);
 //        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_category, new UpdateProfileFragment());
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_personal, new ProfileFragment());
-        transaction.commit();
+//        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_personal, new ProfileFragment());
+//        transaction.commit();
         return v;
     }
 
