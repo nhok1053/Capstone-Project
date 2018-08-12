@@ -12,24 +12,31 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.adapter.PersonalAllPostAdapter;
 import com.example.huynhha.cookandshare.entity.Follow;
+import com.example.huynhha.cookandshare.entity.NotificationDetails;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,8 +96,13 @@ public class ViewProfileFragment extends Fragment {
     private CollectionReference notebookRefUser = MainActivity.db.collection("User");
     private CollectionReference notebookRefPost = MainActivity.db.collection("Post");
     private CollectionReference notebookRefFollow = MainActivity.db.collection("Follow");
+    private FirebaseAuth firebaseAuth;
     private String currentUser = "lPCl0cwAb9PYliqt5acSTLYBI4t1";
     private int count;
+    private CollectionReference notiRef = MainActivity.db.collection("Notification");
+    private String documentNoti;
+    private List<Map<String, Object>> listNoti;
+    private ArrayList<NotificationDetails> listNotiDetails;
 
     public ViewProfileFragment() {
         // Required empty public constructor
@@ -113,6 +125,8 @@ public class ViewProfileFragment extends Fragment {
         }
         listUnFollowing = new ArrayList<>();
         listUnFollower = new ArrayList<>();
+        listNoti = new ArrayList<>();
+        listNotiDetails = new ArrayList<>();
         userInfo();
         countPost();
         countFollowingFollower("following", txtNumberFollowing);
@@ -233,7 +247,7 @@ public class ViewProfileFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         count = 2;
-                        System.out.println(count+"AAAAAAAAAAAAAA");
+                        System.out.println(count + "AAAAAAAAAAAAAA");
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             sFollowing = documentSnapshot.getId();
                             try {
@@ -279,7 +293,7 @@ public class ViewProfileFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         count = 2;
-                        System.out.println(count+"AAAAAAAAAAAAAA");
+                        System.out.println(count + "AAAAAAAAAAAAAA");
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             sFollowing = documentSnapshot.getId();
                             try {
@@ -336,6 +350,7 @@ public class ViewProfileFragment extends Fragment {
                 System.out.println(count);
                 if (count > 1) {
                     if (listFollower.size() > 0 && listFollowing.size() > 0) {
+                        getNotification();
                         notebookRefFollow.document(sFollowing).update("following", listFollowing);
                         notebookRefFollow.document(sFollower).update("follower", listFollower);
                         if (getFragmentManager() != null) {
@@ -446,5 +461,102 @@ public class ViewProfileFragment extends Fragment {
                 rvImgPost.requestFocus();
             }
         });
+    }
+
+    public void getNotification() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        String currentUser = firebaseAuth.getUid().toString();
+        if (currentUser.equals(getUserID)) {
+            System.out.println("Nothing");
+        } else {
+            System.out.println("UserID " + getUserID);
+            notiRef.whereEqualTo("userID", getUserID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            documentNoti = document.getId();
+                            try {
+                                listNoti = (List<Map<String, Object>>) document.get("notification");
+                            } catch (Exception e) {
+                                System.out.println(e);
+                            }
+                            if (listNoti == null) {
+                                System.out.println("Khong co noti");
+                            } else {
+                                for (int i = 0; i < listNoti.size(); i++) {
+                                    NotificationDetails notificationDetails = new NotificationDetails();
+                                    notificationDetails.setType(listNoti.get(i).get("type").toString());
+                                    notificationDetails.setUserUrlImage(listNoti.get(i).get("userUrlImage").toString());
+                                    notificationDetails.setPostID(listNoti.get(i).get("postID").toString());
+                                    notificationDetails.setTime(listNoti.get(i).get("time").toString());
+                                    notificationDetails.setContent(listNoti.get(i).get("content").toString());
+                                    notificationDetails.setUserName(listNoti.get(i).get("userName").toString());
+                                    notificationDetails.setUserID(listNoti.get(i).get("userID").toString());
+                                    listNotiDetails.add(notificationDetails);
+                                    count++;
+                                }
+                            }
+
+                            if (listNoti == null) {
+                                addNoti(documentNoti);
+                            } else if (count == listNoti.size()) {
+                                addNoti(documentNoti);
+                                count = 0;
+                            }
+
+                        }
+
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        }
+    }
+
+    public void addNoti(final String documentID) {
+        firebaseAuth = FirebaseAuth.getInstance();
+        final String userID = firebaseAuth.getCurrentUser().getUid().toString();
+        DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        final String date = df.format(Calendar.getInstance().getTime());
+        notebookRefUser.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        Map<String, Object> updateNoti = new HashMap<>();
+                        updateNoti.put("postID", "");
+                        updateNoti.put("time", date);
+                        updateNoti.put("type", 0);
+                        updateNoti.put("userID", getUserID);
+                        updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+                        updateNoti.put("userName", firebaseAuth.getCurrentUser().getDisplayName().toString());
+                        updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString() + " đã bắt đầu theo dõi bạn");
+                        if (listNoti == null) {
+                            listNoti = new ArrayList<>();
+                            listNoti.add(updateNoti);
+                        } else {
+                            listNoti.add(updateNoti);
+                        }
+
+                        notiRef.document(documentID).update("notification", listNoti);
+                        Toast.makeText(getContext(), "Add Noti Success", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
     }
 }

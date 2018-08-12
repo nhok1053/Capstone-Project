@@ -169,7 +169,7 @@ public class PostDetails extends AppCompatActivity {
                         Log.d(TAG, "onComplete: " + list1.get(0).get("materialName").toString());
                         System.out.println("Quatity" + list1.get(0).toString());
                         post.setMaterials(list);
-                        startLoading(post);
+                        setData(post);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -198,11 +198,11 @@ public class PostDetails extends AppCompatActivity {
         progressDialog.dismiss();
     }
 
-    private void startLoading(Post post) {
-        progressDialog.setTitle("Đang tải ...");
-        progressDialog.show();
-        setData(post);
-    }
+//    private void startLoading(Post post) {
+//        progressDialog.setTitle("Đang tải ...");
+//        progressDialog.show();
+//
+//    }
 
     private void saveDataGoMarket() {
         btn_go_market.setOnClickListener(new View.OnClickListener() {
@@ -226,7 +226,6 @@ public class PostDetails extends AppCompatActivity {
     }
 
     public void saveData() {
-
         DBHelper mDbHelper = new DBHelper(getApplicationContext());
         MaterialDBHelper materialDBHelper = new MaterialDBHelper(getApplicationContext());
         // Gets the data repository in write mode
@@ -249,6 +248,7 @@ public class PostDetails extends AppCompatActivity {
 
         for (int i = 0; i < list.size(); i++) {
             ContentValues contentValues = new ContentValues();
+            System.out.println("RowID "+newRowId);
             contentValues.put(DBContext.MaterialDB.COLUMN_ID, String.valueOf(newRowId));
             contentValues.put(DBContext.MaterialDB.COLUMN_NAME_OF_MATERIAL, list.get(i).getMaterialName().toString());
             contentValues.put(DBContext.MaterialDB.COLUMN_QUANTITY, list.get(i).getQuantity().toString());

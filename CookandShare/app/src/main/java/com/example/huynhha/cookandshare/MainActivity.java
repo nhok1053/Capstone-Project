@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         pagerAdapter.addFragment(new NotificationFragment(), "");
         pagerAdapter.addFragment(new ProfileFragment(), "");
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(5);
+        viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
         System.out.println("App id : " + BuildConfig.APPLICATION_ID);
