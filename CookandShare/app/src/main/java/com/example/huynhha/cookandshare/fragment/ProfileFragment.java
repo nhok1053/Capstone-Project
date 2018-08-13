@@ -24,6 +24,7 @@ import com.example.huynhha.cookandshare.entity.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -81,7 +82,7 @@ public class ProfileFragment extends Fragment {
     private CollectionReference notebookRefUser = MainActivity.db.collection("User");
     private CollectionReference notebookRefPost = MainActivity.db.collection("Post");
     private CollectionReference notebookRefFollow = MainActivity.db.collection("Follow");
-    private String currentUser = "4SqPgH6eUIYqzT5mKIUXw0hbqSy1";
+    private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -95,6 +96,7 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, v);
         posts = new ArrayList<>();
+        System.out.println(currentUser);
         userInfo();
         importTopPost();
         setBtnGoMarket();
@@ -177,16 +179,25 @@ public class ProfileFragment extends Fragment {
     }
 
     private void countFollowingFollower(final String s, final TextView tv) {
-        notebookRefFollow.whereEqualTo("userID", currentUser)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                            tv.setText(((List<Map<String, Object>>) documentSnapshot.get(s)).size() + "");
+        try {
+            notebookRefFollow.whereEqualTo("userID", currentUser)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                if (task.getResult() != null && task.getResult().size() != 0) {
+                                    tv.setText(((List<Map<String, Object>>) documentSnapshot.get(s)).size() - 1 + "");
+                                } else {
+                                    tv.setText("0");
+                                }
+                            }
                         }
-                    }
-                });
+                    });
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            throw ex;
+        }
     }
 
     public void setBtnGoMarket() {
@@ -222,27 +233,31 @@ public class ProfileFragment extends Fragment {
         rvImgPost.setNestedScrollingEnabled(false);
         GridLayoutManager gln = new GridLayoutManager(this.getActivity(), 2, GridLayoutManager.VERTICAL, false);
         rvImgPost.setLayoutManager(gln);
-        notebookRefPost.whereEqualTo("userID", currentUser)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                            postID = documentSnapshot.get("postID").toString();
-                            userID = documentSnapshot.get("userID").toString();
-                            imgUrl = documentSnapshot.get("urlImage").toString();
-                            Post post = new Post(postID, userID, imgUrl);
-                            posts.add(post);
+        try {
+            notebookRefPost.whereEqualTo("userID", currentUser)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                postID = documentSnapshot.get("postID").toString();
+                                userID = documentSnapshot.get("userID").toString();
+                                imgUrl = documentSnapshot.get("urlImage").toString();
+                                Post post = new Post(postID, userID, imgUrl);
+                                posts.add(post);
+                            }
+                            PersonalAllPostAdapter personalAllPostAdapter = new PersonalAllPostAdapter(posts, getActivity());
+                            rvImgPost.setAdapter(personalAllPostAdapter);
                         }
-                        PersonalAllPostAdapter personalAllPostAdapter = new PersonalAllPostAdapter(posts, getActivity());
-                        rvImgPost.setAdapter(personalAllPostAdapter);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println(e.getMessage());
-            }
-        });
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     private void setBtnFavorite() {

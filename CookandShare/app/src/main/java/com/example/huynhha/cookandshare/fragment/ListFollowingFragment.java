@@ -20,6 +20,7 @@ import com.example.huynhha.cookandshare.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,9 +39,10 @@ public class ListFollowingFragment extends Fragment {
     @BindView(R.id.rvFollow)
     RecyclerView rvFollow;
     private CollectionReference notebookRefUser = MainActivity.db.collection("Follow");
-    private String currentUser = "4SqPgH6eUIYqzT5mKIUXw0hbqSy1";
+    private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
     String getAttribute;
-    private ArrayList<User> users;
+    private ArrayList<User> usersFollowing;
+    private ArrayList<User> usersFollower;
     private List<Map<String, Object>> list1;
     String getUserID;
 
@@ -55,7 +57,8 @@ public class ListFollowingFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_list_following, container, false);
         ButterKnife.bind(this, v);
-        users = new ArrayList<>();
+        usersFollower = new ArrayList<>();
+        usersFollowing = new ArrayList<>();
         Bundle bundle = getArguments();
         if (bundle != null) {
             getAttribute = bundle.getString("attribute");
@@ -84,14 +87,16 @@ public class ListFollowingFragment extends Fragment {
                             for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                 list1 = (List<Map<String, Object>>) documentSnapshot.get("following");
                                 for (int i = 0; i < list1.size(); i++) {
-                                    String userID = list1.get(i).get("userID").toString();
-                                    String userName = list1.get(i).get("userName").toString();
-                                    String avatar = list1.get(i).get("userUrlImage").toString();
-                                    User user = new User(userID, userName, avatar);
-                                    users.add(user);
+                                    if (!getUserID.equals(list1.get(i).get("userID").toString())) {
+                                        String userID = list1.get(i).get("userID").toString();
+                                        String userName = list1.get(i).get("userName").toString();
+                                        String avatar = list1.get(i).get("userUrlImage").toString();
+                                        User user = new User(userID, userName, avatar);
+                                        usersFollowing.add(user);
+                                    }
                                 }
                             }
-                            FollowListAdapter followListAdapter = new FollowListAdapter(users);
+                            FollowListAdapter followListAdapter = new FollowListAdapter(usersFollowing);
                             rvFollow.setAdapter(followListAdapter);
 
                         }
@@ -110,14 +115,16 @@ public class ListFollowingFragment extends Fragment {
                             for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                 list1 = (List<Map<String, Object>>) documentSnapshot.get("follower");
                                 for (int i = 0; i < list1.size(); i++) {
-                                    String userID = list1.get(i).get("userID").toString();
-                                    String userName = list1.get(i).get("userName").toString();
-                                    String avatar = list1.get(i).get("userUrlImage").toString();
-                                    User user = new User(userID, userName, avatar);
-                                    users.add(user);
+                                    if (!getUserID.equals(list1.get(i).get("userID").toString())) {
+                                        String userID = list1.get(i).get("userID").toString();
+                                        String userName = list1.get(i).get("userName").toString();
+                                        String avatar = list1.get(i).get("userUrlImage").toString();
+                                        User user = new User(userID, userName, avatar);
+                                        usersFollower.add(user);
+                                    }
                                 }
                             }
-                            FollowListAdapter followListAdapter = new FollowListAdapter(users);
+                            FollowListAdapter followListAdapter = new FollowListAdapter(usersFollower);
                             rvFollow.setAdapter(followListAdapter);
 
                         }
