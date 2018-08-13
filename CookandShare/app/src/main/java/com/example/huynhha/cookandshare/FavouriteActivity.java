@@ -95,7 +95,7 @@ public class FavouriteActivity extends AppCompatActivity {
                                 post.setTitle(documentSnapshot.get("title").toString());
                                 post.setUrlImage(documentSnapshot.get("urlImage").toString());
                                 post.setPostID(documentSnapshot.get("postID").toString());
-                                post.setNumberOfRate(4);
+                                post.setNumberOfRate("4");
                                 post.setUserName(documentSnapshot.get("userName").toString());
                                 System.out.println("Name: " + documentSnapshot.get("title").toString());
                                 count++;

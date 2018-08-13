@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Post {
     
-    private int numberOfRate;
+    private String numberOfRate;
     private String userName;
     private String numberOfPeople;
     private String postID;
@@ -37,11 +37,11 @@ public class Post {
         this.userName =userName;
     }
 
-    public int getNumberOfRate() {
+    public String getNumberOfRate() {
         return numberOfRate;
     }
 
-    public void setNumberOfRate(int numberOfRate) {
+    public void setNumberOfRate(String numberOfRate) {
         this.numberOfRate = numberOfRate;
     }
     public String getDifficult() {
@@ -52,7 +52,7 @@ public class Post {
         this.difficult = difficult;
     }
 
-    public Post(String difficult,int numberOfRate, String userName, String postTime, String numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
+    public Post(String difficult,String numberOfRate, String userName, String postTime, String numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
         this.numberOfRate = numberOfRate;
         this.difficult = difficult;
         this.userName = userName;
