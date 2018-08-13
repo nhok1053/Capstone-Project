@@ -55,6 +55,15 @@ public class FavouriteActivity extends AppCompatActivity {
 
     }
 
+    public void deleteDBOffline(){
+        FavouriteDBHelper favouriteDBHelper = new FavouriteDBHelper(getApplicationContext());
+        SQLiteDatabase db = favouriteDBHelper.getWritableDatabase();
+        String selection = DBContext.FavouriteDB.COLUMN_POST_ID + " LIKE ?";
+// Specify arguments in placeholder order.
+        String[] selectionArgs = { "MyTitle" };
+// Issue SQL statement.
+        int deletedRows = db.delete(DBContext.FavouriteDB.TABLE_NAME, selection, selectionArgs);
+    }
     public void getDataFromDBOffline() {
         FavouriteDBHelper favouriteDBHelper = new FavouriteDBHelper(getApplicationContext());
         SQLiteDatabase db = favouriteDBHelper.getReadableDatabase();

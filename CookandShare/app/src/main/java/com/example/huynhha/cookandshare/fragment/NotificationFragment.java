@@ -66,13 +66,19 @@ public class NotificationFragment extends Fragment {
         list = new ArrayList<>();
         System.out.println("run");
         System.out.println("UserID " + userID);
-        getData("4SqPgH6eUIYqzT5mKIUXw0hbqSy1");
+        System.out.println("AR: Oncreate");
         return v;
     }
 
     public void getData(String userID) {
         LinearLayoutManager lln = new LinearLayoutManager(getContext());
         rcNoti.setLayoutManager(lln);
+
+        if(list.size()!=0){
+            list.clear();
+            System.out.println("AR: Vao2");
+            notificationAdapter.notifyDataSetChanged();
+        }
         System.out.println("Vao1");
         postRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -93,10 +99,12 @@ public class NotificationFragment extends Fragment {
                             list.add(notificationDetails);
                             count++;
                         }
+                        System.out.println("AR: "+count);
                         if (count == list1.size()) {
                             System.out.println("Vao2");
                             notificationAdapter = new NotificationAdapter(list, getContext());
                             rcNoti.setAdapter(notificationAdapter);
+                            count = 0;
                         }
 
 
@@ -111,5 +119,28 @@ public class NotificationFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("AR: Resume");
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.printf("AR: Pause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        System.out.println("AR: Stop");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getData(userID);
+        System.out.println("AR: Start");
+    }
 }

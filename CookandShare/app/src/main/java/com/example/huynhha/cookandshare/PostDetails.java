@@ -68,7 +68,7 @@ public class PostDetails extends AppCompatActivity {
     public Post post = new Post();
     private ProgressDialog progressDialog;
     private List<Material> list;
-    private int count =0;
+    private int count = 0;
 
 
     @Override
@@ -85,18 +85,20 @@ public class PostDetails extends AppCompatActivity {
         setFavourite();
         setBtnStartCooking();
     }
-    public void setBtnStartCooking(){
+
+    public void setBtnStartCooking() {
         btn_start_cooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String postID = getIntent().getExtras().getString("postID");
-                Intent intent = new Intent(PostDetails.this,CookingActitvity.class);
-                intent.putExtra("postIDStep",postID);
+                Intent intent = new Intent(PostDetails.this, CookingActitvity.class);
+                intent.putExtra("postIDStep", postID);
                 startActivity(intent);
             }
         });
 
     }
+
     public void setUp() {
         btn_back = findViewById(R.id.btn_back);
         btn_favourite = findViewById(R.id.btn_add_favourite);
@@ -114,7 +116,8 @@ public class PostDetails extends AppCompatActivity {
         btn_start_cooking = findViewById(R.id.start_cooking);
 
     }
-    public void setFavourite(){
+
+    public void setFavourite() {
         btn_favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,17 +126,17 @@ public class PostDetails extends AppCompatActivity {
                 SQLiteDatabase db1 = favouriteDBHelper.getWritableDatabase();
                 SQLiteDatabase db2 = favouriteDBHelper.getReadableDatabase();
 
-                if(count%2==0){
-                    ContentValues values  = new ContentValues();
-                    values.put(DBContext.FavouriteDB.COLUMN_POST_ID,postID);
-                    long row = db1.insert(DBContext.FavouriteDB.TABLE_NAME,null,values);
+                if (count % 2 == 0) {
+                    ContentValues values = new ContentValues();
+                    values.put(DBContext.FavouriteDB.COLUMN_POST_ID, postID);
+                    long row = db1.insert(DBContext.FavouriteDB.TABLE_NAME, null, values);
                     Toast.makeText(PostDetails.this, "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
-                    System.out.println("Row : "+row);
-                }else{
+                    System.out.println("Row : " + row);
+                } else {
                     String selection = DBContext.FavouriteDB.COLUMN_POST_ID + " LIKE ?";
                     String[] selectionArgs = {postID};
                     int deletedRows = db2.delete(DBContext.FavouriteDB.TABLE_NAME, selection, selectionArgs);
-                    System.out.println("Row : "+deletedRows);
+                    System.out.println("Row : " + deletedRows);
                     Toast.makeText(PostDetails.this, "Đã xoá khỏi yêu thích", Toast.LENGTH_SHORT).show();
                 }
 
@@ -141,10 +144,12 @@ public class PostDetails extends AppCompatActivity {
             }
         });
     }
-    public boolean checkData(String postID){
+
+    public boolean checkData(String postID) {
 
         return true;
     }
+
     public Post getData(String postID) {
         postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -169,7 +174,7 @@ public class PostDetails extends AppCompatActivity {
                         Log.d(TAG, "onComplete: " + list1.get(0).get("materialName").toString());
                         System.out.println("Quatity" + list1.get(0).toString());
                         post.setMaterials(list);
-                        startLoading(post);
+                        setData(post);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -198,11 +203,11 @@ public class PostDetails extends AppCompatActivity {
         progressDialog.dismiss();
     }
 
-    private void startLoading(Post post) {
-        progressDialog.setTitle("Đang tải ...");
-        progressDialog.show();
-        setData(post);
-    }
+//    private void startLoading(Post post) {
+//        progressDialog.setTitle("Đang tải ...");
+//        progressDialog.show();
+//
+//    }
 
     private void saveDataGoMarket() {
         btn_go_market.setOnClickListener(new View.OnClickListener() {
@@ -226,7 +231,6 @@ public class PostDetails extends AppCompatActivity {
     }
 
     public void saveData() {
-
         DBHelper mDbHelper = new DBHelper(getApplicationContext());
         MaterialDBHelper materialDBHelper = new MaterialDBHelper(getApplicationContext());
         // Gets the data repository in write mode
@@ -249,6 +253,7 @@ public class PostDetails extends AppCompatActivity {
 
         for (int i = 0; i < list.size(); i++) {
             ContentValues contentValues = new ContentValues();
+            System.out.println("RowID " + newRowId);
             contentValues.put(DBContext.MaterialDB.COLUMN_ID, String.valueOf(newRowId));
             contentValues.put(DBContext.MaterialDB.COLUMN_NAME_OF_MATERIAL, list.get(i).getMaterialName().toString());
             contentValues.put(DBContext.MaterialDB.COLUMN_QUANTITY, list.get(i).getQuantity().toString());

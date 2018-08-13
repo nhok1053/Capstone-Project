@@ -43,11 +43,10 @@ public class GoMarketActivity extends AppCompatActivity {
         go_market_back_main = findViewById(R.id.go_market_back_main);
         context=this;
         getData();
-        setMarketAdapter();
         setClose();
     }
 
-    public void setMarketAdapter() {
+    public void setMarketAdapter(ArrayList<Post> posts) {
         LinearLayoutManager lln = new LinearLayoutManager(this);
         rcGoMarket.setLayoutManager(lln);
         listMarketRecipeAdapter = new ListMarketRecipeAdapter(posts,context);
@@ -64,13 +63,10 @@ public class GoMarketActivity extends AppCompatActivity {
     }
 
     public void getData() {
-
         DBHelper mDbHelper = new DBHelper(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
         Cursor cursor = db.rawQuery("select * from " + DBContext.FeedEntry.TABLE_NAME, null);
         posts = new ArrayList<>();
-
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 Post post = new Post();
@@ -78,11 +74,13 @@ public class GoMarketActivity extends AppCompatActivity {
                 post.setUrlImage(cursor.getString(cursor.getColumnIndex("imageUrl")));
                 post.setTime(cursor.getString(cursor.getColumnIndex("time")));
                 post.setPostID(cursor.getString(cursor.getColumnIndex("_id")));
+                System.out.println("Name food : "+post.getTitle().toString());
                 posts.add(post);
                 cursor.moveToNext();
             }
         }
+        System.out.println("GO mar: "+posts.size());
+        setMarketAdapter(posts);
         cursor.close();
     }
-
 }

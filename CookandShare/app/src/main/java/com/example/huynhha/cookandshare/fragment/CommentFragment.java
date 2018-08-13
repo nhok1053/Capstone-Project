@@ -71,8 +71,9 @@ public class CommentFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private String documentNoti = "";
     private String postID = "";
-    private int count =0;
+    private int count = 0;
     private String userID;
+
     public CommentFragment() {
         // Required empty public constructor
     }
@@ -115,7 +116,7 @@ public class CommentFragment extends Fragment {
 
     }
 
-    public void loadComment(String postID) {
+    public void loadComment(final String postID) {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rc_comment.setLayoutManager(lln);
         MainActivity.db.collection("Comment").whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -142,7 +143,7 @@ public class CommentFragment extends Fragment {
                                 list.add(comment);
                             }
                             System.out.println(list.toString());
-                            commentAdapter = new CommentAdapter(list, getContext());
+                            commentAdapter = new CommentAdapter(list, getContext(),postID,rc_comment);
 
                         }
                         rc_comment.setAdapter(commentAdapter);
@@ -185,7 +186,7 @@ public class CommentFragment extends Fragment {
                 }
                 db.collection("Comment").document(documentID).update("comment", list1);
                 edt_comment.setText("");
-                commentAdapter = new CommentAdapter(list, getContext());
+                commentAdapter = new CommentAdapter(list, getContext(),postID,rc_comment);
                 rc_comment.setAdapter(commentAdapter);
                 getNotification();
             }
@@ -198,96 +199,81 @@ public class CommentFragment extends Fragment {
     public void getNotification() {
         firebaseAuth = FirebaseAuth.getInstance();
         String currentUser = firebaseAuth.getUid().toString();
-        if(currentUser.equals(userID)){
+        if (currentUser.equals(userID)) {
             System.out.println("Nothing");
-        }else{
-        System.out.println("UserID " + userID);
-        notiRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+        } else {
+            System.out.println("UserID " + userID);
+            notiRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
 
-                        documentNoti = document.getId();
-                        System.out.println("documentNoti: "+documentID);
-                        try {
-                            listNoti = (List<Map<String, Object>>) document.get("notification");
-                        } catch (Exception e) {
-                            System.out.println(e);
-                        }
-                        if (listNoti == null) {
-                            System.out.println("Khong co noti");
-                        } else {
-                            for (int i = 0; i < listNoti.size(); i++) {
-                                NotificationDetails notificationDetails = new NotificationDetails();
-                                notificationDetails.setType(listNoti.get(i).get("type").toString());
-                                notificationDetails.setUserUrlImage(listNoti.get(i).get("userUrlImage").toString());
-                                notificationDetails.setPostID(listNoti.get(i).get("postID").toString());
-                                notificationDetails.setTime(listNoti.get(i).get("time").toString());
-                                notificationDetails.setContent(listNoti.get(i).get("content").toString());
-                                notificationDetails.setUserName(listNoti.get(i).get("userName").toString());
-                                notificationDetails.setUserID(listNoti.get(i).get("userID").toString());
-                                listNotiDetails.add(notificationDetails);
-                                count++;
+                            documentNoti = document.getId();
+                            System.out.println("documentNoti: " + documentID);
+                            try {
+                                listNoti = (List<Map<String, Object>>) document.get("notification");
+                            } catch (Exception e) {
+                                System.out.println(e);
                             }
-                        }
+                            if (listNoti == null) {
+                                System.out.println("Khong co noti");
+                            } else {
+                                for (int i = 0; i < listNoti.size(); i++) {
+                                    NotificationDetails notificationDetails = new NotificationDetails();
+                                    notificationDetails.setType(listNoti.get(i).get("type").toString());
+                                    notificationDetails.setUserUrlImage(listNoti.get(i).get("userUrlImage").toString());
+                                    notificationDetails.setPostID(listNoti.get(i).get("postID").toString());
+                                    notificationDetails.setTime(listNoti.get(i).get("time").toString());
+                                    notificationDetails.setContent(listNoti.get(i).get("content").toString());
+                                    notificationDetails.setUserName(listNoti.get(i).get("userName").toString());
+                                    notificationDetails.setUserID(listNoti.get(i).get("userID").toString());
+                                    listNotiDetails.add(notificationDetails);
+                                    count++;
+                                }
+                            }
 
-                        if(listNoti==null){
-                            addNoti(documentNoti);
-                        }
-                        else if(count== listNoti.size()){
-                            addNoti(documentNoti);
+                            if (listNoti == null) {
+                                addNoti(documentNoti);
+                            } else if (count == listNoti.size()) {
+                                addNoti(documentNoti);
+                                count = 0;
+                            }
+
                         }
 
                     }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });}
+            });
+        }
     }
 
     public void addNoti(final String documentID) {
+        firebaseAuth = FirebaseAuth.getInstance();
         DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
         final String date = df.format(Calendar.getInstance().getTime());
-        userRef.whereEqualTo("userID",userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                        Map<String, Object> updateNoti = new HashMap<>();
-                        updateNoti.put("postID", postID);
-                        updateNoti.put("time", date);
-                        updateNoti.put("type", 1);
-                        updateNoti.put("userID", userID);
-                        updateNoti.put("userUrlImage", documentSnapshot.get("imgUrl"));
-                        updateNoti.put("userName", documentSnapshot.get("firstName"));
-                        updateNoti.put("content", documentSnapshot.get("firstName")+ " đã bình luận vào bài viết của bạn");
-                        if(listNoti==null){
-                            listNoti = new ArrayList<>();
-                            listNoti.add(updateNoti);
-                        }else{
-                            listNoti.add(updateNoti);
-                        }
-
-                        notiRef.document(documentID).update("notification", listNoti);
-                        Toast.makeText(getContext(), "Add Noti Success", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
+            Map<String, Object> updateNoti = new HashMap<>();
+            updateNoti.put("postID", postID);
+            updateNoti.put("time", date);
+            updateNoti.put("type", 1);
+            updateNoti.put("userID", userID);
+            updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl());
+            updateNoti.put("userName", firebaseAuth.getCurrentUser().getDisplayName());
+            updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName() + " đã bình luận vào bài viết của bạn");
+            if (listNoti == null) {
+                listNoti = new ArrayList<>();
+                listNoti.add(updateNoti);
+            } else {
+                listNoti.add(updateNoti);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
 
-            }
-        });
-
-
+            notiRef.document(documentID).update("notification", listNoti);
+            Toast.makeText(getContext(), "Add Noti Success", Toast.LENGTH_SHORT).show();
 
     }
 
