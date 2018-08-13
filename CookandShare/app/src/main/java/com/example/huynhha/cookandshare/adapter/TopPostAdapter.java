@@ -12,20 +12,25 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.example.huynhha.cookandshare.fragment.CommentFragment;
 import com.example.huynhha.cookandshare.fragment.ProfileFragment;
+import com.example.huynhha.cookandshare.fragment.ReportFragment;
 import com.example.huynhha.cookandshare.fragment.ViewProfileFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,8 +43,10 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     private ArrayList<Post> posts;
     private OnAdapterClick onAdapterClick;
     Context context;
+    public FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
+
         ImageView userAvatar;
         TextView userName;
         TextView time;
@@ -52,6 +59,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Button btnComment;
         View view2;
         FrameLayout fl_comment;
+        Button cvTopPostBtnShowMore;
 
 
         public PostViewHolder(final View itemView) {
@@ -66,6 +74,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             comment = itemView.findViewById(R.id.cvTopPostTvComment);
             btnComment = itemView.findViewById(R.id.cvTopPostBtnComment);
             view2 = itemView.findViewById(R.id.checkFragment);
+            cvTopPostBtnShowMore = itemView.findViewById(R.id.cvTopPostBtnShowMore);
         }
     }
 
@@ -91,6 +100,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     @Override
     public void onBindViewHolder(final PostViewHolder holder, int position) {
         final Post post = posts.get(position);
+        final String currentUser = firebaseAuth.getUid().toString();
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
         holder.userAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,9 +138,55 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         holder.btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onAdapterClick.OnCommentClicked(post.getPostID().toString(),post.getUserID().toString());
+                onAdapterClick.OnCommentClicked(post.getPostID().toString(), post.getUserID().toString());
             }
         });
+        holder.cvTopPostBtnShowMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUser.equals(post.getUserID())) {
+                    PopupMenu popupMenu = new PopupMenu(context, holder.cvTopPostBtnShowMore);
+                    popupMenu.getMenuInflater().inflate(R.menu.post_option_user, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.editPost:
+                                    System.out.println("AS: edit");
+                                    return true;
+                                case R.id.deletePost:
+                                    System.out.println("AS: delete");
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                    });
+                    popupMenu.show();
+                }
+                else {
+                    PopupMenu popupMenu = new PopupMenu(context,holder.cvTopPostBtnShowMore);
+                    popupMenu.getMenuInflater().inflate(R.menu.post_option,popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            ReportFragment reportFragment = new ReportFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("postID",post.getPostID());
+                            bundle.putString("userID",post.getUserID());
+                            bundle.putString("userName",post.getUserName());
+                            System.out.println("USername"+post.getUserName());
+                            reportFragment.setArguments(bundle);
+                            ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main,reportFragment).addToBackStack(null).commit();
+                            return true;
+                        }
+                    });
+                    popupMenu.show();
+                }
+
+            }
+        });
+
 
 //        holder.like.setText(post.getLike()+" "+holder.like.getText());
 //        holder.comment.setText(post.getComment()+" "+holder.comment.getText());
@@ -142,7 +198,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     }
 
     public interface OnAdapterClick {
-        void OnCommentClicked(String postId,String userID);
+        void OnCommentClicked(String postId, String userID);
     }
 
     public void setOnAdapterClick(OnAdapterClick onAdapterClick) {

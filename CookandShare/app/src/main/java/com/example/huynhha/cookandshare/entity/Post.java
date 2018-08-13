@@ -18,14 +18,24 @@ public class Post {
     private String time;
     private String urlImage;
     private String difficult;
-
-
-
     private int like;
     private int comment;
     private String postTime;
     private List<Material> materials;
     private List<PostStep> postSteps;
+
+    public Post(String postID, String userID, String time, String imgUrl, String title, String description, String userImgUrl, int like, int comment, String userName) {
+        this.postID = postID;
+        this.userID = userID;
+        this.time = time;
+        this.urlImage = imgUrl;
+        this.title = title;
+        this.description = description;
+        this.userImgUrl = userImgUrl;
+        this.like = like;
+        this.comment = comment;
+        this.userName =userName;
+    }
 
     public int getNumberOfRate() {
         return numberOfRate;
@@ -97,6 +107,7 @@ public class Post {
 
     public Post(String postID, String userID, String time, String imgUrl, String title, String titleLower,
                 String description, String userImgUrl, int like, int comment) {
+
         this.postID = postID;
         this.userID = userID;
         this.time = time;

@@ -116,7 +116,7 @@ public class CommentFragment extends Fragment {
 
     }
 
-    public void loadComment(String postID) {
+    public void loadComment(final String postID) {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rc_comment.setLayoutManager(lln);
         MainActivity.db.collection("Comment").whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -143,7 +143,7 @@ public class CommentFragment extends Fragment {
                                 list.add(comment);
                             }
                             System.out.println(list.toString());
-                            commentAdapter = new CommentAdapter(list, getContext());
+                            commentAdapter = new CommentAdapter(list, getContext(),postID,rc_comment);
 
                         }
                         rc_comment.setAdapter(commentAdapter);
@@ -186,7 +186,7 @@ public class CommentFragment extends Fragment {
                 }
                 db.collection("Comment").document(documentID).update("comment", list1);
                 edt_comment.setText("");
-                commentAdapter = new CommentAdapter(list, getContext());
+                commentAdapter = new CommentAdapter(list, getContext(),postID,rc_comment);
                 rc_comment.setAdapter(commentAdapter);
                 getNotification();
             }

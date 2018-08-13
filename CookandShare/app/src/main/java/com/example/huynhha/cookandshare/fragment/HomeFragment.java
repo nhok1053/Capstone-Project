@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment{
         // Required empty public constructor
     }
 
-    String postID, userID, time, imgUrl, title, description, userImgUrl;
+    String postID, userID, time, imgUrl, title, description, userImgUrl,userName;
     int like, comment;
     TopPostAdapter postAdapter;
     ArrayList<Post> posts;
@@ -101,6 +101,7 @@ public class HomeFragment extends Fragment{
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                            userName = documentSnapshot.get("userName").toString();
                             postID = documentSnapshot.get("postID").toString();
                             userID = documentSnapshot.get("userID").toString();
                             time = documentSnapshot.get("time").toString();
@@ -110,7 +111,7 @@ public class HomeFragment extends Fragment{
                             userImgUrl = documentSnapshot.get("userImgUrl").toString();
                             like = Integer.parseInt(documentSnapshot.get("like").toString());
                             comment = Integer.parseInt(documentSnapshot.get("comment").toString());
-                            Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment);
+                            Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment,userName);
                             posts.add(post);
                         }
                         postAdapter = new TopPostAdapter(posts,getContext());
