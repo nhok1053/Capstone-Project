@@ -1,9 +1,11 @@
 package com.example.huynhha.cookandshare.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketRecipeAdapter.RecyclerViewHolder> {
     public ArrayList<Post> posts;
     public Context context;
+    public ArrayList<Material> materials;
 
     @NonNull
     @Override
@@ -48,15 +51,18 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
         System.out.println("Post size :" + posts.size() + " " + post.getTitle().toString());
         holder.txt_name_recipe.setText(post.getTitle().toString());
         holder.time_create.setText("Thêm vào lúc: " + post.getTime().toString());
+        System.out.println("Post IA: "+post.getPostID().toString());
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
                 GoMarketDetails goMarketDetails = new GoMarketDetails();
                 Bundle bundle = new Bundle();
-                bundle.putString("id", post.getPostID());
+                bundle.putString("id", post.getDescription());
                 bundle.putString("name", post.getTitle().toString());
                 bundle.putString("time", post.getTime().toString());
                 bundle.putString("img", post.getUrlImage().toString());
+                bundle.putString("userID",post.getUserID().toString());
+                bundle.putString("postID",post.getPostID().toString());
                 goMarketDetails.setArguments(bundle);
                 ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fl_go_market, goMarketDetails).addToBackStack(null)
@@ -64,6 +70,17 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
                 System.out.println("CLick " + position);
             }
         });
+        getData(post.getDescription().toString());
+        int countMaterial = 0;
+        System.out.println("Size count: "+materials.size());
+        for (int i = 0; i < materials.size(); i++) {
+            System.out.println("zo zo");
+            if (materials.get(i).isCheckGoMarket().equals("1")) {
+                countMaterial++;
+                System.out.println("Count a" + countMaterial);
+            }
+        }
+        holder.txt_number.setText("Đã mua " + countMaterial + "/" + materials.size() + " nguyên liệu");
         Picasso.get().load(post.getUrlImage()).fit().centerCrop().into(holder.img_recipe);
 
     }
@@ -90,6 +107,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
         public ImageView img_recipe;
         public TextView time_create;
         public ImageView img_delete;
+        public TextView txt_number;
         public ListMarketRecipeAdapter.ItemClickListener itemClickListener;
 
         public RecyclerViewHolder(View itemView) {
@@ -99,6 +117,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
             time_create = itemView.findViewById(R.id.add_date);
             img_recipe = itemView.findViewById(R.id.market_img);
             img_delete = itemView.findViewById(R.id.go_market_delete);
+            txt_number = itemView.findViewById(R.id.number_go_market);
             img_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -108,7 +127,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             // System.out.println("Adapter position:"+getAdapterPosition());
-                           // System.out.println("IDD: "+posts.get(getAdapterPosition()).getPostID().toString());
+                            // System.out.println("IDD: "+posts.get(getAdapterPosition()).getPostID().toString());
                             deleteDBOffline(Integer.parseInt(posts.get(getAdapterPosition()).getPostID().toString()));
                             posts.remove(getAdapterPosition());
                             notifyItemRemoved(getAdapterPosition());
@@ -116,6 +135,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
                             return true;
                         }
                     });
+
                     popupMenu.show();
                 }
             });
@@ -159,4 +179,46 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
         }
 
     }
+
+    public void getData(String id) {
+
+        MaterialDBHelper materialDBHelper = new MaterialDBHelper(context);
+        SQLiteDatabase db1 = materialDBHelper.getReadableDatabase();
+
+        String[] projection = {
+                BaseColumns._ID,
+                DBContext.MaterialDB.COLUMN_NAME_OF_MATERIAL,
+                DBContext.MaterialDB.COLUMN_QUANTITY,
+                DBContext.MaterialDB.COLUMN_CHECK
+        };
+
+        String selection = DBContext.MaterialDB.COLUMN_ID + " = ?";
+        String[] selectionArgs = {"" + id};
+
+        //  Cursor cursor1 = db1.rawQuery("SELECT _id, name, quatity, check FROM material WHERE id = "+id,projection);
+
+        Cursor cursor = db1.query(
+                DBContext.MaterialDB.TABLE_NAME,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                null               // The sort order
+        );
+        materials = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                Material material = new Material();
+                material.setMaterialName(cursor.getString(cursor.getColumnIndex("name")));
+                material.setQuantity(cursor.getString(cursor.getColumnIndex("quatity")));
+                material.setCheckGoMarket(cursor.getString(cursor.getColumnIndex("checkBoolean")));
+                materials.add(material);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+    }
+
 }

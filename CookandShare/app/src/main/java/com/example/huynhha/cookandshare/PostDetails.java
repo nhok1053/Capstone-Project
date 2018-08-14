@@ -163,6 +163,7 @@ public class PostDetails extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
+
                         post.setUrlImage(document.get("urlImage").toString());
                         post.setTitle(document.get("title").toString());
                         post.setUserID(document.get("userID").toString());
@@ -223,18 +224,6 @@ public class PostDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveData();
-
-                // db.delete(String tableName, String whereClause, String[] whereArgs);
-                // If whereClause is null, it will delete all rows.
-//                    DBHelper mDbHelper = new DBHelper(getApplicationContext());
-//                    MaterialDBHelper materialDBHelper = new MaterialDBHelper(getApplicationContext());
-//                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
-//                    SQLiteDatabase db1 = materialDBHelper.getWritableDatabase();
-//
-//                    db1.delete(DBContext.MaterialDB.TABLE_NAME, null, null);
-//                    db.delete(DBContext.FeedEntry.TABLE_NAME, null, null);
-//                System.out.println("DELETE SUCCCESS");
-
             }
         });
     }
@@ -253,6 +242,8 @@ public class PostDetails extends AppCompatActivity {
         values.put(DBContext.FeedEntry.COLUMN_NAME_OF_RECIPE, post.getTitle());
         values.put(DBContext.FeedEntry.COLUMN_IMG_URL, post.getUrlImage());
         values.put(DBContext.FeedEntry.COLUMN_TIME, date);
+        values.put(DBContext.FeedEntry.COLUMN_USERID,post.getUserID());
+        values.put(DBContext.FeedEntry.COLUMN_POST_ID,postID);
         System.out.println(values);
 
 

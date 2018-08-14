@@ -44,6 +44,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     private OnAdapterClick onAdapterClick;
     Context context;
     public FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private String currentUser;
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
 
@@ -100,7 +101,10 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     @Override
     public void onBindViewHolder(final PostViewHolder holder, int position) {
         final Post post = posts.get(position);
-        final String currentUser = firebaseAuth.getUid().toString();
+        if(firebaseAuth.getCurrentUser()!=null){
+            currentUser = firebaseAuth.getUid().toString();
+        }
+
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
         holder.userAvatar.setOnClickListener(new View.OnClickListener() {
             @Override

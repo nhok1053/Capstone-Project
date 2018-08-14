@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
     private CollectionReference notebookRefUser = MainActivity.db.collection("User");
     private CollectionReference notebookRefPost = MainActivity.db.collection("Post");
     private CollectionReference notebookRefFollow = MainActivity.db.collection("Follow");
-    private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+    private String currentUser ;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -96,6 +96,10 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, v);
         posts = new ArrayList<>();
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+        }
+
         System.out.println(currentUser);
         userInfo();
         importTopPost();

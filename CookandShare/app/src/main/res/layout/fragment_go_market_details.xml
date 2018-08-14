@@ -9,7 +9,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"></View>
+        android:clickable="true">
+
+    </View>
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolBar_back_materialDetails"
@@ -31,13 +33,18 @@
             android:textColor="#ffffff"
             android:textSize="20dp" />
         <Button
+            android:id="@+id/btn_start_cooking"
+            android:layout_marginStart="75dp"
+            android:background="@drawable/pan"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <Button
             android:id="@+id/add_save_go_market"
             android:layout_marginEnd="0dp"
-            android:layout_marginStart="120dp"
+            android:layout_marginStart="15dp"
             android:background="@drawable/ic_add_check"
             android:layout_width="30dp"
             android:layout_height="30dp" />
-
     </android.support.v7.widget.Toolbar>
         <LinearLayout
             android:elevation="5dp"
