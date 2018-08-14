@@ -38,7 +38,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
 
     @Override
     public void onBindViewHolder(NotificationViewHolder holder, int position) {
-        final NotificationDetails notificationDetail = notificationDetails.get(position);
+        int newposition = notificationDetails.size() - position - 1;
+        final NotificationDetails notificationDetail = notificationDetails.get(newposition);
         holder.txtContent.setText(notificationDetail.getContent().toString());
         System.out.println("notification" + notificationDetail.getContent().toString());
         holder.txtTime.setText(notificationDetail.getTime().toString());
@@ -47,7 +48,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
         holder.setItemClickListener(new ItemClickListener() {
 
             @Override
-            public void onClick(View view, int position, boolean isLongClick) {
+            public void onClick(View view, int newposition, boolean isLongClick) {
                 System.out.println("Click click" + type);
                 if (type.equals("0")) {
                     ViewProfileFragment viewProfileFragment = new ViewProfileFragment();

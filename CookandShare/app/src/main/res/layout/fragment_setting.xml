@@ -8,85 +8,139 @@
     android:orientation="vertical"
     tools:context=".fragment.SettingFragment">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <Button
+            android:id="@+id/settings_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Cook and share"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+    </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Thiết lập"
-            android:textSize="35sp" />
+            android:layout_height="160dp"
+            android:src="@drawable/settingbackground" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#BDBDBD" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imgSettingFeedback"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@mipmap/ic_feedback"
-                android:cropToPadding="true" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/send"
+                android:cropToPadding="true"
+                android:padding="8dp" />
 
             <Button
                 android:id="@+id/btnSettingFeedback"
-                android:layout_width="wrap_content"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:background="#fff"
                 android:paddingLeft="5dp"
                 android:text="Gửi phản hồi"
                 android:textAlignment="viewStart"
                 android:textSize="20sp" />
         </LinearLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#BDBDBD" />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imgSettingAboutUs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/ic_aboutme"
-                android:cropToPadding="false" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/information"
+                android:padding="8dp" />
 
             <Button
                 android:id="@+id/btnSettingAboutUs"
-                android:layout_width="wrap_content"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:background="#fff"
                 android:paddingLeft="5dp"
                 android:text="Thông tin"
                 android:textAlignment="viewStart"
                 android:textSize="20sp" />
         </LinearLayout>
+        <View
 
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#BDBDBD" />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imgSettingLogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/ic_logout"
-                android:cropToPadding="false" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/logout"
+                android:cropToPadding="false"
+                android:padding="8dp" />
 
             <Button
                 android:id="@+id/btnSettingLogout"
-                android:layout_width="wrap_content"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:background="#fff"
                 android:paddingLeft="5dp"
                 android:text="Đăng xuất"
                 android:textAlignment="viewStart"
                 android:textSize="20sp" />
         </LinearLayout>
+
     </LinearLayout>
 </FrameLayout>

@@ -1,7 +1,9 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +14,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +37,9 @@ public class SettingFragment extends Fragment {
     ImageView imgAboutUs;
     @BindView(R.id.imgSettingLogout)
     ImageView imgLogout;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private SettingFragment settingFragment;
+    private Button settingClose;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -45,6 +52,8 @@ public class SettingFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, v);
+        settingClose = v.findViewById(R.id.settings_close);
+        settingFragment = this;
         btnAboutUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +66,51 @@ public class SettingFragment extends Fragment {
                 feedbackClick();
             }
         });
+        logOut();
+        closeFragment();
         return v;
+    }
+
+    public void removeFragment(Fragment fragment) {
+        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+
+    }
+
+    public void closeFragment() {
+        settingClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeFragment(settingFragment);
+            }
+        });
+
+    }
+
+    public void logOut() {
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Đăng xuất");
+                alert.setMessage("Bạn muốn đăng xuất tài khoản?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                firebaseAuth.signOut();
+                                ((MainActivity) getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, new LoginFragment()).addToBackStack(null).commit();
+                                removeFragment(settingFragment);
+                            }
+                        }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+            }
+        });
     }
 
     public void feedbackClick() {

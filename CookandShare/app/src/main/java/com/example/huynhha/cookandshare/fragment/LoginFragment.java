@@ -23,12 +23,17 @@ import com.example.huynhha.cookandshare.R;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +56,9 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth mAuth;
     // [END declare_auth]
     private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference userRef = db.collection("User");
+
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -61,7 +69,7 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        ButterKnife.bind(this,v);
+        ButterKnife.bind(this, v);
         // Configure Google Sign In
         signInWithGoogle();
         signInWithPhone();
@@ -76,7 +84,8 @@ public class LoginFragment extends Fragment {
         // [END initialize_auth]
         return v;
     }
-    private void signInWithGoogle(){
+
+    private void signInWithGoogle() {
         signInGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,11 +93,12 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-    private void signInWithPhone(){
+
+    private void signInWithPhone() {
         singInPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction().replace(R.id.fl,new LoginWithPhoneFragment()).addToBackStack(null);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction().replace(R.id.fl, new LoginWithPhoneFragment()).addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -110,6 +120,7 @@ public class LoginFragment extends Fragment {
             }
         }
     }
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -119,6 +130,7 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
     }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
@@ -133,16 +145,32 @@ public class LoginFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getContext(),"Login Successfull",Toast.LENGTH_LONG);
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(intent);
-                            //FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login,new UpdateProfileFragment()).addToBackStack(null);
-                            //transaction.commit();
+                            Toast.makeText(getContext(), "Login Successfull", Toast.LENGTH_LONG);
+                            userRef.whereEqualTo("userID", user.getUid().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    System.out.println("Intent2");
+                                    if (queryDocumentSnapshots != null && queryDocumentSnapshots.size() != 0) {
+                                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login, new UpdateProfileFragment()).addToBackStack(null);
+                                        transaction.commit();
+                                    }
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getContext(),"Fail",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Fail", Toast.LENGTH_LONG).show();
                         }
                         // [START_EXCLUDE]
                         // [END_EXCLUDE]

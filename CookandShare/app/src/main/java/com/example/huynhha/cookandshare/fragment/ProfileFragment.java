@@ -82,7 +82,8 @@ public class ProfileFragment extends Fragment {
     private CollectionReference notebookRefUser = MainActivity.db.collection("User");
     private CollectionReference notebookRefPost = MainActivity.db.collection("Post");
     private CollectionReference notebookRefFollow = MainActivity.db.collection("Follow");
-    private String currentUser ;
+    private String currentUser;
+    private ProfileFragment profileFragment;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -96,10 +97,10 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, v);
         posts = new ArrayList<>();
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         }
-
+        profileFragment = this;
         System.out.println(currentUser);
         userInfo();
         importTopPost();
@@ -124,7 +125,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 SettingFragment sf = new SettingFragment();
-                ft.replace(R.id.fl_profile, sf);
+                ft.replace(R.id.fl_main, sf);
                 ft.addToBackStack(null);
                 ft.commit();
             }
@@ -140,6 +141,13 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    public void removeFragment(Fragment fragment) {
+        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+
+    }
 
     private void clickFollowing(TextView tv) {
         tv.setOnClickListener(new View.OnClickListener() {
