@@ -72,7 +72,7 @@ public class CommentFragment extends Fragment {
     private String documentNoti = "";
     private String postID = "";
     private int count = 0;
-    private String userID;
+    private String userID="";
 
     public CommentFragment() {
         // Required empty public constructor
@@ -143,7 +143,7 @@ public class CommentFragment extends Fragment {
                                 list.add(comment);
                             }
                             System.out.println(list.toString());
-                            commentAdapter = new CommentAdapter(list, getContext(),postID,rc_comment);
+                            commentAdapter = new CommentAdapter(list, getContext(), postID, rc_comment);
 
                         }
                         rc_comment.setAdapter(commentAdapter);
@@ -186,7 +186,7 @@ public class CommentFragment extends Fragment {
                 }
                 db.collection("Comment").document(documentID).update("comment", list1);
                 edt_comment.setText("");
-                commentAdapter = new CommentAdapter(list, getContext(),postID,rc_comment);
+                commentAdapter = new CommentAdapter(list, getContext(), postID, rc_comment);
                 rc_comment.setAdapter(commentAdapter);
                 getNotification();
             }
@@ -257,24 +257,23 @@ public class CommentFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
         final String date = df.format(Calendar.getInstance().getTime());
-            Map<String, Object> updateNoti = new HashMap<>();
-            updateNoti.put("postID", postID);
-            updateNoti.put("time", date);
-            updateNoti.put("type", 1);
-            updateNoti.put("userID", userID);
-            updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl());
-            updateNoti.put("userName", firebaseAuth.getCurrentUser().getDisplayName());
-            updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName() + " đã bình luận vào bài viết của bạn");
-            if (listNoti == null) {
-                listNoti = new ArrayList<>();
-                listNoti.add(updateNoti);
-            } else {
-                listNoti.add(updateNoti);
-            }
-
-            notiRef.document(documentID).update("notification", listNoti);
-            Toast.makeText(getContext(), "Add Noti Success", Toast.LENGTH_SHORT).show();
-
+        Map<String, Object> updateNoti = new HashMap<>();
+        updateNoti.put("postID", postID);
+        updateNoti.put("time", date);
+        updateNoti.put("type", 1);
+        updateNoti.put("userID", firebaseAuth.getCurrentUser().getUid().toString());
+        updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+        updateNoti.put("userName", firebaseAuth.getCurrentUser().getDisplayName().toString());
+        updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString()+ " đã bình luận vào bài viết của bạn");
+        if (listNoti == null) {
+            listNoti = new ArrayList<>();
+            listNoti.add(updateNoti);
+        } else {
+            listNoti.add(updateNoti);
+        }
+        System.out.println("check noti comment");
+        notiRef.document(documentID).update("notification", listNoti);
+        Toast.makeText(getContext(), "Add Noti Success", Toast.LENGTH_SHORT).show();
     }
 
     public void setUpData(View view) {

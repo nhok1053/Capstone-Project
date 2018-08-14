@@ -326,7 +326,7 @@ public class PostDetails extends AppCompatActivity {
 
     public void addRate(String strRate, float newRate) {
         float oldRate = Float.parseFloat(strRate);
-        float rate = (oldRate + newRate) / 2;
+        float rate = (oldRate*10 + newRate) / 11;
         System.out.println("New Rate :" + rate);
         String rateNew = String.valueOf(rate);
         postRef.document(documentID).update("rate", rateNew);
