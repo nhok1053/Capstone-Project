@@ -1,5 +1,7 @@
 package com.example.huynhha.cookandshare;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +26,7 @@ import com.example.huynhha.cookandshare.model.DBHelper;
 import com.example.huynhha.cookandshare.model.FavouriteDBHelper;
 import com.example.huynhha.cookandshare.model.MaterialDBHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -69,21 +73,25 @@ public class PostDetails extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private List<Material> list;
     private int count = 0;
+    private String postID;
+    private String documentID = "";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_post_details);
         progressDialog = new ProgressDialog(this);
-        String postID = getIntent().getExtras().getString("postID");
+        postID = getIntent().getExtras().getString("postID");
         setUp();
         storageReference = FirebaseStorage.getInstance().getReference();
         getData(postID);
         saveDataGoMarket();
         setFavourite();
         setBtnStartCooking();
+        setRatingBar();
     }
 
     public void setBtnStartCooking() {
@@ -106,7 +114,7 @@ public class PostDetails extends AppCompatActivity {
         recipe_detail_image = findViewById(R.id.recipe_image_details);
         name_of_food = findViewById(R.id.name_of_recipe);
         create_by_name = findViewById(R.id.create_by_name);
-        ratingBar = findViewById(R.id.ratingBarSmalloverall);
+        ratingBar = findViewById(R.id.ratingBarSmall);
         txt_recipe_description = findViewById(R.id.tv_description);
         txt_duration = findViewById(R.id.txt_duration);
         txt_number_of_people_eat_details = findViewById(R.id.number_of_people_eat_detail);
@@ -114,7 +122,6 @@ public class PostDetails extends AppCompatActivity {
         txt_material = findViewById(R.id.tv_material_details);
         rc_list_recipe = findViewById(R.id.rc_list_recipe);
         btn_start_cooking = findViewById(R.id.start_cooking);
-
     }
 
     public void setFavourite() {
@@ -156,6 +163,7 @@ public class PostDetails extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
+
                         post.setUrlImage(document.get("urlImage").toString());
                         post.setTitle(document.get("title").toString());
                         post.setUserID(document.get("userID").toString());
@@ -163,6 +171,7 @@ public class PostDetails extends AppCompatActivity {
                         post.setNumberOfPeople(document.get("numberOfPeople").toString());
                         post.setDescription(document.get("description").toString());
                         post.setDifficult(document.get("difficult").toString());
+                        post.setNumberOfRate(document.get("rate").toString());
                         list = new ArrayList<>();
                         List<Map<String, Object>> list1 = (List<Map<String, Object>>) document.get("materials");
                         for (int i = 0; i < list1.size(); i++) {
@@ -189,7 +198,7 @@ public class PostDetails extends AppCompatActivity {
         Picasso.get().load(post.getUrlImage()).resize(650, 0).into(recipe_detail_image);
         name_of_food.setText(post.getTitle().toString());
         create_by_name.setText(post.getUserName().toString());
-        ratingBar.setNumStars(post.getNumberOfRate());
+        ratingBar.setRating(Float.parseFloat(post.getNumberOfRate()));
         txt_recipe_description.setText(post.getDescription().toString());
         txt_difficult.setText(post.getDifficult().toString());
         txt_number_of_people_eat_details.setText(post.getNumberOfPeople().toString());
@@ -201,6 +210,7 @@ public class PostDetails extends AppCompatActivity {
         }
         txt_material.setText(str);
         progressDialog.dismiss();
+
     }
 
 //    private void startLoading(Post post) {
@@ -214,18 +224,6 @@ public class PostDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveData();
-
-                // db.delete(String tableName, String whereClause, String[] whereArgs);
-                // If whereClause is null, it will delete all rows.
-//                    DBHelper mDbHelper = new DBHelper(getApplicationContext());
-//                    MaterialDBHelper materialDBHelper = new MaterialDBHelper(getApplicationContext());
-//                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
-//                    SQLiteDatabase db1 = materialDBHelper.getWritableDatabase();
-//
-//                    db1.delete(DBContext.MaterialDB.TABLE_NAME, null, null);
-//                    db.delete(DBContext.FeedEntry.TABLE_NAME, null, null);
-//                System.out.println("DELETE SUCCCESS");
-
             }
         });
     }
@@ -244,6 +242,8 @@ public class PostDetails extends AppCompatActivity {
         values.put(DBContext.FeedEntry.COLUMN_NAME_OF_RECIPE, post.getTitle());
         values.put(DBContext.FeedEntry.COLUMN_IMG_URL, post.getUrlImage());
         values.put(DBContext.FeedEntry.COLUMN_TIME, date);
+        values.put(DBContext.FeedEntry.COLUMN_USERID,post.getUserID());
+        values.put(DBContext.FeedEntry.COLUMN_POST_ID,postID);
         System.out.println(values);
 
 
@@ -268,4 +268,63 @@ public class PostDetails extends AppCompatActivity {
         Toast.makeText(this, "Lưu thành công ", Toast.LENGTH_SHORT).show();
 
     }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void setRatingBar() {
+        ratingBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final Dialog dialog;
+                dialog = new Dialog(PostDetails.this);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.rating_dialog);
+                final RatingBar rateBar = dialog.findViewById(R.id.ratingBar);
+                Button btnSendRate = dialog.findViewById(R.id.sendRating);
+
+                btnSendRate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                        documentID = documentSnapshot.getId();
+                                        String strRate = documentSnapshot.getString("rate");
+                                        System.out.println("RATE: " + strRate);
+                                        System.out.println("Kaka: " + rateBar.getRating());
+                                        addRate(strRate, rateBar.getRating());
+                                        dialog.cancel();
+                                    }
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
+                    }
+                });
+                dialog.show();
+
+                return false;
+            }
+        });
+    }
+
+
+    public void addRate(String strRate, float newRate) {
+        float oldRate = Float.parseFloat(strRate);
+        float rate = (oldRate*10 + newRate) / 11;
+        System.out.println("New Rate :" + rate);
+        String rateNew = String.valueOf(rate);
+        postRef.document(documentID).update("rate", rateNew);
+        Toast.makeText(this, "Cảm ơn bạn đã đánh giá công thức!", Toast.LENGTH_SHORT).show();
+        finish();
+        startActivity(getIntent());
+    }
 }
+
+

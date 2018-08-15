@@ -7,7 +7,7 @@
     android:background="#fff"
     tools:context=".fragment.ProfileFragment">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -39,12 +39,13 @@
                         android:paddingLeft="3dp">
 
                         <TextView
+                            android:textColor="#ff1744"
                             android:id="@+id/profileUserNumberFollowing"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="50"
-                            android:textSize="18sp"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -63,12 +64,13 @@
                         android:paddingLeft="3dp">
 
                         <TextView
+                            android:textColor="#64DD17"
                             android:id="@+id/profileUserNumberPost"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="50"
-                            android:textSize="18sp"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -87,12 +89,13 @@
                         android:paddingLeft="3dp">
 
                         <TextView
+                            android:textColor="#ff9100"
                             android:id="@+id/profileUserNumberFollower"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="50"
-                            android:textSize="18sp"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -116,6 +119,8 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:textColor="#000000"
+                            android:textStyle="bold"
                             android:id="@+id/profileUserName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -151,45 +156,96 @@
                     android:background="#cccccc" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/btnProfileCookbook"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#fff"
-                        android:paddingLeft="5dp"
-                        android:text="Cookbook"
-                        android:textAlignment="viewStart" />
+                        android:layout_height="wrap_content">
 
-                    <Button
-                        android:id="@+id/btnProfileGoMarket"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#fff"
-                        android:paddingLeft="5dp"
-                        android:text="Đi chợ"
-                        android:textAlignment="viewStart" />
+                        <ImageView
+                            android:padding="4dp"
+                            android:src="@drawable/cookbook"
+                            android:layout_gravity="center"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
 
-                    <Button
-                        android:id="@+id/btnProfileFavorite"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#fff"
-                        android:paddingLeft="5dp"
-                        android:text="Yêu thích"
-                        android:textAlignment="viewStart" />
+                        <Button
+                            style="?android:attr/borderlessButtonStyle"
+                            android:id="@+id/btnProfileCookbook"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#fff"
+                            android:paddingLeft="5dp"
+                            android:text="Cookbook"
+                            android:textAlignment="viewStart" />
+                    </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btnProfileSetting"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#fff"
-                        android:paddingLeft="5dp"
-                        android:text="Thiết lập"
-                        android:textAlignment="viewStart" />
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:padding="4dp"
+                            android:src="@drawable/cart"
+                            android:layout_gravity="center"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
+                        <Button
+                            style="?android:attr/borderlessButtonStyle"
+                            android:id="@+id/btnProfileGoMarket"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#fff"
+                            android:paddingLeft="5dp"
+                            android:text="Đi chợ"
+                            android:textAlignment="viewStart" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:padding="4dp"
+                            android:src="@drawable/star"
+                            android:layout_gravity="center"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
+                        <Button
+                            style="?android:attr/borderlessButtonStyle"
+                            android:id="@+id/btnProfileFavorite"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#fff"
+                            android:paddingLeft="5dp"
+                            android:text="Yêu thích"
+                            android:textAlignment="viewStart" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginBottom="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:padding="4dp"
+                            android:src="@drawable/settings"
+                            android:layout_gravity="center"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
+                        <Button
+                            style="?android:attr/borderlessButtonStyle"
+                            android:id="@+id/btnProfileSetting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#fff"
+                            android:paddingLeft="5dp"
+                            android:text="Thiết lập"
+                            android:textAlignment="viewStart" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <View
@@ -200,9 +256,11 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvProfileImgPost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </FrameLayout>

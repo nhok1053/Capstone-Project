@@ -130,7 +130,7 @@ public class CookbookInfoFragment extends Fragment {
             String postTitle = list1.get(i).get("postTitle").toString();
             String postUrlImage = list1.get(i).get("postUrlImage").toString();
             String userName = list1.get(i).get("userName").toString();
-            Post post = new Post(Integer.parseInt(postRate), userName, postID, postTitle, postUrlImage);
+            Post post = new Post(postRate, userName, postID, postTitle, postUrlImage);
             posts.add(post);
         }
         CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts);

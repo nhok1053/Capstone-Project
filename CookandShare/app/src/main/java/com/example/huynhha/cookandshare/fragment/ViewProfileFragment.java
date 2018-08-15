@@ -383,6 +383,8 @@ public class ViewProfileFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 if (count > 1) {
                                     if (listFollower.size() > 0 && listFollowing.size() > 0) {
+                                        getNotification();
+
                                         notebookRefFollow.document(sFollowing).update("following", listFollowing);
                                         notebookRefFollow.document(sFollower).update("follower", listFollower);
                                         if (getFragmentManager() != null) {
@@ -550,13 +552,18 @@ public class ViewProfileFragment extends Fragment {
                                     listNotiDetails.add(notificationDetails);
                                     count++;
                                 }
-                            }
-                            if (listNoti == null) {
+                                System.out.println("Vao cai nay");
                                 addNoti(documentNoti);
-                            } else if (count == listNoti.size()) {
-                                addNoti(documentNoti);
-                                count = 0;
+//                                if (listNotiDetails == null) {
+//                                    addNoti(documentNoti);
+//                                    System.out.println("Add noti success");
+//                                } else if (count == listNotiDetails.size()) {
+//                                    addNoti(documentNoti);
+//                                    System.out.println("Add noti success");
+//                                    count = 0;
+//                                }
                             }
+
                         }
                     }
                 }
@@ -570,39 +577,32 @@ public class ViewProfileFragment extends Fragment {
     }
 
     public void addNoti(final String documentID) {
+        System.out.println("DOCU "+documentID);
         firebaseAuth = FirebaseAuth.getInstance();
         final String userID = firebaseAuth.getCurrentUser().getUid().toString();
         DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        System.out.println("Current USer:"+currentUser);
         final String date = df.format(Calendar.getInstance().getTime());
-        notebookRefUser.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                        Map<String, Object> updateNoti = new HashMap<>();
-                        updateNoti.put("postID", "");
-                        updateNoti.put("time", date);
-                        updateNoti.put("type", 0);
-                        updateNoti.put("userID", getUserID);
-                        updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-                        updateNoti.put("userName", firebaseAuth.getCurrentUser().getDisplayName().toString());
-                        updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString() + " đã bắt đầu theo dõi bạn");
-                        if (listNoti == null) {
-                            listNoti = new ArrayList<>();
-                            listNoti.add(updateNoti);
-                        } else {
-                            listNoti.add(updateNoti);
-                        }
-                        notiRef.document(documentID).update("notification", listNoti);
-                        Toast.makeText(getContext(), "Add Noti Success", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+        Map<String, Object> updateNoti = new HashMap<>();
+        updateNoti.put("postID", "");
+        updateNoti.put("time", date);
+        updateNoti.put("type", 0);
+        updateNoti.put("userID", currentUser);
+        updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+        updateNoti.put("userName", firebaseAuth.getCurrentUser().getDisplayName().toString());
+        updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString() + " đã bắt đầu theo dõi bạn");
+        System.out.println("Vao day luon roi");
+        if (listNoti == null) {
+            System.out.println("bang null");
+            listNoti = new ArrayList<>();
+            listNoti.add(updateNoti);
+        } else {
+            System.out.println("Ko null");
+            listNoti.add(updateNoti);
+        }
 
-            }
-        });
+        notiRef.document(documentID).update("notification", listNoti);
+        Toast.makeText(getContext(), "Add Noti Success", Toast.LENGTH_SHORT).show();
+
     }
 }

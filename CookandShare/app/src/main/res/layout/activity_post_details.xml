@@ -65,7 +65,7 @@
                     android:layout_marginLeft="8dp">
 
                     <RatingBar
-                        android:id="@+id/ratingBarSmalloverall"
+                        android:id="@+id/ratingBarSmall"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

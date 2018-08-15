@@ -70,10 +70,12 @@ public class GoMarketActivity extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 Post post = new Post();
+                post.setPostID(cursor.getString(cursor.getColumnIndex("postID")));
                 post.setTitle(cursor.getString(cursor.getColumnIndex("name")));
                 post.setUrlImage(cursor.getString(cursor.getColumnIndex("imageUrl")));
                 post.setTime(cursor.getString(cursor.getColumnIndex("time")));
-                post.setPostID(cursor.getString(cursor.getColumnIndex("_id")));
+                post.setDescription(cursor.getString(cursor.getColumnIndex("_id")));
+                post.setUserID(cursor.getString(cursor.getColumnIndex("userID")));
                 System.out.println("Name food : "+post.getTitle().toString());
                 posts.add(post);
                 cursor.moveToNext();

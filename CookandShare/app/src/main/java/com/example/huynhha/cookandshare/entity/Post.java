@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
-
-    private int numberOfRate;
+    private String numberOfRate;
     private String userName;
     private String numberOfPeople;
     private String postID;
@@ -24,7 +23,7 @@ public class Post {
     private List<Material> materials;
     private List<PostStep> postSteps;
 
-    public Post(int numberOfRate, String userName, String postID, String title, String urlImage) {
+    public Post(String numberOfRate, String userName, String postID, String title, String urlImage) {
         this.numberOfRate = numberOfRate;
         this.userName = userName;
         this.postID = postID;
@@ -45,11 +44,11 @@ public class Post {
         this.userName = userName;
     }
 
-    public int getNumberOfRate() {
+    public String getNumberOfRate() {
         return numberOfRate;
     }
 
-    public void setNumberOfRate(int numberOfRate) {
+    public void setNumberOfRate(String numberOfRate) {
         this.numberOfRate = numberOfRate;
     }
 
@@ -61,7 +60,8 @@ public class Post {
         this.difficult = difficult;
     }
 
-    public Post(String difficult, int numberOfRate, String userName, String postTime, String numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
+
+    public Post(String difficult,String numberOfRate, String userName, String postTime, String numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
         this.numberOfRate = numberOfRate;
         this.difficult = difficult;
         this.userName = userName;
@@ -104,14 +104,6 @@ public class Post {
         this.like = like;
         this.comment = comment;
         this.userImgUrl = userImgUrl;
-    }
-
-    public Post(String userName, String postID, String userID, String title, String urlImage) {
-        this.userName = userName;
-        this.postID = postID;
-        this.userID = userID;
-        this.title = title;
-        this.urlImage = urlImage;
     }
 
     public Post(String postID, String userID, String time, String imgUrl, String title, String titleLower,

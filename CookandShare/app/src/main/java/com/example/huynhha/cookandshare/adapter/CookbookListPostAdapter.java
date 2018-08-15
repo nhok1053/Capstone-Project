@@ -58,7 +58,7 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
         Picasso.get().load(post.getUrlImage()).fit().centerCrop().into(holder.img);
         holder.title.setText(post.getTitle());
         holder.createBy.setText(post.getUserName());
-        holder.rb.setNumStars(post.getNumberOfRate());
+        holder.rb.setNumStars(Integer.parseInt(post.getNumberOfRate()));
     }
 
     @Override
