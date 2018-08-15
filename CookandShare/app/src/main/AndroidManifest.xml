@@ -15,7 +15,6 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,8 +34,8 @@
             android:parentActivityName=".MainActivity" />
         <activity android:name=".GoMarketActivity" />
         <activity android:name=".FavouriteActivity" />
-        <activity android:name=".CookbookActivty" />
-        <activity android:name=".CookingActitvity"></activity>
+        <activity android:name=".CookingActitvity" />
+        <activity android:name=".CookBookActivity"></activity>
     </application>
 
 </manifest>

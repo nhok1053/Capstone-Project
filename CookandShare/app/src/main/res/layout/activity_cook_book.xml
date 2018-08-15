@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostRecipe">
+    tools:context=".CookBookActivity">
+
+
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/post_toolbar"
+        android:id="@+id/toolBarCookbook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
@@ -17,7 +19,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/btn_close"
+                android:id="@+id/btnCookbookClose"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/ic_add_close" />
@@ -25,15 +27,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/btn_close"
-                android:text="Tạo công thức"
+                android:layout_toRightOf="@+id/btnCookbookClose"
+                android:text="Cookbook"
                 android:textColor="#ffffff"
                 android:textSize="18dp" />
 
             <Button
-                android:id="@+id/btn_add_recipe"
+                android:id="@+id/btnEditDeleteCookbook"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
@@ -43,31 +44,21 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/post_toolbar"
-        tools:ignore="UnknownId">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolBarCookbook">
 
-        <com.marlonmafra.android.widget.SegmentedTab
-            android:id="@+id/segmented_post_recipe"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCookbook"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            app:tabBackground="@drawable/border_tab_layout"
-            app:tabSelectedColor="@android:color/white"
-            app:tabTextColor="@color/colorPrimary"
-            app:tabUnselectedColor="@android:color/white" />
+            android:layout_height="wrap_content">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_post_recipe"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/segmented_post_recipe" />
-    </RelativeLayout>
-
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/fl_cookbook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 </RelativeLayout>
-

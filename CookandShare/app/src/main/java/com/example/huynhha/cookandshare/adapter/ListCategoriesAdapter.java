@@ -31,7 +31,7 @@ public class ListCategoriesAdapter extends RecyclerView.Adapter<ListCategoriesAd
 
         public CategoryViewHolder(View itemView) {
             super(itemView);
-            cardView=itemView.findViewById(R.id.cvCategory);
+            cardView = itemView.findViewById(R.id.cvCategory);
             imgCategory = itemView.findViewById(R.id.cvCategoryCategoryImg);
             nameCategory = itemView.findViewById(R.id.cvCategoryCategoryName);
         }
@@ -41,8 +41,8 @@ public class ListCategoriesAdapter extends RecyclerView.Adapter<ListCategoriesAd
 
     private List<Category> categories = new ArrayList<>();
 
-    public ListCategoriesAdapter(Context ctx,List<Category> categories) {
-        this.ctx=ctx;
+    public ListCategoriesAdapter(Context ctx, List<Category> categories) {
+        this.ctx = ctx;
         this.categories = categories;
     }
 
@@ -68,7 +68,7 @@ public class ListCategoriesAdapter extends RecyclerView.Adapter<ListCategoriesAd
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ctx, PostActivity.class);
-                intent.putStringArrayListExtra("categorypost",category.getPostCategory());
+                intent.putStringArrayListExtra("categorypost", category.getPostCategory());
                 ctx.startActivity(intent);
             }
         });
