@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.EditMaterialFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+ <android.support.v4.widget.NestedScrollView
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     >
+     <android.support.constraint.ConstraintLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+         <RelativeLayout
+             android:id="@+id/relativeLayout"
+             android:layout_width="match_parent"
+             android:layout_height="250dp"
+             android:layout_marginEnd="8dp"
+             android:layout_marginStart="8dp"
+             android:layout_marginTop="8dp"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent">
+             <ImageView
+                 android:id="@+id/img_edit_recipe"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:background="@drawable/image_border" />
+         </RelativeLayout>
+
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="1137dp"
+             android:layout_marginEnd="8dp"
+             android:layout_marginStart="8dp"
+             android:layout_marginTop="8dp"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintHorizontal_bias="0.0"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+             <EditText
+
+                 android:id="@+id/edt_edit_recipe_name"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentStart="true"
+                 android:layout_alignParentTop="true"
+                 android:background="@android:color/transparent"
+                 android:hint="Tên món ăn "
+                 android:paddingLeft="5dp"
+                 android:textStyle="bold" />
+
+             <View
+                 android:id="@+id/line_below"
+                 android:layout_width="match_parent"
+                 android:layout_height="1dp"
+                 android:layout_below="@+id/edt_edit_recipe_name"
+                 android:layout_marginTop="8dp"
+                 android:background="#9E9E9E" />
+
+             <EditText
+                 android:id="@+id/edt__edit_recipe_description"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@+id/line_below"
+                 android:layout_marginTop="5dp"
+                 android:background="@android:color/transparent"
+                 android:hint="Mô tả ngắn gọn về món ăn"
+                 android:minLines="5"
+                 android:paddingLeft="5dp" />
+
+             <LinearLayout
+                 android:id="@+id/difficult_title"
+                 android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:layout_below="@id/category_content"
+                 android:background="#E0E0E0">
+
+                 <ImageView
+                     android:layout_width="50dp"
+                     android:layout_height="50dp"
+                     android:src="@drawable/duration" />
+
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_centerInParent="true"
+                     android:layout_gravity="center_vertical"
+                     android:paddingLeft="15dp"
+                     android:text="ĐỘ KHÓ VÀ THỜI GIAN THỰC HIỆN" />
+             </LinearLayout>
+
+             <RelativeLayout
+                 android:id="@+id/rl_difficult"
+                 android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:layout_below="@id/difficult_title">
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:paddingLeft="15dp"
+                     android:text="Độ khó "
+                     android:textAlignment="textStart"
+                     android:textColor="#000000"
+                     android:textSize="18dp" />
+
+                 <TextView
+                     android:id="@+id/tv_difficult"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentEnd="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginRight="10dp"
+                     android:text="---"
+                     android:textColor="#FF6D00"
+                     android:textSize="18dp" />
+             </RelativeLayout>
+
+             <RelativeLayout
+                 android:id="@+id/rl_time"
+                 android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:layout_below="@id/rl_difficult">
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:paddingLeft="15dp"
+                     android:text="Thời gian thực hiện "
+                     android:textAlignment="textStart"
+                     android:textColor="#000000"
+                     android:textSize="18dp" />
+
+                 <TextView
+                     android:id="@+id/tv_time_cook"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentEnd="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginRight="10dp"
+                     android:text="0p"
+                     android:textColor="#FF6D00"
+                     android:textSize="18dp" />
+             </RelativeLayout>
+
+             <RelativeLayout
+                 android:id="@+id/rl_number_people"
+                 android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:layout_below="@id/rl_time">
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:paddingLeft="15dp"
+                     android:text="Số người dùng"
+                     android:textAlignment="textStart"
+                     android:textColor="#000000"
+                     android:textSize="18dp" />
+
+                 <Spinner
+                     android:id="@+id/spinner_people"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentRight="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginRight="10dp">
+
+                 </Spinner>
+             </RelativeLayout>
+
+             <LinearLayout
+                 android:id="@+id/material_title"
+                 android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:layout_below="@id/rl_number_people"
+                 android:background="#E0E0E0">
+
+                 <ImageView
+                     android:layout_width="50dp"
+                     android:layout_height="50dp"
+                     android:src="@drawable/material" />
+
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_centerInParent="true"
+                     android:layout_gravity="center_vertical"
+                     android:paddingLeft="15dp"
+                     android:text="NGUYÊN LIỆU" />
+             </LinearLayout>
+
+             <RelativeLayout
+                 android:id="@+id/rl_material_name"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@id/material_title">
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:paddingLeft="15dp"
+                     android:text="Tên nguyên liệu "
+                     android:textAlignment="textStart"
+                     android:textColor="#000000"
+                     android:textSize="18dp" />
+
+                 <EditText
+                     android:id="@+id/edt_name_of_material"
+                     android:layout_width="250dp"
+                     android:layout_height="50dp"
+                     android:layout_alignParentRight="true"
+                     android:layout_marginRight="10dp"
+                     android:background="@android:color/transparent"
+                     android:hint="trứng gà"
+                     android:textAlignment="center" />
+             </RelativeLayout>
+
+             <RelativeLayout
+                 android:id="@+id/rl_weight"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@id/rl_material_name">
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:paddingLeft="15dp"
+                     android:text="Khối lượng"
+                     android:textAlignment="textStart"
+                     android:textColor="#000000"
+                     android:textSize="18dp" />
+
+                 <EditText
+                     android:id="@+id/edt_quatity"
+                     android:layout_width="250dp"
+                     android:layout_height="50dp"
+                     android:layout_alignParentRight="true"
+                     android:layout_marginRight="10dp"
+                     android:background="@android:color/transparent"
+                     android:hint="100"
+                     android:inputType="number"
+                     android:textAlignment="center" />
+             </RelativeLayout>
+
+             <RelativeLayout
+                 android:id="@+id/rl_weight_type"
+                 android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:layout_below="@id/rl_weight">
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerVertical="true"
+                     android:paddingLeft="15dp"
+                     android:text="Đơn vị"
+                     android:textAlignment="textStart"
+                     android:textColor="#000000"
+                     android:textSize="18dp" />
+
+                 <Spinner
+                     android:id="@+id/material_quantity_type"
+                     android:layout_width="100dp"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentRight="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginRight="10dp"
+                     android:entries="@array/quatity"
+                     tools:listitem="@layout/support_simple_spinner_dropdown_item">
+
+                 </Spinner>
+             </RelativeLayout>
+
+             <Button
+                 android:id="@+id/btn_add_material"
+                 android:layout_width="300dp"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@id/rl_weight_type"
+                 android:layout_centerInParent="true"
+                 android:layout_marginBottom="5dp"
+                 android:layout_marginTop="5dp"
+                 android:background="#64DD17"
+                 android:text="Thêm nguyên liệu"
+                 android:textColor="#ffffff" />
+
+             <android.support.v7.widget.RecyclerView
+                 android:id="@+id/rc_material"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@+id/btn_add_material"> 
+             </android.support.v7.widget.RecyclerView>
+
+             <LinearLayout
+                 android:id="@+id/category_title"
+                 android:layout_width="match_parent"
+                 android:layout_height="50dp"
+                 android:layout_below="@id/edt__edit_recipe_description"
+                 android:background="#E0E0E0">
+
+                 <ImageView
+                     android:layout_width="50dp"
+                     android:layout_height="50dp"
+                     android:src="@drawable/category_type" />
+
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_centerInParent="true"
+                     android:layout_gravity="center_vertical"
+                     android:paddingLeft="15dp"
+                     android:text="THỂ LOẠI" />
+             </LinearLayout>
+
+             <LinearLayout
+                 android:id="@+id/category_content"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@id/category_title"
+                 android:orientation="vertical">
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="50dp"
+                     android:layout_alignParentStart="true"
+                     android:layout_alignParentTop="true">
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_breakfast"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="10dp"
+                         android:text="Bữa sáng" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_lunch"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Bữa trưa" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_dinner"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Bữa tối" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="50dp"
+                     android:layout_alignParentStart="true"
+                     android:layout_alignParentTop="true">
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_fast_food"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="10dp"
+                         android:text="Thức ăn nhanh" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_vegetable"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Rau, quả..." />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_drink"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Đồ uống" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="50dp"
+                     android:layout_alignParentStart="true"
+                     android:layout_alignParentTop="true">
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_salad"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="10dp"
+                         android:text="Salad" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_sauce"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Nước xốt" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_cookie"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Bánh quy" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="50dp"
+                     android:layout_alignParentStart="true"
+                     android:layout_alignParentTop="true">
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_healthy"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="10dp"
+                         android:text="Sức khỏe" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_noodle"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Mỳ, bún, phở..." />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_hotpot"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Lẩu" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="50dp"
+                     android:layout_alignParentStart="true"
+                     android:layout_alignParentTop="true">
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_dessert"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="10dp"
+                         android:text="Tráng miệng" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_soup"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Súp" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_for_kid"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Dành cho trẻ em" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="50dp"
+                     android:layout_alignParentStart="true"
+                     android:layout_alignParentTop="true">
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_for_gym"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="10dp"
+                         android:text="Dành cho Gymer" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_diet"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="Ăn kiêng" />
+
+                     <CheckBox
+                         android:id="@+id/cb_edit_fast_and_easy"
+                         android:layout_width="100dp"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:layout_marginLeft="20dp"
+                         android:text="@string/fast_easy" />
+                 </LinearLayout>
+             </LinearLayout>
+         </RelativeLayout>
+     </android.support.constraint.ConstraintLayout>
+ </android.support.v4.widget.NestedScrollView>
+
+</FrameLayout>

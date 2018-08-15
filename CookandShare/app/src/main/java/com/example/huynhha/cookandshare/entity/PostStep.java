@@ -21,7 +21,7 @@ public class PostStep {
         this.temp = temp;
     }
 
-    public PostStep(String uri, String imgURL, String numberOfStep, String description, String tips, String secret_material, String temp) {
+    public PostStep(String uri, String imgURL, String numberOfStep, String description, String tips, String secret_material, String temp, String time_duration) {
         this.uri = uri;
         this.imgURL = imgURL;
         this.numberOfStep = numberOfStep;
@@ -29,6 +29,7 @@ public class PostStep {
         this.tips = tips;
         this.secret_material = secret_material;
         this.temp = temp;
+        this.time_duration = time_duration;
 
     }
 

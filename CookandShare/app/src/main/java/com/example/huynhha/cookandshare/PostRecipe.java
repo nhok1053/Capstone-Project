@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.example.huynhha.cookandshare.adapter.PagerAdapter;
 import com.example.huynhha.cookandshare.adapter.PostRecipeTabLayoutAdapter;
 import com.example.huynhha.cookandshare.adapter.PostStepAdapter;
 import com.example.huynhha.cookandshare.entity.Post;
@@ -37,13 +40,16 @@ import com.marlonmafra.android.widget.SegmentedTab;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PostRecipe extends AppCompatActivity {
-    SegmentedTab segmentedTab;
+
     ViewPager viewPager;
     Button btn_close_activity;
     Button btn_finish;
@@ -56,16 +62,18 @@ public class PostRecipe extends AppCompatActivity {
     final Post post = new Post();
     private int count = 0;
     private ProgressDialog progressDialog;
+    private TabLayout tabLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         progressDialog =new ProgressDialog(this);
         setContentView(R.layout.activity_post_recipe);
-        segmentedTab = findViewById(R.id.segmented_post_recipe);
         viewPager = findViewById(R.id.view_post_recipe);
         btn_close_activity = findViewById(R.id.btn_close);
         btn_finish = findViewById(R.id.btn_add_recipe);
+        tabLayout = findViewById(R.id.post_recipe_tab_layout);
         storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().hide();
         setTabLayout();
@@ -77,11 +85,11 @@ public class PostRecipe extends AppCompatActivity {
     private void setTabLayout() {
         postRecipeStepFragment = new PostRecipeStepFragment();
         postRecipeMaterialFragment = new PostRecipeMaterialFragment();
-        PostRecipeTabLayoutAdapter postRecipeTabLayoutAdapter = new PostRecipeTabLayoutAdapter(getSupportFragmentManager());
-        postRecipeTabLayoutAdapter.addFragment(postRecipeMaterialFragment, "1. Materials");
-        postRecipeTabLayoutAdapter.addFragment(postRecipeStepFragment, "2. Step");
-        viewPager.setAdapter(postRecipeTabLayoutAdapter);
-        segmentedTab.setupWithViewPager(viewPager);
+        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        pagerAdapter.addFragment(postRecipeMaterialFragment, "1. Nguyên liệu");
+        pagerAdapter.addFragment(postRecipeStepFragment, "2. Bước thực hiện");
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -142,6 +150,7 @@ public class PostRecipe extends AppCompatActivity {
 
     private void startPushing(String postID) {
         progressDialog.setTitle("Uploading...");
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
         pushRecipeImageToFireStore(postRecipeMaterialFragment.getImageUri(), postID);
     }
@@ -182,7 +191,7 @@ public class PostRecipe extends AppCompatActivity {
                         count++;
                         if (count < (postSteps.size())) {
                             pushStepImageToFireStorage(postId);
-                            System.out.println("Count"+count);
+                            System.out.println("Count step : "+count);
                         }
                         if(count == postSteps.size()){
                             System.out.println("Count"+count);
@@ -203,6 +212,11 @@ public class PostRecipe extends AppCompatActivity {
                             }catch (Exception e){
                                 System.out.println(e);
                             }
+                            DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+                            final String date = df.format(Calendar.getInstance().getTime());
+                            post.setPostTime(date.toString());
+                            post.setNumberOfRate("3");
+                            post.setDifficult("Dễ");
                             post.setPostSteps(postSteps);
                             loadData(post);
                         }

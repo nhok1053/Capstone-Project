@@ -73,7 +73,7 @@ public class SettingFragment extends Fragment {
 
     public void removeFragment(Fragment fragment) {
         android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right);
         fragmentTransaction.remove(fragment);
         fragmentTransaction.commit();
 
@@ -100,7 +100,7 @@ public class SettingFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 firebaseAuth.signOut();
-                                ((MainActivity) getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, new LoginFragment()).addToBackStack(null).commit();
+                                ((MainActivity) getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, new LoginFragment()).setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right).addToBackStack(null).commit();
                                 removeFragment(settingFragment);
                             }
                         }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -130,7 +130,7 @@ public class SettingFragment extends Fragment {
     }
 
     public void aboutUsClick() {
-        android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right);
         AboutUsFragment auf = new AboutUsFragment();
         ft.replace(R.id.fl_setting, auf);
         ft.addToBackStack(null);

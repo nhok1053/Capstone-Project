@@ -10,7 +10,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:elevation="5dp">
+        android:elevation="10dp">
 
         <View
             android:layout_width="match_parent"

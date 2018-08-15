@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment{
                             Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment,userName);
                             posts.add(post);
                         }
-                        postAdapter = new TopPostAdapter(posts,getContext());
+                        postAdapter = new TopPostAdapter(posts,getContext(),rvPost);
                         postAdapter.setOnAdapterClick(new TopPostAdapter.OnAdapterClick() {
                             @Override
                             public void OnCommentClicked(String postId,String userID) {
