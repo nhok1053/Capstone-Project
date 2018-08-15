@@ -68,7 +68,7 @@ public class PostRecipe extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        progressDialog =new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         setContentView(R.layout.activity_post_recipe);
         viewPager = findViewById(R.id.view_post_recipe);
         btn_close_activity = findViewById(R.id.btn_close);
@@ -77,7 +77,7 @@ public class PostRecipe extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().hide();
         setTabLayout();
-        String uuid = UUID.randomUUID().toString().replace("-","");
+        String uuid = UUID.randomUUID().toString().replace("-", "");
         setPostListener(uuid, uuid);
         closeActivity();
     }
@@ -192,9 +192,10 @@ public class PostRecipe extends AppCompatActivity {
                         if (count < (postSteps.size())) {
                             pushStepImageToFireStorage(postId);
                             System.out.println("Count step : "+count);
+
                         }
-                        if(count == postSteps.size()){
-                            System.out.println("Count"+count);
+                        if (count == postSteps.size()) {
+                            System.out.println("Count" + count);
                             post.setPostID(postId);
                             post.setTitle(postRecipeMaterialFragment.getRecipeTitle());
                             post.setDescription(postRecipeMaterialFragment.getDescription());
@@ -204,12 +205,12 @@ public class PostRecipe extends AppCompatActivity {
                             post.setComment(0);
                             post.setLike(0);
                             post.setNumberOfPeople("0");
-                            try{
-                                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+                            try {
+                                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                 post.setUserID(currentFirebaseUser.getUid());
                                 post.setUserName(currentFirebaseUser.getDisplayName());
                                 post.setUserImgUrl(currentFirebaseUser.getPhotoUrl().toString());
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 System.out.println(e);
                             }
                             DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");

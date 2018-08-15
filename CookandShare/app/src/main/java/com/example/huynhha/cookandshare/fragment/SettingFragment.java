@@ -119,7 +119,7 @@ public class SettingFragment extends Fragment {
                 + "\n" + "Product: " + android.os.Build.PRODUCT;
         Intent intent = new Intent(Intent.ACTION_SEND);
         String[] recipientList = new String[1];
-        recipientList[0] = "hungltse04132@fpt.edu.vn";
+        recipientList[0] = "cooknsharefu@gmail.com";
 //        intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
         intent.putExtra(Intent.EXTRA_EMAIL, recipientList);
         intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback Cook And Share");

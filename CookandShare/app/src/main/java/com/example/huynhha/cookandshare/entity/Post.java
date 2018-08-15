@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
-    
     private String numberOfRate;
     private String userName;
     private String numberOfPeople;
@@ -24,6 +23,14 @@ public class Post {
     private List<Material> materials;
     private List<PostStep> postSteps;
 
+    public Post(String numberOfRate, String userName, String postID, String title, String urlImage) {
+        this.numberOfRate = numberOfRate;
+        this.userName = userName;
+        this.postID = postID;
+        this.title = title;
+        this.urlImage = urlImage;
+    }
+
     public Post(String postID, String userID, String time, String imgUrl, String title, String description, String userImgUrl, int like, int comment, String userName) {
         this.postID = postID;
         this.userID = userID;
@@ -34,7 +41,7 @@ public class Post {
         this.userImgUrl = userImgUrl;
         this.like = like;
         this.comment = comment;
-        this.userName =userName;
+        this.userName = userName;
     }
 
     public String getNumberOfRate() {
@@ -44,6 +51,7 @@ public class Post {
     public void setNumberOfRate(String numberOfRate) {
         this.numberOfRate = numberOfRate;
     }
+
     public String getDifficult() {
         return difficult;
     }
@@ -51,6 +59,7 @@ public class Post {
     public void setDifficult(String difficult) {
         this.difficult = difficult;
     }
+
 
     public Post(String difficult,String numberOfRate, String userName, String postTime, String numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
         this.numberOfRate = numberOfRate;
@@ -95,14 +104,6 @@ public class Post {
         this.like = like;
         this.comment = comment;
         this.userImgUrl = userImgUrl;
-    }
-
-    public Post(String userName, String postID, String userID, String title, String urlImage) {
-        this.userName = userName;
-        this.postID = postID;
-        this.userID = userID;
-        this.title = title;
-        this.urlImage = urlImage;
     }
 
     public Post(String postID, String userID, String time, String imgUrl, String title, String titleLower,
@@ -163,7 +164,9 @@ public class Post {
         return time;
     }
 
-    public String getTitleLower(){ return titleLower; }
+    public String getTitleLower() {
+        return titleLower;
+    }
 
     public void setTitleLower(String titleLower) {
         this.titleLower = titleLower;
@@ -220,7 +223,7 @@ public class Post {
     public void setComment(int comment) {
         this.comment = comment;
     }
-    
+
 
     public List<Material> getMaterials() {
         return materials;
@@ -245,6 +248,7 @@ public class Post {
     public void setPostTime(String postTime) {
         this.postTime = postTime;
     }
+
     public String getNumberOfPeople() {
         return numberOfPeople;
     }
@@ -252,6 +256,7 @@ public class Post {
     public void setNumberOfPeople(String numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
     }
+
     public String getUserName() {
         return userName;
     }

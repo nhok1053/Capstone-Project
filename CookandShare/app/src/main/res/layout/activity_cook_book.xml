@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CookBookActivity">
+
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBarCookbook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btnCookbookClose"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_add_close" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/btnCookbookClose"
+                android:text="Cookbook"
+                android:textColor="#ffffff"
+                android:textSize="18dp" />
+
+            <Button
+                android:id="@+id/btnEditDeleteCookbook"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_add_check" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolBarCookbook">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCookbook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/fl_cookbook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+</RelativeLayout>

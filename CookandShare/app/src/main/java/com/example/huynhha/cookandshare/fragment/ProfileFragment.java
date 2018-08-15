@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.huynhha.cookandshare.CookBookActivity;
 import com.example.huynhha.cookandshare.FavouriteActivity;
 import com.example.huynhha.cookandshare.GoMarketActivity;
 import com.example.huynhha.cookandshare.MainActivity;
@@ -116,6 +117,7 @@ public class ProfileFragment extends Fragment {
         clickFowller(txtNumberFollower);
         settingClick();
         setBtnFavorite();
+        cookbookClick();
         return v;
     }
 
@@ -221,6 +223,16 @@ public class ProfileFragment extends Fragment {
                                            }
                                        }
         );
+    }
+
+    public void cookbookClick() {
+        btnCookbook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CookBookActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void userInfo() {
