@@ -88,24 +88,31 @@ public class NotificationFragment extends Fragment {
 
                         System.out.println("Vao1");
                         List<Map<String, Object>> list1 = (List<Map<String, Object>>) document.get("notification");
-                        for (int i = 0; i < list1.size(); i++) {
-                            NotificationDetails notificationDetails = new NotificationDetails();
-                            notificationDetails.setContent(list1.get(i).get("content").toString());
-                            notificationDetails.setTime(list1.get(i).get("time").toString());
-                            notificationDetails.setType(list1.get(i).get("type").toString());
-                            notificationDetails.setUserID(list1.get(i).get("userID").toString());
-                            notificationDetails.setPostID(list1.get(i).get("postID").toString());
-                            notificationDetails.setUserUrlImage(list1.get(i).get("userUrlImage").toString());
-                            list.add(notificationDetails);
-                            count++;
+
+                        if(list1!=null){
+                            for (int i = 0; i < list1.size(); i++) {
+                                NotificationDetails notificationDetails = new NotificationDetails();
+                                notificationDetails.setContent(list1.get(i).get("content").toString());
+                                notificationDetails.setTime(list1.get(i).get("time").toString());
+                                notificationDetails.setType(list1.get(i).get("type").toString());
+                                notificationDetails.setUserID(list1.get(i).get("userID").toString());
+                                notificationDetails.setPostID(list1.get(i).get("postID").toString());
+                                notificationDetails.setUserUrlImage(list1.get(i).get("userUrlImage").toString());
+                                list.add(notificationDetails);
+                                count++;
+                            }
+                            System.out.println("AR: "+count);
+                            if (count == list1.size()) {
+                                System.out.println("Vao2");
+                                notificationAdapter = new NotificationAdapter(list, getContext());
+                                rcNoti.setAdapter(notificationAdapter);
+                                count = 0;
+                            }
+
+                        }else {
+                            System.out.println("Null roiiii");
                         }
-                        System.out.println("AR: "+count);
-                        if (count == list1.size()) {
-                            System.out.println("Vao2");
-                            notificationAdapter = new NotificationAdapter(list, getContext());
-                            rcNoti.setAdapter(notificationAdapter);
-                            count = 0;
-                        }
+
 
 
                     }

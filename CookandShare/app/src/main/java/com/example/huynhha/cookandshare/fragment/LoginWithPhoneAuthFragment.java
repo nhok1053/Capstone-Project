@@ -1,6 +1,7 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -15,17 +16,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -50,6 +61,10 @@ public class LoginWithPhoneAuthFragment extends Fragment {
     private PhoneAuthProvider.ForceResendingToken resendToken;
     private PhoneAuthProvider mPhoneAuthProvider;
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference userRef = db.collection("User");
+    private CollectionReference followRef = db.collection("Follow");
+    private CollectionReference notiRef = db.collection("Notification");
 
 
     public LoginWithPhoneAuthFragment() {
@@ -86,7 +101,6 @@ public class LoginWithPhoneAuthFragment extends Fragment {
                         "" + millisUntilFinished / 1000 + "s");
                 //here you can have your logic to set text to edittext
             }
-
             public void onFinish() {
                 txtTimeRemaning.setText("0s");
             }
@@ -125,8 +139,42 @@ public class LoginWithPhoneAuthFragment extends Fragment {
                 final Bundle bundle = new Bundle();
                 bundle.putString("phoneNumber",phoneNumber);
                 loginWithPhoneAuth.setArguments(bundle);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login,new UpdateProfileFragment()).addToBackStack(null);
-                transaction.commit();
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                Map<String, Object> data = new HashMap<>();
+                data.put("userID", user.getUid().toString());
+                Toast.makeText(getContext(), "Login Successfull", Toast.LENGTH_LONG);
+                notiRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                    }
+                });
+                followRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                    }
+                });
+                userRef.whereEqualTo("userID", user.getUid().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        System.out.println("Intent2");
+                        if (queryDocumentSnapshots != null && queryDocumentSnapshots.size() != 0) {
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login, new UpdateProfileFragment()).addToBackStack(null);
+                            transaction.commit();
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
             }
 
             @Override

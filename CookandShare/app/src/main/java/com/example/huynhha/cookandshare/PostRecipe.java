@@ -24,8 +24,10 @@ import com.example.huynhha.cookandshare.entity.PostStep;
 import com.example.huynhha.cookandshare.fragment.PostRecipeMaterialFragment;
 import com.example.huynhha.cookandshare.fragment.PostRecipeStepFragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -43,7 +45,9 @@ import org.greenrobot.eventbus.Subscribe;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -59,11 +63,15 @@ public class PostRecipe extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
     private CollectionReference postRef = db.collection("Post");
+    private CollectionReference reportRef = db.collection("Report");
+    private CollectionReference userRef = db.collection("User");
+    private CollectionReference commentRef = db.collection("Comment");
+
     final Post post = new Post();
     private int count = 0;
     private ProgressDialog progressDialog;
     private TabLayout tabLayout;
-
+private  String uuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +85,7 @@ public class PostRecipe extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().hide();
         setTabLayout();
-        String uuid = UUID.randomUUID().toString().replace("-", "");
+        uuid = UUID.randomUUID().toString().replace("-", "");
         setPostListener(uuid, uuid);
         closeActivity();
     }
@@ -236,6 +244,22 @@ public class PostRecipe extends AppCompatActivity {
         postRef.add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("postID", uuid);
+                reportRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        System.out.println("Report add success!");
+                    }
+                });
+                commentRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        System.out.println("Comment add success!");
+
+                    }
+                });
+
                 Log.d("Posted", "onSuccess: ");
                 progressDialog.dismiss();
                 Toast.makeText(PostRecipe.this, "Post Recipe Success", Toast.LENGTH_SHORT).show();

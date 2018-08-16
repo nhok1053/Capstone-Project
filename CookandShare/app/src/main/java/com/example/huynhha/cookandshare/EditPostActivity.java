@@ -46,5 +46,4 @@ public class EditPostActivity extends AppCompatActivity {
         editTabLayout.getTabAt(1).setIcon(tabIcons[1]);
     }
 
-
 }
