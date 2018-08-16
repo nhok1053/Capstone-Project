@@ -43,7 +43,7 @@ public class PostRecipeStepFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_post_recipe_step, container, false);
         rc_postStep = view.findViewById(R.id.rc_post_step);
         btn_add_step = view.findViewById(R.id.btn_add_step);
-        postSteps.add(new PostStep("", "", "", "", "", "", "",""));
+        postSteps.add(new PostStep("", "",  "", "", "",""));
         importPostStep();
         addStep();
         return view;
@@ -64,7 +64,7 @@ public class PostRecipeStepFragment extends Fragment {
         btn_add_step.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postSteps.add(new PostStep("", "", "", "", "", "", "",""));
+                postSteps.add(new PostStep("", "",  "", "", "",""));
                 importPostStep();
             }
         });

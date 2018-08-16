@@ -8,8 +8,6 @@ public class PostStep {
     private String numberOfStep;
     private String description;
     private String time_duration;
-    private String tips;
-    private String secret_material;
     private String temp;
 
 
@@ -21,13 +19,12 @@ public class PostStep {
         this.temp = temp;
     }
 
-    public PostStep(String uri, String imgURL, String numberOfStep, String description, String tips, String secret_material, String temp, String time_duration) {
+    public PostStep(String uri, String imgURL, String numberOfStep, String description, String temp, String time_duration) {
         this.uri = uri;
         this.imgURL = imgURL;
         this.numberOfStep = numberOfStep;
         this.description = description;
-        this.tips = tips;
-        this.secret_material = secret_material;
+
         this.temp = temp;
         this.time_duration = time_duration;
 
@@ -76,19 +73,5 @@ public class PostStep {
         this.time_duration = time_duration;
     }
 
-    public String getTips() {
-        return tips;
-    }
 
-    public void setTips(String tips) {
-        this.tips = tips;
-    }
-
-    public String getSecret_material() {
-        return secret_material;
-    }
-
-    public void setSecret_material(String secret_material) {
-        this.secret_material = secret_material;
-    }
 }

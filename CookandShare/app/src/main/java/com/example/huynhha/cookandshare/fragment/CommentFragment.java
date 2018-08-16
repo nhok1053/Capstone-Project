@@ -132,7 +132,7 @@ public class CommentFragment extends Fragment {
                             System.out.println(e);
                         }
                         if (list1 == null) {
-                            Toast.makeText(getContext(), "Chưa có bình luận nào.", Toast.LENGTH_SHORT).show();
+                            System.out.println("Chưa có bình luận nào.");
                         } else {
                             for (int i = 0; i < list1.size(); i++) {
                                 Comment comment = new Comment();

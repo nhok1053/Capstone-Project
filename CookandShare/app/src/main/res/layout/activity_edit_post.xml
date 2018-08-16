@@ -29,10 +29,11 @@
                 android:layout_height="wrap_content"
                 android:textSize="18dp"/>
             <Button
+
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/btn_add_recipe"
+                android:id="@+id/btn_add_edit_recipe"
                 android:background="@drawable/ic_add_check"
                 android:layout_width="30dp"
                 android:layout_height="30dp" />

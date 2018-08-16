@@ -177,6 +177,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                 case R.id.editPost:
                                     System.out.println("AS: edit");
                                     Intent intent = new Intent(context, EditPostActivity.class);
+                                    intent.putExtra("postID",post.getPostID());
                                     context.startActivity(intent);
                                     return true;
                                 case R.id.deletePost:

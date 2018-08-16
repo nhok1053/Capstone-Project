@@ -158,7 +158,7 @@ public class PostRecipeMaterialFragment extends Fragment {
     public void importPostMaterial() {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rc_material.setLayoutManager(lln);
-        MaterialAdapter materialAdapter = new MaterialAdapter(materials);
+        MaterialAdapter materialAdapter = new MaterialAdapter(materials,0);
         rc_material.setAdapter(materialAdapter);
     }
 

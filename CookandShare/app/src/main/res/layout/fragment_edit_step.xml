@@ -18,7 +18,7 @@
         <Button
             android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
-            android:id="@+id/btn_add_step"
+            android:id="@+id/btn_add_edit_step"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/rc_edit_post_step"

@@ -17,10 +17,12 @@ import java.util.List;
 public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.MaterialViewHolder> {
 
     private List<Material> materials;
+    private int type = 12;
 
 
-    public MaterialAdapter(List<Material> materials) {
+    public MaterialAdapter(List<Material> materials, int type) {
         this.materials = materials;
+        this.type = type;
     }
 
     public class MaterialViewHolder extends RecyclerView.ViewHolder {
@@ -60,7 +62,11 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     public void onBindViewHolder(@NonNull MaterialViewHolder holder, int position) {
         Material material = materials.get(position);
         holder.cvMaterialTvMaterialName.setText(material.getMaterialName());
-        holder.getCvMaterialTvMaterialQuantity.setText(material.getQuantity() + material.getType());
+        if(type==0){
+            holder.getCvMaterialTvMaterialQuantity.setText(material.getQuantity()+" " + material.getType());
+        }else if(type == 1){
+            holder.getCvMaterialTvMaterialQuantity.setText(material.getQuantity());
+        }
     }
 
     @Override

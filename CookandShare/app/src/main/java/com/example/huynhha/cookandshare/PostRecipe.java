@@ -71,7 +71,7 @@ public class PostRecipe extends AppCompatActivity {
     private int count = 0;
     private ProgressDialog progressDialog;
     private TabLayout tabLayout;
-private  String uuid;
+    private String uuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +199,7 @@ private  String uuid;
                         count++;
                         if (count < (postSteps.size())) {
                             pushStepImageToFireStorage(postId);
-                            System.out.println("Count step : "+count);
+                            System.out.println("Count step : " + count);
 
                         }
                         if (count == postSteps.size()) {

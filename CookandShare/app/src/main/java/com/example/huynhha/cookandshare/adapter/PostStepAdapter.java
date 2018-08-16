@@ -25,6 +25,7 @@ import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.PostStep;
 import com.example.huynhha.cookandshare.fragment.PostRecipeStepFragment;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -64,6 +65,17 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
     @Override
     public void onBindViewHolder(@NonNull PostStepAdapter.PostStepViewHolder holder, final int position) {
         PostStep postStep = postSteps.get(position);
+        if(!postStep.getImgURL().equals("")){
+            Picasso.get().load(postStep.getImgURL().toString()).centerCrop().fit().into(holder.img_step);
+            holder.btn_add_image.setVisibility(View.INVISIBLE);
+
+        }
+        if(!postStep.getTemp().equals("")){
+            holder.edtTemp.setText(postStep.getTemp().toString());
+        }
+        if(!postStep.getTime_duration().equals("")){
+            holder.duration.setText(postStep.getTime_duration().toString());
+        }
         holder.txt_step.setText(""+ (position+1));
         holder.edt_description.setText(postStep.getDescription().toString());
         holder.btn_add_image.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +97,6 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             holder.img_step.setImageBitmap(bitmap);
             holder.edtTemp.setText(postStep.getTemp().toString());
             holder.duration.setText(postStep.getTime_duration().toString());
@@ -93,6 +104,9 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         }
         System.out.println("Holder" + holder.edt_description.getText().toString());
 
+    }
+    public List<PostStep> getPostSteps(){
+        return postSteps;
     }
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
@@ -225,7 +239,6 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
     public interface OnPostSend{
         void onClick(List<PostStep> postStep);
     }
-    public List<PostStep> getPostSteps(){
-        return postSteps;
-    }
+
+
 }
