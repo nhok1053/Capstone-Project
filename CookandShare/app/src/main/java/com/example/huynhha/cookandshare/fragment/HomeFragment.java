@@ -33,6 +33,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -95,7 +96,7 @@ public class HomeFragment extends Fragment{
         rvPost.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rvPost.setLayoutManager(lln);
-        MainActivity.db.collection("Post")
+        MainActivity.db.collection("Post").orderBy("postTime", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -114,7 +115,7 @@ public class HomeFragment extends Fragment{
                             Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment,userName);
                             posts.add(post);
                         }
-                        postAdapter = new TopPostAdapter(posts,getContext());
+                        postAdapter = new TopPostAdapter(posts,getContext(),rvPost);
                         postAdapter.setOnAdapterClick(new TopPostAdapter.OnAdapterClick() {
                             @Override
                             public void OnCommentClicked(String postId,String userID) {

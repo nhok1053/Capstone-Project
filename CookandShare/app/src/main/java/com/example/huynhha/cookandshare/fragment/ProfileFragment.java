@@ -125,7 +125,7 @@ public class ProfileFragment extends Fragment {
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right);
                 SettingFragment sf = new SettingFragment();
                 ft.replace(R.id.fl_main, sf);
                 ft.addToBackStack(null);

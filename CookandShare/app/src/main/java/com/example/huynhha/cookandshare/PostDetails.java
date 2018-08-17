@@ -262,7 +262,7 @@ public class PostDetails extends AppCompatActivity {
                         post.setNumberOfPeople(document.get("numberOfPeople").toString());
                         post.setDescription(document.get("description").toString());
                         post.setDifficult(document.get("difficult").toString());
-                        post.setNumberOfRate(document.get("rate").toString());
+                        post.setNumberOfRate(document.get("numberOfRate").toString());
                         list = new ArrayList<>();
                         List<Map<String, Object>> list1 = (List<Map<String, Object>>) document.get("materials");
                         for (int i = 0; i < list1.size(); i++) {
@@ -382,7 +382,7 @@ public class PostDetails extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                         documentID = documentSnapshot.getId();
-                                        String strRate = documentSnapshot.getString("rate");
+                                        String strRate = documentSnapshot.getString("numberOfRate");
                                         System.out.println("RATE: " + strRate);
                                         System.out.println("Kaka: " + rateBar.getRating());
                                         addRate(strRate, rateBar.getRating());

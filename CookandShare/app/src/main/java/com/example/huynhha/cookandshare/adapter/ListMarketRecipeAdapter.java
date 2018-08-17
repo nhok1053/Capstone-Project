@@ -128,7 +128,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
                         public boolean onMenuItemClick(MenuItem item) {
                             // System.out.println("Adapter position:"+getAdapterPosition());
                             // System.out.println("IDD: "+posts.get(getAdapterPosition()).getPostID().toString());
-                            deleteDBOffline(Integer.parseInt(posts.get(getAdapterPosition()).getPostID().toString()));
+                            deleteDBOffline(Integer.parseInt(posts.get(getAdapterPosition()).getDescription().toString()));
                             posts.remove(getAdapterPosition());
                             notifyItemRemoved(getAdapterPosition());
                             Toast.makeText(context, "Xoá khỏi đi chợ thành công!", Toast.LENGTH_SHORT).show();

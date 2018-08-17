@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.EditStepFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rc_edit_post_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:layout_marginTop="8dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btn_add_edit_step"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rc_edit_post_step"
+            android:background="#64DD17"
+            android:text="Thêm bước thực hiện"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

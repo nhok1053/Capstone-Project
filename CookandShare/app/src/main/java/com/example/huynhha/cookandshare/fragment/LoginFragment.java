@@ -32,8 +32,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +62,8 @@ public class LoginFragment extends Fragment {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("User");
+    private CollectionReference followRef = db.collection("Follow");
+    private CollectionReference notiRef = db.collection("Notification");
 
     public LoginFragment() {
         // Required empty public constructor
@@ -145,7 +151,23 @@ public class LoginFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("userID", user.getUid().toString());
+
+
                             Toast.makeText(getContext(), "Login Successfull", Toast.LENGTH_LONG);
+                            notiRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                }
+                            });
+                            followRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                }
+                            });
                             userRef.whereEqualTo("userID", user.getUid().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

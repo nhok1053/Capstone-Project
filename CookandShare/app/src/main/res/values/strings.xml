@@ -26,6 +26,7 @@
     <string name="material">Material: </string>
     <string name="minutes">minutes</string>
     <string name="start_button">START COOKING</string>
+
     <string-array name="quatity">
         <item>@string/kg</item>
         <item>@string/g</item>
