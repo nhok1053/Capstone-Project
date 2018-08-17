@@ -32,6 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
@@ -53,19 +54,19 @@ public class CookbookInfoFragment extends Fragment {
     @BindView(R.id.imgCookbookInfoUserImage)
     ImageView imgUserImage;
     @BindView(R.id.tvCookbookInfoUserName)
-    TextView userName;
+    TextView tvUserName;
     @BindView(R.id.tvCookbookInfoCookbookTitle)
-    TextView title;
+    TextView tvTitle;
     @BindView(R.id.tvCookbookInfoNumberPost)
-    TextView numberPost;
+    TextView tvNumberPost;
     @BindView(R.id.tvCookbookInfoCookbookDescription)
-    TextView descriptopn;
+    TextView tvDescriptopn;
     @BindView(R.id.rvCookbookInfoListPostCookbook)
     RecyclerView rv;
     @BindView(R.id.btnFragmentCookbookInfoMore)
     Button btnMore;
     Cookbook cb;
-    private List<Map<String, Object>> list1;
+    private ArrayList<String> listpost;
     ArrayList<Post> posts = new ArrayList<>();
 
     public CookbookInfoFragment() {
@@ -87,7 +88,6 @@ public class CookbookInfoFragment extends Fragment {
                 cookbookID = "";
             }
         }
-        System.out.println(cookbookID + "HH");
         getInfoCookbook();
         clickMore();
         return v;
@@ -159,17 +159,57 @@ public class CookbookInfoFragment extends Fragment {
                     if (task.isSuccessful()) {
                         DocumentSnapshot documentSnapshot = task.getResult();
                         if (documentSnapshot.exists()) {
-                            list1 = (List<Map<String, Object>>) documentSnapshot.get("postlist");
-                            int numberpost = list1.size();
-                            String image = list1.get(0).get("postUrlImage").toString();
-                            userName.setText(documentSnapshot.get("userName").toString());
-                            title.setText(documentSnapshot.get("cookbookName").toString());
-                            descriptopn.setText(documentSnapshot.get("cookbookDescription").toString());
-                            cb = new Cookbook(documentSnapshot.getId().toString(), documentSnapshot.get("cookbookName").toString(), documentSnapshot.get("cookbookDescription").toString());
-                            Picasso.get().load(documentSnapshot.get("userUrlImage").toString()).transform(new RoundedTransformation()).fit().centerCrop().into(imgUserImage);
-                            numberPost.setText(numberpost + " công thức");
-                            Picasso.get().load(image).fit().centerCrop().into(imgMain);
-                            loadListPost(list1);
+                            listpost = (ArrayList<String>) documentSnapshot.get("postlist");
+                            int numberpost = listpost.size();
+                            final String[] image = new String[1];
+                            MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        QuerySnapshot querySnapshot = task.getResult();
+                                        if (task.getResult() != null) {
+                                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                                                image[0] = queryDocumentSnapshot.get("urlImage").toString();
+                                            }
+                                        }
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+                            final String[] userName = new String[1];
+                            final String[] userUrlImage = new String[1];
+                            MainActivity.db.collection("User").whereEqualTo("userID", documentSnapshot.get("userID")).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        QuerySnapshot querySnapshot = task.getResult();
+                                        if (task.getResult() != null) {
+                                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                                                userName[0] = queryDocumentSnapshot.get("firstName").toString();
+                                                userUrlImage[0] = queryDocumentSnapshot.get("imgUrl").toString();
+                                            }
+                                        }
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+
+                            tvUserName.setText(userName[0]);
+                            tvTitle.setText(documentSnapshot.get("cookbookName").toString());
+                            tvDescriptopn.setText(documentSnapshot.get("cookbookDescription").toString());
+                            tvNumberPost.setText(numberpost + "công thức");
+//                            cb = new Cookbook(documentSnapshot.getId().toString(), documentSnapshot.get("cookbookName").toString(), documentSnapshot.get("cookbookDescription").toString());
+                            Picasso.get().load(userUrlImage[0]).transform(new RoundedTransformation()).fit().centerCrop().into(imgUserImage);
+                            Picasso.get().load(image[0]).fit().centerCrop().into(imgMain);
+                            loadListPost(listpost);
                         } else {
                             System.out.println("Error");
                         }
@@ -189,18 +229,59 @@ public class CookbookInfoFragment extends Fragment {
         }
     }
 
-    private void loadListPost(List<Map<String, Object>> list1) {
+    private void loadListPost(ArrayList<String> list) {
         rv.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rv.setLayoutManager(lln);
-        for (int i = 0; i < list1.size(); i++) {
-            String postID = list1.get(i).get("postID").toString();
-            String postRate = list1.get(i).get("postRate").toString();
-            String postTitle = list1.get(i).get("postTitle").toString();
-            String postUrlImage = list1.get(i).get("postUrlImage").toString();
-            String userName = list1.get(i).get("userName").toString();
-            Post post = new Post(postRate, userName, postID, postTitle, postUrlImage);
-            posts.add(post);
+//        for (int i = 0; i < list1.size(); i++) {
+//            String postID = list1.get(i).get("postID").toString();
+//            String postRate = list1.get(i).get("postRate").toString();
+//            String postTitle = list1.get(i).get("postTitle").toString();
+//            String postUrlImage = list1.get(i).get("postUrlImage").toString();
+//            String userName = list1.get(i).get("userName").toString();
+//            Post post = new Post(postRate, userName, postID, postTitle, postUrlImage);
+//            posts.add(post);
+//        }
+        for (String lst : list) {
+            MainActivity.db.collection("Post").whereEqualTo("postID", lst).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                            String postID = queryDocumentSnapshot.get("postID").toString();
+                            String postRate = queryDocumentSnapshot.get("numberOfRate").toString();
+                            String postTitle = queryDocumentSnapshot.get("title").toString();
+                            String postUrlImage = queryDocumentSnapshot.get("urlImage").toString();
+                            String userID = queryDocumentSnapshot.get("userID").toString();
+                            final String[] userName = new String[1];
+                            MainActivity.db.collection("User").whereEqualTo("userID", userID).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        QuerySnapshot querySnapshot1 = task.getResult();
+                                        for (QueryDocumentSnapshot queryDocumentSnapshot1 : querySnapshot1) {
+                                            userName[0] = queryDocumentSnapshot1.get("firstName").toString();
+                                        }
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+                            Post post = new Post(postRate, userName[0], postID, postTitle, postUrlImage);
+                            posts.add(post);
+                        }
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            });
         }
         CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts);
         rv.setAdapter(cookbookListPostAdapter);

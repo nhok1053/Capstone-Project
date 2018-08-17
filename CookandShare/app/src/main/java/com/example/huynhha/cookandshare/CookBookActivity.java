@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -36,7 +37,9 @@ public class CookBookActivity extends AppCompatActivity {
     Button btnClose;
     private Context context;
     private ArrayList<Cookbook> cookbooks;
-    private List<Map<String, Object>> list1;
+    private ArrayList<String> listpost;
+    private ArrayList<String> listImg;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,10 @@ public class CookBookActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         context = this;
+        count = 0;
+        System.out.println("SSSS+"+count);
         cookbooks = new ArrayList<>();
+        listImg= new ArrayList<>();
         close();
         importListCookbook();
     }
@@ -65,18 +71,45 @@ public class CookBookActivity extends AppCompatActivity {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             if (task.getResult().size() > 0) {
                                 String id = documentSnapshot.getId().toString();
-                                list1 = (List<Map<String, Object>>) documentSnapshot.get("postlist");
-                                int numberpost = list1.size();
-                                String image = list1.get(0).get("postUrlImage").toString();
+                                listpost = (ArrayList<String>) documentSnapshot.get("postlist");
+                                int numberpost = listpost.size();
+                                final String[] image = new String[1];
                                 String cookbookName = documentSnapshot.get("cookbookName").toString();
-                                String userID = documentSnapshot.get("userID").toString();
-                                String userName = documentSnapshot.get("userName").toString();
-                                Cookbook cookbook = new Cookbook(id, cookbookName, image, numberpost + "", userID, userName);
+                                System.out.println(listpost.get(0).toString() + "AAAAAAAAA");
+                                MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            QuerySnapshot querySnapshot = task.getResult();
+                                            if (task.getResult() != null) {
+                                                for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                                                    image[0] = queryDocumentSnapshot.get("urlImage").toString();
+                                                    listImg.add(queryDocumentSnapshot.get("urlImage").toString());
+                                                    
+                                                }
+                                            }
+                                        }
+                                        count++;
+                                        System.out.println("AAAA+"+count);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                });
+                                System.out.println(image[0]+"ASSSS");
+                                Cookbook cookbook = new Cookbook(id, cookbookName, image[0], numberpost + "");
                                 cookbooks.add(cookbook);
+                                count++;
                             }
                         }
-                        listCookbookAdapter = new ListCookbookAdapter(context, cookbooks);
-                        rv.setAdapter(listCookbookAdapter);
+                        if (count == listpost.size()) {
+                            System.out.println();
+                            listCookbookAdapter = new ListCookbookAdapter(context, cookbooks);
+                            rv.setAdapter(listCookbookAdapter);
+                            count=0;
+                        }
                     }
 
                 }).addOnFailureListener(new OnFailureListener() {

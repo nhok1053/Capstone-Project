@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -22,6 +23,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.huynhha.cookandshare.adapter.AddCookbookAdapter;
+import com.example.huynhha.cookandshare.adapter.CategoryPostAdapter;
+import com.example.huynhha.cookandshare.entity.Cookbook;
 import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.example.huynhha.cookandshare.entity.User;
@@ -88,6 +92,7 @@ public class PostDetails extends AppCompatActivity {
     private CollectionReference userRef = db.collection("User");
     private String currentUser = FirebaseAuth.getInstance().getUid().toString();
     private User user;
+    private ArrayList<Cookbook> cookbooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +103,7 @@ public class PostDetails extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         postID = getIntent().getExtras().getString("postID");
         context = this;
+        cookbooks = new ArrayList<>();
         setUp();
         storageReference = FirebaseStorage.getInstance().getReference();
         getData(postID);
@@ -183,7 +189,36 @@ public class PostDetails extends AppCompatActivity {
                 dialog.setContentView(R.layout.dialog_add_to_cookbook);
                 Button btnAddCookbook = dialog.findViewById(R.id.btnAddNewCookbook);
                 Button btnCancel = dialog.findViewById(R.id.btnAddToCookbookCancel);
-                ListView lv = dialog.findViewById(R.id.lvAllCookbook);
+                final RecyclerView rv = dialog.findViewById(R.id.rvAddToCookbookAllCookbook);
+
+                rv.setNestedScrollingEnabled(false);
+                LinearLayoutManager lln = new LinearLayoutManager(context);
+                rv.setLayoutManager(lln);
+                cookbookRef.whereEqualTo("userID", currentUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                                String id = queryDocumentSnapshot.getId().toString();
+                                String name = queryDocumentSnapshot.get("cookbookName").toString();
+                                System.out.println(id + "|" + name);
+                                Cookbook cookbook = new Cookbook(id, name);
+                                cookbooks.add(cookbook);
+                            }
+                        }
+                        if (cookbooks.size() > 0) {
+                            AddCookbookAdapter addCookbookAdapter = new AddCookbookAdapter(context, cookbooks, post);
+                            rv.setAdapter(addCookbookAdapter);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                });
+
                 btnAddCookbook.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -195,6 +230,8 @@ public class PostDetails extends AppCompatActivity {
                         EditText des = dialog2.findViewById(R.id.etAddNewCookbookDes);
                         Button save = dialog2.findViewById(R.id.btnAddNewCookbookSave);
                         Button quit = dialog2.findViewById(R.id.btnAddNewCookbookCancel);
+
+
                         quit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

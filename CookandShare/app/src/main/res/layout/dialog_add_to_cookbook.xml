@@ -32,9 +32,10 @@
             android:textSize="11sp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lvAllCookbook"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvAddToCookbookAllCookbook"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"></ListView>
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>
