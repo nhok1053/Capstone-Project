@@ -138,7 +138,6 @@ public class CommentFragment extends Fragment {
                                 Comment comment = new Comment();
                                 comment.setUserID(list1.get(i).get("userID").toString());
                                 comment.setUserImgUrl(list1.get(i).get("userImgUrl").toString());
-                                comment.setUserName(list1.get(i).get("userName").toString());
                                 comment.setCommentContent(list1.get(i).get("commentContent").toString());
                                 list.add(comment);
                             }
@@ -174,7 +173,6 @@ public class CommentFragment extends Fragment {
                 list.add(comment1);
                 //list1.add((Map<String, Object>) comment1);
                 Map<String, Object> updateMap = new HashMap<>();
-                updateMap.put("userName", currentFirebaseUser.getDisplayName().toString());
                 updateMap.put("userImgUrl", currentFirebaseUser.getPhotoUrl().toString());
                 updateMap.put("userID", currentFirebaseUser.getUid().toString());
                 updateMap.put("commentContent", comment);
@@ -226,7 +224,6 @@ public class CommentFragment extends Fragment {
                                     notificationDetails.setPostID(listNoti.get(i).get("postID").toString());
                                     notificationDetails.setTime(listNoti.get(i).get("time").toString());
                                     notificationDetails.setContent(listNoti.get(i).get("content").toString());
-                                    notificationDetails.setUserName(listNoti.get(i).get("userName").toString());
                                     notificationDetails.setUserID(listNoti.get(i).get("userID").toString());
                                     listNotiDetails.add(notificationDetails);
                                     count++;
@@ -263,7 +260,6 @@ public class CommentFragment extends Fragment {
         updateNoti.put("type", 1);
         updateNoti.put("userID", firebaseAuth.getCurrentUser().getUid().toString());
         updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-        updateNoti.put("userName", firebaseAuth.getCurrentUser().getDisplayName().toString());
         updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString()+ " đã bình luận vào bài viết của bạn");
         if (listNoti == null) {
             listNoti = new ArrayList<>();

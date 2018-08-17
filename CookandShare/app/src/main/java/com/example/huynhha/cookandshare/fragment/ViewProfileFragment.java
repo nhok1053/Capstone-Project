@@ -547,7 +547,6 @@ public class ViewProfileFragment extends Fragment {
                                     notificationDetails.setPostID(listNoti.get(i).get("postID").toString());
                                     notificationDetails.setTime(listNoti.get(i).get("time").toString());
                                     notificationDetails.setContent(listNoti.get(i).get("content").toString());
-                                    notificationDetails.setUserName(listNoti.get(i).get("userName").toString());
                                     notificationDetails.setUserID(listNoti.get(i).get("userID").toString());
                                     listNotiDetails.add(notificationDetails);
                                     count++;
@@ -589,7 +588,6 @@ public class ViewProfileFragment extends Fragment {
         updateNoti.put("type", 0);
         updateNoti.put("userID", currentUser);
         updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-        updateNoti.put("userName", firebaseAuth.getCurrentUser().getDisplayName().toString());
         updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString() + " đã bắt đầu theo dõi bạn");
         System.out.println("Vao day luon roi");
         if (listNoti == null) {

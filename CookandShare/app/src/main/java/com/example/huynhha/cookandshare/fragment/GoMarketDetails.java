@@ -267,7 +267,6 @@ public class GoMarketDetails extends Fragment {
                                 notificationDetails.setPostID(listNoti.get(i).get("postID").toString());
                                 notificationDetails.setTime(listNoti.get(i).get("time").toString());
                                 notificationDetails.setContent(listNoti.get(i).get("content").toString());
-                                notificationDetails.setUserName(listNoti.get(i).get("userName").toString());
                                 notificationDetails.setUserID(listNoti.get(i).get("userID").toString());
                                 listNotiDetails.add(notificationDetails);
                                 count++;
@@ -306,7 +305,6 @@ public class GoMarketDetails extends Fragment {
         updateNoti.put("type", 3);
         updateNoti.put("userID", firebaseAuth.getCurrentUser().getUid().toString());
         updateNoti.put("userUrlImage", "https://firebasestorage.googleapis.com/v0/b/capstone-project-1d078.appspot.com/o/ic_laucher.png?alt=media&token=cc8d4d0d-afbd-4ca4-a832-865bed762a89");
-        updateNoti.put("userName", firebaseAuth.getCurrentUser().getDisplayName().toString());
         updateNoti.put("content", "Món ăn ' " + recipeName + " ' đã hoàn thành " + doneMaterials * 100 + "% nguyên liệu. Nấu ăn ngay nào!!!");
         if (listNoti == null) {
             listNoti = new ArrayList<>();

@@ -153,9 +153,9 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                 Intent intent = new Intent(context, PostDetails.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("postID", post.getPostID());
-
                 intent.putExtras(bundle);
                 context.startActivity(intent);
+
             }
         });
         holder.btnComment.setOnClickListener(new View.OnClickListener() {
@@ -177,8 +177,10 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                 case R.id.editPost:
                                     System.out.println("AS: edit");
                                     Intent intent = new Intent(context, EditPostActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.putExtra("postID",post.getPostID());
                                     context.startActivity(intent);
+                                    ((MainActivity)context).finish();
                                     return true;
                                 case R.id.deletePost:
                                     AlertDialog.Builder alert = new AlertDialog.Builder(context);

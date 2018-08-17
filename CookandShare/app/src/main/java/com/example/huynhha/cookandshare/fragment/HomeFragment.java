@@ -83,6 +83,7 @@ public class HomeFragment extends Fragment{
         importTopPost();
         importTopAttribute();
         importTopRecipes();
+
         return v;
     }
 

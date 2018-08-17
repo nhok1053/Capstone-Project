@@ -13,6 +13,12 @@ public class Comment {
         this.commentContent = commentContent;
     }
 
+    public Comment(String userID, String userImgUrl, String commentContent) {
+        this.userID = userID;
+        this.userImgUrl = userImgUrl;
+        this.commentContent = commentContent;
+    }
+
     public Comment() {
     }
 

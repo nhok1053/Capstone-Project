@@ -1,8 +1,12 @@
 package com.example.huynhha.cookandshare;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -46,6 +50,7 @@ public class EditPostActivity extends AppCompatActivity {
     private String documentID = "";
     private int count = 0;
     String postID ="";
+    private Context context;
 
 
     @Override
@@ -61,6 +66,7 @@ public class EditPostActivity extends AppCompatActivity {
         listStep = new ArrayList<>();
         listMaterials = new ArrayList<>();
         postSteps = new ArrayList<>();
+        context=this;
         postID = getIntent().getExtras().getString("postID");
         getDocumentID();
         getSupportActionBar().hide();
@@ -135,11 +141,34 @@ public class EditPostActivity extends AppCompatActivity {
         updateRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getListStep();
-                getMaterialRecipe();
-                Toast.makeText(EditPostActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
-                finish();
+            final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(context);
+                alert.setTitle("Xác nhận cập nhập bài viết");
+                alert.setMessage("Bạn đã hoàn thành tất cả rồi chứ?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getListStep();
+                        getMaterialRecipe();
+                        Toast.makeText(EditPostActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
+                        finish();
+                        finish();
+                        Intent intent = new Intent(context,MainActivity.class);
+                        startActivity(intent);
+                    }
+                }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(context,MainActivity.class);
+        startActivity(intent);
     }
 }

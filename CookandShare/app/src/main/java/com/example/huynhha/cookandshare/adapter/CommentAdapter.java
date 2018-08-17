@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
@@ -39,6 +41,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     private String postID = "";
     private CommentAdapter commentAdapter;
     private RecyclerView rcComment;
+    private CollectionReference userRef = FirebaseFirestore.getInstance().collection("User");
+    int count = 0;
 
 
     @NonNull
@@ -55,8 +59,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public void onBindViewHolder(@NonNull final CommentViewHolder holder, final int position) {
         final Comment comment = comments.get(position);
         holder.img_settings.setVisibility(View.INVISIBLE);
+        getUserName(comment.getUserID(), holder);
         Picasso.get().load(comment.getUserImgUrl()).fit().centerCrop().into(holder.imgUser);
-        holder.txt_userName.setText(comment.getUserName());
         holder.txt_content.setText(comment.getCommentContent());
         if (currentUserID.equals(comment.getUserID())) {
             holder.img_settings.setVisibility(View.VISIBLE);
@@ -84,6 +88,21 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         System.out.println(comment.getCommentContent());
     }
 
+    public void getUserName(String userID, final CommentViewHolder holder) {
+        userRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String userName = document.getString("firstName");
+                        holder.txt_userName.setText(userName);
+                        count++;
+                    }
+                }
+            }
+        });
+    }
+
     public void loadComment(String postID, final int postion) {
         MainActivity.db.collection("Comment").whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -101,10 +120,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                             Toast.makeText(context, "Chưa có bình luận nào.", Toast.LENGTH_SHORT).show();
                         } else {
                             for (int i = 0; i < list1.size(); i++) {
-                                Comment comment = new Comment();
+                                Comment comment = new Comment("","","");
                                 comment.setUserID(list1.get(i).get("userID").toString());
                                 comment.setUserImgUrl(list1.get(i).get("userImgUrl").toString());
-                                comment.setUserName(list1.get(i).get("userName").toString());
                                 comment.setCommentContent(list1.get(i).get("commentContent").toString());
                                 list.add(comment);
                             }
@@ -133,14 +151,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             }
         }
 
-        for (int i = 0;i<comments.size();i++){
-            if(i==postion){
+        for (int i = 0; i < comments.size(); i++) {
+            if (i == postion) {
                 comments.remove(postion);
                 break;
             }
         }
         MainActivity.db.collection("Comment").document(documentID).update("comment", list1);
-        commentAdapter = new CommentAdapter(comments, context, postID,rcComment);
+        commentAdapter = new CommentAdapter(comments, context, postID, rcComment);
         rcComment.setAdapter(commentAdapter);
     }
 
@@ -149,7 +167,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return comments.size();
     }
 
-    public CommentAdapter(ArrayList<Comment> comments, Context context, String postID,RecyclerView recyclerView) {
+    public CommentAdapter(ArrayList<Comment> comments, Context context, String postID, RecyclerView recyclerView) {
         this.context = context;
         this.comments = comments;
         this.postID = postID;

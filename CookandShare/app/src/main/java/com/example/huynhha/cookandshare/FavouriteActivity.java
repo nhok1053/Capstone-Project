@@ -8,14 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.adapter.FavouriteAdapter;
-import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.example.huynhha.cookandshare.model.DBContext;
-import com.example.huynhha.cookandshare.model.DBHelper;
 import com.example.huynhha.cookandshare.model.FavouriteDBHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,7 +24,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class FavouriteActivity extends AppCompatActivity {
     private RecyclerView rcFavourite;
@@ -37,8 +33,12 @@ public class FavouriteActivity extends AppCompatActivity {
     private Context context;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference postRef = db.collection("Post");
+    private CollectionReference userRef = db.collection("User");
     private Post post;
     private int count = 0;
+    private int countID = 0;
+    private String userName;
+    private List<String> listUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +47,25 @@ public class FavouriteActivity extends AppCompatActivity {
         rcFavourite = findViewById(R.id.rc_favourite);
         postsName = new ArrayList<>();
         posts = new ArrayList<>();
+        listUserName = new ArrayList<>();
         context = this;
+        getDataFromDBOffline();
         getData();
         LinearLayoutManager lln = new LinearLayoutManager(this);
         rcFavourite.setLayoutManager(lln);
 
-
     }
 
-    public void deleteDBOffline(){
+    public void deleteDBOffline() {
         FavouriteDBHelper favouriteDBHelper = new FavouriteDBHelper(getApplicationContext());
         SQLiteDatabase db = favouriteDBHelper.getWritableDatabase();
         String selection = DBContext.FavouriteDB.COLUMN_POST_ID + " LIKE ?";
 // Specify arguments in placeholder order.
-        String[] selectionArgs = { "MyTitle" };
+        String[] selectionArgs = {"MyTitle"};
 // Issue SQL statement.
         int deletedRows = db.delete(DBContext.FavouriteDB.TABLE_NAME, selection, selectionArgs);
     }
+
     public void getDataFromDBOffline() {
         FavouriteDBHelper favouriteDBHelper = new FavouriteDBHelper(getApplicationContext());
         SQLiteDatabase db = favouriteDBHelper.getReadableDatabase();
@@ -80,8 +82,6 @@ public class FavouriteActivity extends AppCompatActivity {
     }
 
     public void getData() {
-        getDataFromDBOffline();
-
         if (postsName.size() == 0) {
             Toast.makeText(context, "Bạn chưa có công thức yêu thích nào", Toast.LENGTH_SHORT).show();
         } else {
@@ -96,7 +96,9 @@ public class FavouriteActivity extends AppCompatActivity {
                                 post.setUrlImage(documentSnapshot.get("urlImage").toString());
                                 post.setPostID(documentSnapshot.get("postID").toString());
                                 post.setNumberOfRate("4");
-                                post.setUserName(documentSnapshot.get("userName").toString());
+                                // post.setUserName(documentSnapshot.get("userName").toString());
+
+                                System.out.println("NAME DEMO" + post.getUserName().toString());
                                 System.out.println("Name: " + documentSnapshot.get("title").toString());
                                 count++;
                                 posts.add(post);

@@ -46,7 +46,7 @@ public class LoginWithPhoneFragment extends Fragment {
                 final Bundle bundle = new Bundle();
                 bundle.putString("phoneNumber",""+edtSignInWithPhone.getText().toString());
                 loginWithPhoneAuth.setArguments(bundle);
-                FragmentTransaction transaction =  getFragmentManager().beginTransaction()
+                FragmentTransaction transaction = getFragmentManager().beginTransaction()
                         .replace(R.id.fl, loginWithPhoneAuth);
                 transaction.commit();
             }

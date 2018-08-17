@@ -151,23 +151,9 @@ public class LoginFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Map<String, Object> data = new HashMap<>();
+                            final Map<String, Object> data = new HashMap<>();
                             data.put("userID", user.getUid().toString());
-
-
                             Toast.makeText(getContext(), "Login Successfull", Toast.LENGTH_LONG);
-                            notiRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentReference> task) {
-
-                                }
-                            });
-                            followRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentReference> task) {
-
-                                }
-                            });
                             userRef.whereEqualTo("userID", user.getUid().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -176,6 +162,18 @@ public class LoginFragment extends Fragment {
                                         Intent intent = new Intent(getActivity(), MainActivity.class);
                                         startActivity(intent);
                                     } else {
+                                        notiRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                            }
+                                        });
+                                        followRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                            }
+                                        });
                                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login, new UpdateProfileFragment()).addToBackStack(null);
                                         transaction.commit();
                                     }
