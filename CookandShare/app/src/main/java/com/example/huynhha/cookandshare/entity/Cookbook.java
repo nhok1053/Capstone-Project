@@ -22,6 +22,10 @@ public class Cookbook {
         this.numberRecipe = numberRecipe;
     }
 
+    public Cookbook() {
+
+    }
+
     public String getCookbookID() {
         return cookbookID;
     }
