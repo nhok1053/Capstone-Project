@@ -56,7 +56,6 @@ public class ListCookbookAdapter extends RecyclerView.Adapter<ListCookbookAdapte
                         .replace(R.id.fl_cookbook, cookbookInfoFragment)
                         .addToBackStack(null)
                         .commit();
-                System.out.println("GGGGGGGGGGGGGGGGG");
             }
         });
     }

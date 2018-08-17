@@ -576,11 +576,11 @@ public class ViewProfileFragment extends Fragment {
     }
 
     public void addNoti(final String documentID) {
-        System.out.println("DOCU "+documentID);
+        System.out.println("DOCU " + documentID);
         firebaseAuth = FirebaseAuth.getInstance();
         final String userID = firebaseAuth.getCurrentUser().getUid().toString();
         DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-        System.out.println("Current USer:"+currentUser);
+        System.out.println("Current USer:" + currentUser);
         final String date = df.format(Calendar.getInstance().getTime());
         Map<String, Object> updateNoti = new HashMap<>();
         updateNoti.put("postID", "");
