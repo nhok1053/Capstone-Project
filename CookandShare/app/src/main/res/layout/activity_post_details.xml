@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PostDetails">
+
     <ScrollView
-        android:layout_marginTop="-15dp"
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="-15dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -87,13 +88,13 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:padding="8dp"
-                    android:background="@drawable/textview_background"
                     android:id="@+id/tv_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description_title"
                     android:layout_margin="8dp"
+                    android:background="@drawable/textview_background"
+                    android:padding="8dp"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="398dp" />
 
@@ -173,41 +174,42 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:text="sassas
-sasasas
-sasassa"
-                    android:padding="8dp"
-                    android:background="@drawable/textview_background"
                     android:id="@+id/tv_material_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/material_title_details"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    android:background="@drawable/textview_background"
+                    android:padding="8dp"
+                    android:text="sassas
+sasasas
+sasassa" />
 
                 <TextView
                     android:id="@+id/same_category_recipe_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_material_details"
+                    android:layout_marginBottom="4dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
                     android:text="Các món ăn cùng thể loại"
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rc_list_recipe"
-                    android:layout_marginBottom="60dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/same_category_recipe_title"
-                    android:layout_margin="8dp"></android.support.v7.widget.RecyclerView>
+                    android:layout_margin="8dp"
+                    android:layout_marginBottom="60dp"></android.support.v7.widget.RecyclerView>
             </RelativeLayout>
 
         </RelativeLayout>
 
     </ScrollView>
+
     <RelativeLayout
         android:id="@+id/relativeLayout4"
         android:layout_width="match_parent"
@@ -221,6 +223,16 @@ sasassa"
             android:layout_centerVertical="true"
             android:padding="12dp"
             android:src="@drawable/back_arrow" />
+
+        <ImageView
+            android:id="@+id/btn_add_to_cookbook"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="102dp"
+            android:padding="10dp"
+            android:src="@drawable/heart" />
 
         <ImageView
             android:id="@+id/btn_add_favourite"
@@ -242,9 +254,8 @@ sasassa"
             android:padding="10dp"
             android:src="@drawable/ic_cart" />
     </RelativeLayout>
+
     <Button
-        android:textSize="18sp"
-        android:textColor="#ffffff"
         android:id="@+id/start_cooking"
         android:layout_width="252dp"
         android:layout_height="50dp"
@@ -253,8 +264,10 @@ sasassa"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Bắt đầu nấu"
         android:background="#64DD17"
+        android:text="Bắt đầu nấu"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="@+id/scrollView2"
         app:layout_constraintStart_toStartOf="@+id/scrollView2" />

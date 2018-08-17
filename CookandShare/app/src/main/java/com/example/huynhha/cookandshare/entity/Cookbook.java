@@ -41,6 +41,12 @@ public class Cookbook {
         this.cookbookID = cookbookID;
     }
 
+    public Cookbook(String cookbookID, String cookbookName, String cookbookDescription) {
+        this.cookbookID = cookbookID;
+        this.cookbookName = cookbookName;
+        this.cookbookDescription = cookbookDescription;
+    }
+
     public String getCookbookMainImage() {
         return cookbookMainImage;
     }

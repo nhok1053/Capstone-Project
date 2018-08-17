@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -14,13 +15,17 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.Post;
+import com.example.huynhha.cookandshare.entity.User;
+import com.example.huynhha.cookandshare.fragment.CookbookInfoFragment;
 import com.example.huynhha.cookandshare.model.DBContext;
 import com.example.huynhha.cookandshare.model.DBHelper;
 import com.example.huynhha.cookandshare.model.FavouriteDBHelper;
@@ -28,7 +33,9 @@ import com.example.huynhha.cookandshare.model.MaterialDBHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -58,6 +65,7 @@ public class PostDetails extends AppCompatActivity {
     private ImageView btn_back;
     private ImageView btn_favourite;
     private ImageView btn_go_market;
+    private ImageView btn_add_to_cookbook;
     private ImageView recipe_detail_image;
     private TextView name_of_food;
     private TextView create_by_name;
@@ -75,7 +83,11 @@ public class PostDetails extends AppCompatActivity {
     private int count = 0;
     private String postID;
     private String documentID = "";
-
+    Context context;
+    private CollectionReference cookbookRef = db.collection("Cookbook");
+    private CollectionReference userRef = db.collection("User");
+    private String currentUser = FirebaseAuth.getInstance().getUid().toString();
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +97,14 @@ public class PostDetails extends AppCompatActivity {
         setContentView(R.layout.activity_post_details);
         progressDialog = new ProgressDialog(this);
         postID = getIntent().getExtras().getString("postID");
+        context = this;
         setUp();
         storageReference = FirebaseStorage.getInstance().getReference();
         getData(postID);
         saveDataGoMarket();
         setFavourite();
         setBtnStartCooking();
+        addToCookbook();
         setRatingBar();
     }
 
@@ -111,6 +125,7 @@ public class PostDetails extends AppCompatActivity {
         btn_back = findViewById(R.id.btn_back);
         btn_favourite = findViewById(R.id.btn_add_favourite);
         btn_go_market = findViewById(R.id.btn_add_go_market);
+        btn_add_to_cookbook = findViewById(R.id.btn_add_to_cookbook);
         recipe_detail_image = findViewById(R.id.recipe_image_details);
         name_of_food = findViewById(R.id.name_of_recipe);
         create_by_name = findViewById(R.id.create_by_name);
@@ -122,6 +137,82 @@ public class PostDetails extends AppCompatActivity {
         txt_material = findViewById(R.id.tv_material_details);
         rc_list_recipe = findViewById(R.id.rc_list_recipe);
         btn_start_cooking = findViewById(R.id.start_cooking);
+    }
+
+    public void addToCookbook() {
+        btn_add_to_cookbook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userRef.whereEqualTo("userID", currentUser).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                                String userName = queryDocumentSnapshot.get("secondName").toString();
+                                String userUrlImage = queryDocumentSnapshot.get("imgUrl").toString();
+                                user = new User(currentUser, userName, userUrlImage);
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                });
+                cookbookRef.whereEqualTo("userID", currentUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                });
+                final Dialog dialog;
+                dialog = new Dialog(context);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.dialog_add_to_cookbook);
+                Button btnAddCookbook = dialog.findViewById(R.id.btnAddNewCookbook);
+                Button btnCancel = dialog.findViewById(R.id.btnAddToCookbookCancel);
+                ListView lv = dialog.findViewById(R.id.lvAllCookbook);
+                btnAddCookbook.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final Dialog dialog2;
+                        dialog2 = new Dialog(context);
+                        dialog2.setCancelable(false);
+                        dialog2.setContentView(R.layout.dialog_new_cookbook);
+                        EditText name = dialog2.findViewById(R.id.etAddNewCookbookName);
+                        EditText des = dialog2.findViewById(R.id.etAddNewCookbookDes);
+                        Button save = dialog2.findViewById(R.id.btnAddNewCookbookSave);
+                        Button quit = dialog2.findViewById(R.id.btnAddNewCookbookCancel);
+                        quit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog2.dismiss();
+                            }
+                        });
+                        dialog2.show();
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
 
     public void setFavourite() {
@@ -242,8 +333,8 @@ public class PostDetails extends AppCompatActivity {
         values.put(DBContext.FeedEntry.COLUMN_NAME_OF_RECIPE, post.getTitle());
         values.put(DBContext.FeedEntry.COLUMN_IMG_URL, post.getUrlImage());
         values.put(DBContext.FeedEntry.COLUMN_TIME, date);
-        values.put(DBContext.FeedEntry.COLUMN_USERID,post.getUserID());
-        values.put(DBContext.FeedEntry.COLUMN_POST_ID,postID);
+        values.put(DBContext.FeedEntry.COLUMN_USERID, post.getUserID());
+        values.put(DBContext.FeedEntry.COLUMN_POST_ID, postID);
         System.out.println(values);
 
 
@@ -317,7 +408,7 @@ public class PostDetails extends AppCompatActivity {
 
     public void addRate(String strRate, float newRate) {
         float oldRate = Float.parseFloat(strRate);
-        float rate = (oldRate*10 + newRate) / 11;
+        float rate = (oldRate * 10 + newRate) / 11;
         System.out.println("New Rate :" + rate);
         String rateNew = String.valueOf(rate);
         postRef.document(documentID).update("rate", rateNew);

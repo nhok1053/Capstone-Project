@@ -1,6 +1,7 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,16 +9,23 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.huynhha.cookandshare.MainActivity;
+import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.adapter.CookbookListPostAdapter;
 import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
+import com.example.huynhha.cookandshare.entity.Cookbook;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,6 +62,9 @@ public class CookbookInfoFragment extends Fragment {
     TextView descriptopn;
     @BindView(R.id.rvCookbookInfoListPostCookbook)
     RecyclerView rv;
+    @BindView(R.id.btnFragmentCookbookInfoMore)
+    Button btnMore;
+    Cookbook cb;
     private List<Map<String, Object>> list1;
     ArrayList<Post> posts = new ArrayList<>();
 
@@ -78,8 +89,65 @@ public class CookbookInfoFragment extends Fragment {
         }
         System.out.println(cookbookID + "HH");
         getInfoCookbook();
-
+        clickMore();
         return v;
+
+    }
+
+    private void clickMore() {
+        btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(getActivity(), btnMore);
+                popupMenu.getMenuInflater().inflate(R.menu.cookbook_option, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.editCookbook:
+                                System.out.println("CB: edit");
+                                final Dialog dialog;
+                                dialog = new Dialog(getActivity());
+                                dialog.setCancelable(false);
+                                dialog.setContentView(R.layout.editcookbook_dialog);
+                                final EditText name = dialog.findViewById(R.id.etEditCookbookEditName);
+                                final EditText des = dialog.findViewById(R.id.etEditCookbookEditDes);
+                                Button btnSave = dialog.findViewById(R.id.btnEditCookbookSave);
+                                Button btnCancel = dialog.findViewById(R.id.btnEditCookbookCancel);
+                                name.setText(cb.getCookbookName());
+                                des.setText(cb.getCookbookDescription());
+                                btnSave.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        cookbookRef.document(cb.getCookbookID()).update("cookbookName", name.getText().toString());
+                                        cookbookRef.document(cb.getCookbookID()).update("cookbookDescription", des.getText().toString());
+                                        dialog.cancel();
+                                        posts.clear();
+                                        if (getFragmentManager() != null) {
+                                            getFragmentManager().beginTransaction().detach(CookbookInfoFragment.this).attach(CookbookInfoFragment.this).commit();
+                                        }
+                                    }
+                                });
+                                btnCancel.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        System.out.println("Click cancel");
+                                        dialog.cancel();
+                                    }
+                                });
+                                dialog.show();
+                                return true;
+                            case R.id.deleteCookbook:
+                                System.out.println("CB: delete");
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popupMenu.show();
+            }
+        });
 
     }
 
@@ -97,6 +165,7 @@ public class CookbookInfoFragment extends Fragment {
                             userName.setText(documentSnapshot.get("userName").toString());
                             title.setText(documentSnapshot.get("cookbookName").toString());
                             descriptopn.setText(documentSnapshot.get("cookbookDescription").toString());
+                            cb = new Cookbook(documentSnapshot.getId().toString(), documentSnapshot.get("cookbookName").toString(), documentSnapshot.get("cookbookDescription").toString());
                             Picasso.get().load(documentSnapshot.get("userUrlImage").toString()).transform(new RoundedTransformation()).fit().centerCrop().into(imgUserImage);
                             numberPost.setText(numberpost + " công thức");
                             Picasso.get().load(image).fit().centerCrop().into(imgMain);

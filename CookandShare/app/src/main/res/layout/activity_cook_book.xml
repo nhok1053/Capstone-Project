@@ -7,58 +7,54 @@
     tools:context=".CookBookActivity">
 
 
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolBarCookbook"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolBarCookbook"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
 
-            <Button
-                android:id="@+id/btnCookbookClose"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_add_close" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/btnCookbookClose"
-                android:text="Cookbook"
-                android:textColor="#ffffff"
-                android:textSize="18dp" />
+                <Button
+                    android:id="@+id/btnCookbookClose"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_add_close" />
 
-            <Button
-                android:id="@+id/btnEditDeleteCookbook"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/ic_add_check" />
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/btnCookbookClose"
+                    android:text="Cookbook"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+            </RelativeLayout>
 
-    </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolBarCookbook">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvCookbook"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolBarCookbook">
 
-        </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvCookbook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/fl_cookbook"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+        android:layout_height="match_parent"></FrameLayout>
 </RelativeLayout>
