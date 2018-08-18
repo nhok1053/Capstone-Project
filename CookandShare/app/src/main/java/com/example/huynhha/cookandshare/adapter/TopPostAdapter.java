@@ -153,6 +153,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                 Intent intent = new Intent(context, PostDetails.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("postID", post.getPostID());
+                bundle.putString("userID",post.getUserID());
                 intent.putExtras(bundle);
                 context.startActivity(intent);
 

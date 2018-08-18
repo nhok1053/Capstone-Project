@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,11 +27,15 @@ import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.adapter.AddCookbookAdapter;
 import com.example.huynhha.cookandshare.adapter.CategoryPostAdapter;
+import com.example.huynhha.cookandshare.adapter.PagerAdapter;
 import com.example.huynhha.cookandshare.entity.Cookbook;
 import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.example.huynhha.cookandshare.entity.User;
+import com.example.huynhha.cookandshare.fragment.CommentFragment;
 import com.example.huynhha.cookandshare.fragment.CookbookInfoFragment;
+import com.example.huynhha.cookandshare.fragment.PostDetailsComment;
+import com.example.huynhha.cookandshare.fragment.PostDetailsMaterialFragment;
 import com.example.huynhha.cookandshare.model.DBContext;
 import com.example.huynhha.cookandshare.model.DBHelper;
 import com.example.huynhha.cookandshare.model.FavouriteDBHelper;
@@ -96,6 +102,14 @@ public class PostDetails extends AppCompatActivity {
     private User user;
     private ArrayList<Cookbook> cookbooks;
     private ArrayList<String> cbName;
+    private int[] tabIcons = {
+            R.drawable.ic_cart,
+            R.drawable.ic_categories
+    };
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private PostDetailsMaterialFragment postDetailsMaterialFragment;
+    private PostDetailsComment postDetailsComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,29 +123,45 @@ public class PostDetails extends AppCompatActivity {
         cookbooks = new ArrayList<>();
         cbName = new ArrayList<>();
         setUp();
+        getSupportActionBar().hide();
         storageReference = FirebaseStorage.getInstance().getReference();
+        postDetailsMaterialFragment = new PostDetailsMaterialFragment();
+        postDetailsComment = new PostDetailsComment();
         getData(postID);
+        setTabLayout();
         saveDataGoMarket();
         setFavourite();
-        setBtnStartCooking();
         addToCookbook();
         setRatingBar();
+        setBtnBackListener();
     }
-
-    public void setBtnStartCooking() {
-        btn_start_cooking.setOnClickListener(new View.OnClickListener() {
+    public void setBtnBackListener(){
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String postID = getIntent().getExtras().getString("postID");
-                Intent intent = new Intent(PostDetails.this, CookingActitvity.class);
-                intent.putExtra("postIDStep", postID);
-                startActivity(intent);
+                finish();
             }
         });
-
+    }
+    public void setTabLayout() {
+        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        pagerAdapter.addFragment(postDetailsMaterialFragment, "Nguyên liệu");
+        pagerAdapter.addFragment(postDetailsComment, "Bình luận");
+        viewPager.setAdapter(pagerAdapter);
+        // editPostViewPager.setOffscreenPageLimit(2);
+        tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
     }
 
+    private void setupTabIcons() {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+    }
+
+
     public void setUp() {
+        tabLayout = findViewById(R.id.tab_post_details);
+        viewPager = findViewById(R.id.view_pager_postDetails);
         btn_back = findViewById(R.id.btn_back);
         btn_favourite = findViewById(R.id.btn_add_favourite);
         btn_go_market = findViewById(R.id.btn_add_go_market);
@@ -140,13 +170,8 @@ public class PostDetails extends AppCompatActivity {
         name_of_food = findViewById(R.id.name_of_recipe);
         create_by_name = findViewById(R.id.create_by_name);
         ratingBar = findViewById(R.id.ratingBarSmall);
-        txt_recipe_description = findViewById(R.id.tv_description);
-        txt_duration = findViewById(R.id.txt_duration);
-        txt_number_of_people_eat_details = findViewById(R.id.number_of_people_eat_detail);
-        txt_difficult = findViewById(R.id.difficult_type);
-        txt_material = findViewById(R.id.tv_material_details);
-        rc_list_recipe = findViewById(R.id.rc_list_recipe);
-        btn_start_cooking = findViewById(R.id.start_cooking);
+
+
     }
 
     public void addToCookbook() {
@@ -289,18 +314,12 @@ public class PostDetails extends AppCompatActivity {
         });
     }
 
-    public boolean checkData(String postID) {
-
-        return true;
-    }
-
     public Post getData(String postID) {
         postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
                         post.setUrlImage(document.get("urlImage").toString());
                         post.setTitle(document.get("title").toString());
                         post.setUserID(document.get("userID").toString());
@@ -332,22 +351,11 @@ public class PostDetails extends AppCompatActivity {
 
     public void setData(Post post) {
         String str = "";
-        Picasso.get().load(post.getUrlImage()).resize(650, 0).into(recipe_detail_image);
+        Picasso.get().load(post.getUrlImage()).fit().centerCrop().into(recipe_detail_image);
         name_of_food.setText(post.getTitle().toString());
         create_by_name.setText(post.getUserName().toString());
         ratingBar.setRating(Float.parseFloat(post.getNumberOfRate()));
-        txt_recipe_description.setText(post.getDescription().toString());
-        txt_difficult.setText(post.getDifficult().toString());
-        txt_number_of_people_eat_details.setText(post.getNumberOfPeople().toString());
-        List<Material> list1 = post.getMaterials();
-        for (int i = 0; i < list1.size(); i++) {
-            String quatity = list1.get(i).getQuantity();
-            String name = list1.get(i).getMaterialName();
-            str += "  - " + quatity + " " + name + "\n";
-        }
-        txt_material.setText(str);
         progressDialog.dismiss();
-
     }
 
 //    private void startLoading(Post post) {
@@ -454,14 +462,16 @@ public class PostDetails extends AppCompatActivity {
 
     public void addRate(String strRate, float newRate) {
         float oldRate = Float.parseFloat(strRate);
-        float rate = (oldRate * 5 + newRate) / 6;
+        float rate = (oldRate * 2 + newRate) / 3;
         System.out.println("New Rate :" + rate);
         String rateNew = String.valueOf(rate);
-        postRef.document(documentID).update("rate", rateNew);
+        postRef.document(documentID).update("numberOfRate", rateNew);
         Toast.makeText(this, "Cảm ơn bạn đã đánh giá công thức!", Toast.LENGTH_SHORT).show();
         finish();
         startActivity(getIntent());
     }
+
+
 }
 
 

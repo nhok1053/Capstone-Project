@@ -37,7 +37,7 @@ public class FavouriteActivity extends AppCompatActivity {
     private Post post;
     private int count = 0;
     private int countID = 0;
-    private String userName;
+
     private List<String> listUserName;
 
     @Override
@@ -90,25 +90,39 @@ public class FavouriteActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                Post post = new Post();
-                                post.setTitle(documentSnapshot.get("title").toString());
-                                post.setUrlImage(documentSnapshot.get("urlImage").toString());
-                                post.setPostID(documentSnapshot.get("postID").toString());
-                                post.setNumberOfRate("4");
+                            for (final QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+
+                                final String title = documentSnapshot.get("title").toString();
+                                final String urlImage = documentSnapshot.get("urlImage").toString();
+                                final String postID = documentSnapshot.get("postID").toString();
+                                final String rate = "4";
+
                                 // post.setUserName(documentSnapshot.get("userName").toString());
+                                postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        count++;
+                                        if (task.isSuccessful()) {
+                                            Post post;
+                                            String userName = "";
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                userName = document.getString("userName").toString();
+                                            }
+                                            post = new Post(rate, userName, postID, title, urlImage);
+                                            posts.add(post);
 
-                                System.out.println("NAME DEMO" + post.getUserName().toString());
-                                System.out.println("Name: " + documentSnapshot.get("title").toString());
-                                count++;
-                                posts.add(post);
-                                System.out.println("NAME: " + post.getTitle().toString());
-                            }
+                                        }
+                                        if (postsName.size() == count) {
+                                            favouriteAdapter = new FavouriteAdapter(posts, context);
+                                            rcFavourite.setAdapter(favouriteAdapter);
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
 
-                            if (count == postsName.size()) {
-                                System.out.println("Size post: " + posts.size());
-                                favouriteAdapter = new FavouriteAdapter(posts, context);
-                                rcFavourite.setAdapter(favouriteAdapter);
+                                    }
+                                });
                             }
                         }
                     }
@@ -123,6 +137,7 @@ public class FavouriteActivity extends AppCompatActivity {
         }
 
     }
+//checked
 
 }
 

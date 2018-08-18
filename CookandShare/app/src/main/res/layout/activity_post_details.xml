@@ -1,275 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
     tools:context=".PostDetails">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-15dp">
+        android:clipToPadding="false">
 
-        <RelativeLayout
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/ablDefaultMenu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:elevation="6dp">
 
-            <ImageView
-                android:id="@+id/recipe_image_details"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:contentDescription="@string/fruit" />
-
-            <TextView
-                android:id="@+id/name_of_recipe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/recipe_image_details"
-                android:layout_margin="8dp"
-                android:text="Name of food"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:layout_editor_absoluteX="100dp"
-                tools:layout_editor_absoluteY="368dp" />
-
-            <RelativeLayout
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/name_of_recipe">
+                android:fitsSystemWindows="true"
+                app:contentScrim="@android:color/transparent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:titleEnabled="false">
 
-                <TextView
-                    android:id="@+id/create_by"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="tạo bởi "
-                    android:textSize="15sp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/create_by_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_toRightOf="@+id/create_by"
-                    android:text="Huynh Ha"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_description"
-                    android:layout_width="170dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="8dp">
-
-                    <RatingBar
-                        android:id="@+id/ratingBarSmall"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="30dp"
-                        android:isIndicator="false"
-                        android:numStars="5" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/description_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl_description"
-                    android:layout_marginLeft="8dp"
-                    android:text="Thông tin món ăn"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_description"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/description_title"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/textview_background"
-                    android:padding="8dp"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="398dp" />
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_description"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:text="Thời gian: "
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
+                    <RelativeLayout
+                        android:id="@+id/relativeLayout4"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/colorPrimary">
 
-                <TextView
-                    android:id="@+id/txt_duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_description"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@+id/duration"
-                    android:textSize="15dp" />
+                        <ImageView
+                            android:id="@+id/btn_back"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_centerVertical="true"
+                            android:padding="12dp"
+                            android:src="@drawable/back_arrow" />
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/tv_description"
-                    android:layout_below="@+id/tv_description">
+                        <ImageView
+                            android:id="@+id/btn_add_to_cookbook"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="102dp"
+                            android:padding="10dp"
+                            android:src="@drawable/heart" />
+
+                        <ImageView
+                            android:id="@+id/btn_add_favourite"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="55dp"
+                            android:padding="10dp"
+                            android:src="@drawable/heart" />
+
+                        <ImageView
+                            android:id="@+id/btn_add_go_market"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_cart" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/recipe_image_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:contentDescription="@string/fruit" />
 
                     <TextView
-                        android:id="@+id/number_of_people_eat"
+                        android:id="@+id/name_of_recipe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="40dp"
-                        android:text="Số người ăn: "
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
+                        android:layout_below="@+id/recipe_image_details"
+                        android:layout_margin="8dp"
+                        android:text="Name of food"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="100dp"
+                        tools:layout_editor_absoluteY="368dp" />
 
-                    <TextView
-                        android:id="@+id/number_of_people_eat_detail"
-                        android:layout_width="wrap_content"
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignRight="@+id/number_of_people_eat"
-                        android:layout_marginLeft="8dp"
-                        android:textSize="15dp" />
-                </RelativeLayout>
+                        android:layout_below="@+id/name_of_recipe">
 
-                <TextView
-                    android:id="@+id/difficult"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/duration"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:text="Độ khó: "
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/create_by"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:text="tạo bởi "
+                            android:textSize="15sp"
+                            android:textStyle="italic" />
 
-                <TextView
-                    android:id="@+id/difficult_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/duration"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@+id/difficult"
-                    android:textSize="15dp" />
+                        <TextView
+                            android:id="@+id/create_by_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_toRightOf="@+id/create_by"
+                            android:text="Huynh Ha"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/material_title_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/difficult"
-                    android:layout_marginLeft="8dp"
-                    android:text="Nguyên liệu"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
+                        <RelativeLayout
+                            android:id="@+id/rl_description"
+                            android:layout_width="170dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginLeft="8dp">
 
-                <TextView
-                    android:id="@+id/tv_material_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/material_title_details"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/textview_background"
-                    android:padding="8dp"
-                    android:text="sassas
-sasasas
-sasassa" />
+                            <RatingBar
+                                android:id="@+id/ratingBarSmall"
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="30dp"
+                                android:isIndicator="false"
+                                android:numStars="5" />
 
-                <TextView
-                    android:id="@+id/same_category_recipe_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_material_details"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="4dp"
-                    android:text="Các món ăn cùng thể loại"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
+                        </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rc_list_recipe"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/same_category_recipe_title"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="60dp"></android.support.v7.widget.RecyclerView>
-            </RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
 
-        </RelativeLayout>
 
-    </ScrollView>
+            </android.support.design.widget.CollapsingToolbarLayout>
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#66000000">
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_post_details"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/colorPrimary">
 
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_centerVertical="true"
-            android:padding="12dp"
-            android:src="@drawable/back_arrow" />
+            </android.support.design.widget.TabLayout>
+        </android.support.design.widget.AppBarLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager_postDetails"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:nestedScrollingEnabled="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:id="@+id/btn_add_to_cookbook"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="102dp"
-            android:padding="10dp"
-            android:src="@drawable/heart" />
+        </android.support.v4.view.ViewPager>
+    </android.support.design.widget.CoordinatorLayout>
 
-        <ImageView
-            android:id="@+id/btn_add_favourite"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="55dp"
-            android:padding="10dp"
-            android:src="@drawable/heart" />
 
-        <ImageView
-            android:id="@+id/btn_add_go_market"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:padding="10dp"
-            android:src="@drawable/ic_cart" />
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/start_cooking"
-        android:layout_width="252dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:background="#64DD17"
-        android:text="Bắt đầu nấu"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2" />
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
