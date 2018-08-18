@@ -1,6 +1,7 @@
 package com.example.huynhha.cookandshare;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
 
 public class CookBookActivity extends AppCompatActivity {
     private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+    private String getUserID;
     private ListCookbookAdapter listCookbookAdapter;
     @BindView(R.id.rvCookbook)
     RecyclerView rv;
@@ -38,9 +40,7 @@ public class CookBookActivity extends AppCompatActivity {
     private Context context;
     private ArrayList<Cookbook> cookbooks;
     private ArrayList<String> listpost;
-    private ArrayList<String> listImg;
     private int count;
-    private int count1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +50,13 @@ public class CookBookActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         context = this;
         count = 0;
-        count1 = 0;
-        System.out.println("SSSS+" + count);
+        Intent intent = getIntent();
+        if (getIntent().getExtras().getString("getUserID") != null) {
+            getUserID = getIntent().getExtras().getString("getUserID").toString();
+        } else {
+            getUserID = currentUser;
+        }
         cookbooks = new ArrayList<>();
-        listImg = new ArrayList<>();
         close();
         importListCookbook();
     }
@@ -67,7 +70,7 @@ public class CookBookActivity extends AppCompatActivity {
         final GridLayoutManager gln = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         rv.setLayoutManager(gln);
 
-        MainActivity.db.collection("Cookbook").whereEqualTo("userID", currentUser).get()
+        MainActivity.db.collection("Cookbook").whereEqualTo("userID", getUserID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -78,8 +81,8 @@ public class CookBookActivity extends AppCompatActivity {
                                 final int numberpost = listpost.size();
                                 final String[] image = new String[1];
                                 final String cookbookName = documentSnapshot.get("cookbookName").toString();
-                                System.out.println(listpost.get(0).toString() + "AAAAAAAAA");
-                                MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString())
+                                        .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task1) {
                                         count++;
@@ -88,19 +91,16 @@ public class CookBookActivity extends AppCompatActivity {
                                             QuerySnapshot querySnapshot = task1.getResult();
                                             if (task1.getResult() != null) {
                                                 for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-                                                    System.out.println("ASS: " + queryDocumentSnapshot.getString("urlImage"));
                                                     image[0] = queryDocumentSnapshot.getString("urlImage");
-
                                                 }
                                                 cookbook = new Cookbook(id, cookbookName, image[0], numberpost + "");
                                                 cookbooks.add(cookbook);
                                             }
-                                            if(cookbooks.size()==count){
-                                                listCookbookAdapter = new ListCookbookAdapter(context, cookbooks);
+                                            if (cookbooks.size() == count) {
+                                                listCookbookAdapter = new ListCookbookAdapter(context, cookbooks, getUserID);
                                                 rv.setAdapter(listCookbookAdapter);
                                             }
                                         }
-                                        System.out.println("AAAA+" + count);
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -110,9 +110,7 @@ public class CookBookActivity extends AppCompatActivity {
                                 });
                             }
                         }
-                        System.out.println("ASS:1");
                     }
-
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {

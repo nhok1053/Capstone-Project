@@ -1,8 +1,10 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostDetails;
@@ -30,6 +33,7 @@ import com.example.huynhha.cookandshare.entity.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -67,8 +71,10 @@ public class CookbookInfoFragment extends Fragment {
     Button btnMore;
     Cookbook cb;
     private ArrayList<String> listpost;
-    ArrayList<Post> posts = new ArrayList<>();
-
+    private ArrayList<Post> posts = new ArrayList<>();
+    private String userName;
+    private String userUrlImage;
+    private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
     public CookbookInfoFragment() {
         // Required empty public constructor
     }
@@ -87,6 +93,19 @@ public class CookbookInfoFragment extends Fragment {
             } else {
                 cookbookID = "";
             }
+            if (bundle.getString("username") != null) {
+                userName = bundle.getString("username");
+            } else {
+                userName = "";
+            }
+            if (bundle.getString("userimage") != null) {
+                userUrlImage = bundle.getString("userimage");
+            } else {
+                userUrlImage = "";
+            }
+        }
+        if(!userName.equals(currentUser)){
+            btnMore.setVisibility(View.GONE);
         }
         getInfoCookbook();
         clickMore();
@@ -139,6 +158,25 @@ public class CookbookInfoFragment extends Fragment {
                                 return true;
                             case R.id.deleteCookbook:
                                 System.out.println("CB: delete");
+                                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                                alert.setTitle("Xóa Cookbook");
+                                alert.setMessage("Bạn muốn xóa Cookbook?")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                cookbookRef.document(cookbookID).delete();
+                                                if (getFragmentManager() != null) {
+                                                    getFragmentManager().beginTransaction().detach(CookbookInfoFragment.this).commit();
+                                                    Toast.makeText(getActivity(), "Đã xóa Cookbook", Toast.LENGTH_SHORT).show();
+                                                }
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.dismiss();
+                                            }
+                                        }).show();
                                 return true;
                             default:
                                 return false;
@@ -170,6 +208,7 @@ public class CookbookInfoFragment extends Fragment {
                                         if (task.getResult() != null) {
                                             for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
                                                 image[0] = queryDocumentSnapshot.get("urlImage").toString();
+                                                Picasso.get().load(image[0]).fit().centerCrop().into(imgMain);
                                             }
                                         }
                                     }
@@ -180,35 +219,12 @@ public class CookbookInfoFragment extends Fragment {
                                     System.out.println(e.getMessage());
                                 }
                             });
-                            final String[] userName = new String[1];
-                            final String[] userUrlImage = new String[1];
-                            MainActivity.db.collection("User").whereEqualTo("userID", documentSnapshot.get("userID")).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        QuerySnapshot querySnapshot = task.getResult();
-                                        if (task.getResult() != null) {
-                                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-                                                userName[0] = queryDocumentSnapshot.get("firstName").toString();
-                                                userUrlImage[0] = queryDocumentSnapshot.get("imgUrl").toString();
-                                            }
-                                        }
-                                    }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    System.out.println(e.getMessage());
-                                }
-                            });
-
-                            tvUserName.setText(userName[0]);
+                            tvUserName.setText(userName);
+                            Picasso.get().load(userUrlImage).transform(new RoundedTransformation()).fit().centerCrop().into(imgUserImage);
                             tvTitle.setText(documentSnapshot.get("cookbookName").toString());
                             tvDescriptopn.setText(documentSnapshot.get("cookbookDescription").toString());
-                            tvNumberPost.setText(numberpost + "công thức");
-//                            cb = new Cookbook(documentSnapshot.getId().toString(), documentSnapshot.get("cookbookName").toString(), documentSnapshot.get("cookbookDescription").toString());
-                            Picasso.get().load(userUrlImage[0]).transform(new RoundedTransformation()).fit().centerCrop().into(imgUserImage);
-                            Picasso.get().load(image[0]).fit().centerCrop().into(imgMain);
+                            tvNumberPost.setText(numberpost + " công thức");
+                            cb = new Cookbook(documentSnapshot.getId().toString(), documentSnapshot.get("cookbookName").toString(), documentSnapshot.get("cookbookDescription").toString());
                             loadListPost(listpost);
                         } else {
                             System.out.println("Error");
@@ -274,6 +290,8 @@ public class CookbookInfoFragment extends Fragment {
                             Post post = new Post(postRate, userName[0], postID, postTitle, postUrlImage);
                             posts.add(post);
                         }
+                        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts,cookbookID,userName);
+                        rv.setAdapter(cookbookListPostAdapter);
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -283,7 +301,5 @@ public class CookbookInfoFragment extends Fragment {
                 }
             });
         }
-        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts);
-        rv.setAdapter(cookbookListPostAdapter);
     }
 }

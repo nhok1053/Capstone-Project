@@ -3,6 +3,7 @@ package com.example.huynhha.cookandshare.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.huynhha.cookandshare.CookBookActivity;
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
@@ -80,6 +82,8 @@ public class ViewProfileFragment extends Fragment {
     Button btnUnFollow;
     @BindView(R.id.rvViewProfileImgPost)
     RecyclerView rvImgPost;
+    @BindView(R.id.btnViewProfileCookbook)
+    Button btnCookbook;
     private String postID;
     private String userID;
     private String imgUrl;
@@ -144,6 +148,7 @@ public class ViewProfileFragment extends Fragment {
         clickFowller(txtNumberFollower);
         followOther();
         unFollowOther();
+        cookbookClick();
         close();
         return v;
     }
@@ -159,6 +164,17 @@ public class ViewProfileFragment extends Fragment {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 txtNumberAllPost.setText(queryDocumentSnapshots.size() + "");
+            }
+        });
+    }
+
+    public void cookbookClick() {
+        btnCookbook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CookBookActivity.class);
+                intent.putExtra("getUserID", getUserID);
+                startActivity(intent);
             }
         });
     }
