@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -155,12 +156,12 @@ public class LoginFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
                             final Map<String, Object> data = new HashMap<>();
                             data.put("userID", user.getUid().toString());
-                            ArrayList<String> arrFollow=new ArrayList<>();
+                            ArrayList<String> arrFollow = new ArrayList<>();
                             arrFollow.add(user.getUid().toString());
                             final Map<String, Object> dataFollow = new HashMap<>();
-                            dataFollow.put("userID",user.getUid().toString());
-                            dataFollow.put("following",arrFollow);
-                            dataFollow.put("follower",arrFollow);
+                            dataFollow.put("userID", user.getUid().toString());
+                            dataFollow.put("following", arrFollow);
+                            dataFollow.put("follower", arrFollow);
                             Toast.makeText(getContext(), "Login Successfull", Toast.LENGTH_LONG);
                             userRef.whereEqualTo("userID", user.getUid().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
@@ -182,7 +183,11 @@ public class LoginFragment extends Fragment {
 
                                             }
                                         });
-                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login, new UpdateProfileFragment()).addToBackStack(null);
+                                        UpdateProfileFragment updateProfileFragment = new UpdateProfileFragment();
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("type", "0");
+                                        updateProfileFragment.setArguments(bundle);
+                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login, updateProfileFragment).addToBackStack(null);
                                         transaction.commit();
                                     }
 

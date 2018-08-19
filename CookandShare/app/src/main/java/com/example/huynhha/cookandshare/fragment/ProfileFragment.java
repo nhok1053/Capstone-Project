@@ -115,17 +115,34 @@ public class ProfileFragment extends Fragment {
         clickFollowing(txtNumberFollowing);
         clickFollower(txtFollower);
         clickFollower(txtNumberFollower);
+        setUpdateListener();
         settingClick();
         setBtnFavorite();
         cookbookClick();
+
         return v;
+    }
+
+    public void setUpdateListener() {
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateProfileFragment updateProfileFragment = new UpdateProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("userID", currentUser);
+                bundle.putString("type", "1");
+                updateProfileFragment.setArguments(bundle);
+                ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.fl_main,updateProfileFragment).addToBackStack(null).commit();
+            }
+        });
     }
 
     public void settingClick() {
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right);
+                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
                 SettingFragment sf = new SettingFragment();
                 ft.replace(R.id.fl_main, sf);
                 ft.addToBackStack(null);

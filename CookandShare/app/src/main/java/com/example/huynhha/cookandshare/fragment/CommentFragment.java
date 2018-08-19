@@ -99,7 +99,6 @@ public class CommentFragment extends Fragment {
         listNotiDetails = new ArrayList<>();
         storageReference = FirebaseStorage.getInstance().getReference();
         postID = getArguments().getString("postID");
-        postID = "DEMO";
         userID = getArguments().getString("userID");
         time = new Date();
         addComment();

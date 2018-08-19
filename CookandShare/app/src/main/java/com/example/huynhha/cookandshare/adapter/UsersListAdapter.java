@@ -29,7 +29,6 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
     @Override
     public void onBindViewHolder(UsersListAdapter.ViewHolder holder, int position) {
         holder.nameText.setText(userList.get(position).getFirstName());
-        holder.descriptionText.setText(userList.get(position).getSecondName());
         Picasso.get().load(userList.get(position).getImgUrl())
                 .resize(100,100)
                 .centerInside()
