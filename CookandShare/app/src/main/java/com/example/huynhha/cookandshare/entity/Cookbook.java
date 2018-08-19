@@ -22,6 +22,12 @@ public class Cookbook {
         this.numberRecipe = numberRecipe;
     }
 
+    public Cookbook(String cookbookID, String cookbookName, String cookbookDescription) {
+        this.cookbookID = cookbookID;
+        this.cookbookName = cookbookName;
+        this.cookbookDescription = cookbookDescription;
+    }
+
     public Cookbook() {
 
     }

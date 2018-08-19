@@ -44,9 +44,11 @@ import com.example.huynhha.cookandshare.model.FavouriteDBHelper;
 import com.example.huynhha.cookandshare.model.MaterialDBHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -101,6 +103,7 @@ public class PostDetails extends AppCompatActivity {
     private String currentUser = FirebaseAuth.getInstance().getUid().toString();
     private User user;
     private ArrayList<Cookbook> cookbooks;
+    private ArrayList<String> cbName;
     private int[] tabIcons = {
             R.drawable.ic_cart,
             R.drawable.ic_categories
@@ -126,6 +129,7 @@ public class PostDetails extends AppCompatActivity {
         cookbooks = new ArrayList<>();
         postsName = new ArrayList<>();
         getDataFromDBOffline();
+        cbName = new ArrayList<>();
         setUp();
         getSupportActionBar().hide();
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -190,40 +194,6 @@ public class PostDetails extends AppCompatActivity {
         btn_add_to_cookbook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userRef.whereEqualTo("userID", currentUser).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-                                String userName = queryDocumentSnapshot.get("secondName").toString();
-                                String userUrlImage = queryDocumentSnapshot.get("imgUrl").toString();
-                                user = new User(currentUser, userName, userUrlImage);
-                            }
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                });
-                cookbookRef.whereEqualTo("userID", currentUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-
-                            }
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                });
                 final Dialog dialog;
                 dialog = new Dialog(context);
                 dialog.setCancelable(false);
@@ -243,13 +213,14 @@ public class PostDetails extends AppCompatActivity {
                             for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
                                 String id = queryDocumentSnapshot.getId().toString();
                                 String name = queryDocumentSnapshot.get("cookbookName").toString();
+                                cbName.add(name);
                                 System.out.println(id + "|" + name);
                                 Cookbook cookbook = new Cookbook(id, name);
                                 cookbooks.add(cookbook);
                             }
                         }
                         if (cookbooks.size() > 0) {
-                            AddCookbookAdapter addCookbookAdapter = new AddCookbookAdapter(context, cookbooks, post);
+                            AddCookbookAdapter addCookbookAdapter = new AddCookbookAdapter(context, cookbooks, postID);
                             rv.setAdapter(addCookbookAdapter);
                         }
                     }
@@ -267,11 +238,48 @@ public class PostDetails extends AppCompatActivity {
                         dialog2 = new Dialog(context);
                         dialog2.setCancelable(false);
                         dialog2.setContentView(R.layout.dialog_new_cookbook);
-                        EditText name = dialog2.findViewById(R.id.etAddNewCookbookName);
-                        EditText des = dialog2.findViewById(R.id.etAddNewCookbookDes);
+                        final EditText name = dialog2.findViewById(R.id.etAddNewCookbookName);
+                        final EditText des = dialog2.findViewById(R.id.etAddNewCookbookDes);
                         Button save = dialog2.findViewById(R.id.btnAddNewCookbookSave);
                         Button quit = dialog2.findViewById(R.id.btnAddNewCookbookCancel);
 
+                        save.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                int cbNameCount = 0;
+                                for (String cookbookName : cbName) {
+                                    if (name.getText().toString().equals(cookbookName)) {
+                                        Toast.makeText(context, "Tên Cookbook đã tồn tại", Toast.LENGTH_SHORT).show();
+                                        cbNameCount = 1;
+                                    }
+                                }
+                                if (cbNameCount == 0) {
+                                    final Map<String, Object> cookbook = new HashMap<>();
+                                    ArrayList<String> lp = new ArrayList<>();
+                                    lp.add(postID);
+                                    cookbook.put("cookbookName", name.getText().toString());
+                                    cookbook.put("cookbookDescription", des.getText().toString());
+                                    cookbook.put("postlist", lp);
+                                    cookbook.put("userID", currentUser);
+                                    db.collection("Cookbook").add(cookbook).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Toast.makeText(context, "Thêm công thức vào Cookbook mới thành công", Toast.LENGTH_LONG).show();
+                                            cookbook.clear();
+                                            dialog2.dismiss();
+                                            dialog.dismiss();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            System.out.println(e.getMessage());
+                                        }
+                                    });
+                                }
+
+                            }
+                        });
 
                         quit.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -285,6 +293,7 @@ public class PostDetails extends AppCompatActivity {
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        cookbooks.clear();
                         dialog.dismiss();
                     }
                 });

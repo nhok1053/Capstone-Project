@@ -66,7 +66,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="50"
-                            android:textSize="18sp"
+                            android:textColor="#ff1744"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -90,7 +91,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="50"
-                            android:textSize="18sp"
+                            android:textColor="#64DD17"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -114,7 +116,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="50"
-                            android:textSize="18sp"
+                            android:textColor="#ff9100"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -142,7 +145,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="To Tien Luc"
-                            android:textSize="17sp" />
+                            android:textColor="#000000"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtViewProfileUserDateOfBirth"
@@ -172,6 +177,35 @@
                             android:text="Hủy theo dõi"
                             android:visibility="gone" />
                     </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="3dp"
+                    android:background="#cccccc" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:padding="4dp"
+                        android:src="@drawable/cookbook" />
+
+                    <Button
+                        android:id="@+id/btnViewProfileCookbook"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        android:paddingLeft="5dp"
+                        android:text="Cookbook"
+                        android:textAlignment="viewStart" />
                 </LinearLayout>
 
                 <View

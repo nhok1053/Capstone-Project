@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.Cookbook;
@@ -28,14 +29,15 @@ import java.util.Map;
 public class AddCookbookAdapter extends RecyclerView.Adapter<AddCookbookAdapter.CookbookViewHolder> {
     Context context;
     ArrayList<Cookbook> cookbooks;
-    Post post;
-    private List<Map<String, Object>> listPost;
+    String postID;
+    private ArrayList<String> listPost;
     private CollectionReference cookbookRef = FirebaseFirestore.getInstance().collection("Cookbook");
+    int test;
 
-    public AddCookbookAdapter(Context context, ArrayList<Cookbook> cookbooks, Post post) {
+    public AddCookbookAdapter(Context context, ArrayList<Cookbook> cookbooks, String postID) {
         this.context = context;
         this.cookbooks = cookbooks;
-        this.post = post;
+        this.postID = postID;
     }
 
     @NonNull
@@ -48,6 +50,7 @@ public class AddCookbookAdapter extends RecyclerView.Adapter<AddCookbookAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CookbookViewHolder holder, int position) {
+        test = 0;
         final Cookbook cookbook = cookbooks.get(position);
         holder.tv.setText(cookbook.getCookbookName());
         holder.tv.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +62,18 @@ public class AddCookbookAdapter extends RecyclerView.Adapter<AddCookbookAdapter.
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot documentSnapshot = task.getResult();
-                            listPost = (List<Map<String, Object>>) documentSnapshot.get("postlist");
-                            
+                            listPost = (ArrayList<String>) documentSnapshot.get("postlist");
+                            for (String cbName : listPost) {
+                                if (postID.equals(cbName)) {
+                                    Toast.makeText(context, "Đã có công thức trong cookbook", Toast.LENGTH_SHORT).show();
+                                    test = 1;
+                                }
+                            }
+                            if (test == 0) {
+                                listPost.add(postID);
+                                cookbookRef.document(cookbook.getCookbookID()).update("postlist", listPost);
+                                Toast.makeText(context, "Thêm công thức thành công", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
