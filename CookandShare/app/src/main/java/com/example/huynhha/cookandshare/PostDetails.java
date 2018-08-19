@@ -97,6 +97,7 @@ public class PostDetails extends AppCompatActivity {
     private User user;
     private ArrayList<Cookbook> cookbooks;
     private ArrayList<String> cbName;
+    private ArrayList<String> listPostID;
     private int[] tabIcons = {
             R.drawable.ic_cart,
             R.drawable.ic_categories
@@ -110,6 +111,9 @@ public class PostDetails extends AppCompatActivity {
     private ArrayList<String> listRated;
     private Boolean isFavourite = false;
     private Boolean isRated = false;
+    private Boolean isGoMarket = false;
+    private ImageView redDot;
+    private TextView numberOfMarketRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +128,7 @@ public class PostDetails extends AppCompatActivity {
         cookbooks = new ArrayList<>();
         postsName = new ArrayList<>();
         listRated = new ArrayList<>();
+        listPostID = new ArrayList<>();
         getData(postID);
         cbName = new ArrayList<>();
         setUp();
@@ -131,11 +136,20 @@ public class PostDetails extends AppCompatActivity {
         postDetailsMaterialFragment = new PostDetailsMaterialFragment();
         postDetailsComment = new PostDetailsComment();
         getDataFromDBOffline();
+        goMarketDataOffline();
         dataRated();
         isFavourite = checkFavourite();
         isRated = checkRated();
-        System.out.println("israted+ "+isRated.toString());
-        if (isFavourite == true) {
+        isGoMarket = checkGoMarketList();
+        System.out.println("CHEKC"+isGoMarket);
+        if (listPostID != null) {
+            redDot.setVisibility(View.VISIBLE);
+            numberOfMarketRecipe.setVisibility(View.VISIBLE);
+            numberOfMarketRecipe.setText(""+listPostID.size());
+        }
+
+        System.out.println("israted+ " + isRated.toString());
+        if (isFavourite) {
             System.out.println("Check favourite: " + count);
             btn_favourite.setImageResource(R.drawable.heartactiver);
             count++;
@@ -184,8 +198,10 @@ public class PostDetails extends AppCompatActivity {
         name_of_food = findViewById(R.id.name_of_recipe);
         create_by_name = findViewById(R.id.create_by_name);
         ratingBar = findViewById(R.id.ratingBarSmall);
-
-
+        redDot = findViewById(R.id.red_dot);
+        numberOfMarketRecipe = findViewById(R.id.numberOfMarketRecipe);
+        redDot.setVisibility(View.INVISIBLE);
+        numberOfMarketRecipe.setVisibility(View.INVISIBLE);
     }
 
     public void addToCookbook() {
@@ -410,7 +426,17 @@ public class PostDetails extends AppCompatActivity {
         btn_go_market.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData();
+                if (isGoMarket) {
+                    Toast.makeText(context, "Bạn đã thêm món ăn này vào danh sách đi chợ rồi!", Toast.LENGTH_SHORT).show();
+                } else {
+                    saveData();
+                    goMarketDataOffline();
+                    redDot.setVisibility(View.VISIBLE);
+                    numberOfMarketRecipe.setVisibility(View.VISIBLE);
+                    numberOfMarketRecipe.setText(""+listPostID.size());
+
+                }
+
             }
         });
     }
@@ -420,7 +446,6 @@ public class PostDetails extends AppCompatActivity {
         SQLiteDatabase db2 = rateDBHelper.getWritableDatabase();
         ContentValues contentValues1 = new ContentValues();
         contentValues1.put(DBContext.RateDB.COLUMN_POST_ID, postID);
-
         long newRowRate = db2.insert(DBContext.RateDB.TABLE_NAME, null, contentValues1);
 
     }
@@ -460,6 +485,22 @@ public class PostDetails extends AppCompatActivity {
         System.out.println("So : " + newRowId);
         Toast.makeText(this, "Lưu thành công ", Toast.LENGTH_SHORT).show();
 
+    }
+
+    public void goMarketDataOffline() {
+        listPostID.clear();
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + DBContext.FeedEntry.TABLE_NAME, null);
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String post = cursor.getString(cursor.getColumnIndex("postID"));
+                listPostID.add(post);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
     }
 
 
@@ -523,7 +564,24 @@ public class PostDetails extends AppCompatActivity {
                 }
             }
         }
+
         return isRated;
+    }
+
+    public boolean checkGoMarketList() {
+        String postID = getIntent().getExtras().getString("postID");
+        boolean isGoMarket = false;
+        if (listPostID != null) {
+            for (int i = 0; i < listPostID.size(); i++) {
+                if (postID.equals(listPostID.get(i))) {
+                    System.out.println("CHeck task : " + postID + "  " + listPostID.get(i));
+                    isGoMarket = true;
+                    break;
+                }
+            }
+        }
+        System.out.println("CHeck task : "+isGoMarket);
+        return isGoMarket;
     }
 
     public void addRate(String strRate, float newRate) {
