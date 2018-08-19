@@ -23,11 +23,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.ServerTimestamp;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +52,11 @@ public class ReportFragment extends Fragment {
     private String documentID;
     private List<Map<String, Object>> listReport;
     private ArrayList<Report> list;
-    private int count=0;
+    private int count = 0;
     private ReportFragment reportFragment;
+    @ServerTimestamp
+    Date date;
+
     public ReportFragment() {
         // Required empty public constructor
     }
@@ -71,12 +76,14 @@ public class ReportFragment extends Fragment {
         userName = getArguments().getString("userName");
         list = new ArrayList<>();
         listReport = new ArrayList<>();
+        date = new Date();
         getData();
         closeFragment();
         return v;
 
     }
-    public void closeFragment(){
+
+    public void closeFragment() {
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +91,7 @@ public class ReportFragment extends Fragment {
             }
         });
     }
+
     public void removeFragment(Fragment fragment) {
         android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -97,7 +105,6 @@ public class ReportFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
-                final String date = df.format(Calendar.getInstance().getTime());
                 int selectedID = groupReport.getCheckedRadioButtonId();
                 String str = "";
                 switch (selectedID) {
@@ -127,28 +134,9 @@ public class ReportFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 System.out.println("ID :" + document.getId());
                                 documentID = document.getId();
-
-                                try {
-                                    listReport = (List<Map<String, Object>>) document.get("report");
-                                } catch (Exception e) {
-
-                                }
-                                if (listReport == null) {
-                                    System.out.println("Report: No report here");
-                                } else {
-                                    for (int i = 0; i < listReport.size(); i++) {
-                                        Report report = new Report();
-                                        report.setUserName(listReport.get(i).get("userName").toString());
-                                        report.setTime(listReport.get(i).get("time").toString());
-                                        report.setContent(listReport.get(i).get("content").toString());
-                                        report.setUserID(listReport.get(i).get("userID").toString());
-                                        list.add(report);
-                                        count++;
-                                    }
-                                }
-                                    addData(finalStr,date,documentID);
-                                    Toast.makeText(getContext(), "Gửi thành công!\n Cảm ơn bạn đã giúp đỡ chúng tôi loại bỏ những bài đăng không an toàn!", Toast.LENGTH_SHORT).show();
-                                    removeFragment(reportFragment);
+                                addData(finalStr, documentID);
+                                Toast.makeText(getContext(), "Gửi thành công!\n Cảm ơn bạn đã giúp đỡ chúng tôi loại bỏ những bài đăng không an toàn!", Toast.LENGTH_SHORT).show();
+                                removeFragment(reportFragment);
                             }
                         }
                     }
@@ -161,20 +149,14 @@ public class ReportFragment extends Fragment {
             }
         });
     }
-    public void addData(String content,String date,String documentID){
+
+    public void addData(String content, String documentID) {
         Map<String, Object> updateMap = new HashMap<>();
-        updateMap.put("content",content);
-        updateMap.put("userID",userID);
-        updateMap.put("userName",userName);
-        updateMap.put("time",date);
-        if(listReport!=null){
-            listReport.add(updateMap);
-        }else{
-            listReport= new ArrayList<>();
-            listReport.add(updateMap);
-        }
-        System.out.println("List");
-        reportRef.document(documentID).update("report",listReport);
+        updateMap.put("content", content);
+        updateMap.put("userID", userID);
+        updateMap.put("userName", userName);
+        updateMap.put("time", date);
+        reportRef.document(documentID).collection("listreport").add(updateMap);
     }
 
 }

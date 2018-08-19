@@ -103,7 +103,7 @@ public class HomeFragment extends Fragment{
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                            userName = documentSnapshot.get("userName").toString();
+                            //userName = documentSnapshot.get("userName").toString();
                             postID = documentSnapshot.get("postID").toString();
                             userID = documentSnapshot.get("userID").toString();
                             time = documentSnapshot.get("time").toString();

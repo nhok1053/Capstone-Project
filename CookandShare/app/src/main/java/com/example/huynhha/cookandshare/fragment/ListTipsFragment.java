@@ -72,7 +72,7 @@ public class ListTipsFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                            YouTube youTube = new YouTube(Integer.parseInt(documentSnapshot.get("tipID").toString()), documentSnapshot.get("title").toString(), documentSnapshot.get("youtubeUrl").toString());
+                            YouTube youTube = new YouTube(documentSnapshot.get("title").toString(), documentSnapshot.get("youtubeUrl").toString());
                             youtubes.add(youTube);
                         }
                         listTipsAdapter = new ListTipsAdapter(getActivity(), youtubes);

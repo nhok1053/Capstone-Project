@@ -29,16 +29,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.ServerTimestamp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +76,10 @@ public class CommentFragment extends Fragment {
     private String documentNoti = "";
     private String postID = "";
     private int count = 0;
-    private String userID="";
+    private String userID = "";
+    public @ServerTimestamp
+    Date time;
+
 
     public CommentFragment() {
         // Required empty public constructor
@@ -92,8 +99,9 @@ public class CommentFragment extends Fragment {
         listNotiDetails = new ArrayList<>();
         storageReference = FirebaseStorage.getInstance().getReference();
         postID = getArguments().getString("postID");
-        postID= "DEMO";
+        postID = "DEMO";
         userID = getArguments().getString("userID");
+        time = new Date();
         addComment();
         loadComment(postID);
         closeFragment();
@@ -164,6 +172,7 @@ public class CommentFragment extends Fragment {
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String comment = edt_comment.getText().toString();
                 Comment comment1 = new Comment();
                 FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -171,12 +180,14 @@ public class CommentFragment extends Fragment {
                 comment1.setUserImgUrl(currentFirebaseUser.getPhotoUrl().toString());
                 comment1.setUserID(currentFirebaseUser.getUid().toString());
                 comment1.setCommentContent(comment);
+                comment1.setTime(time);
                 list.add(comment1);
                 //list1.add((Map<String, Object>) comment1);
                 Map<String, Object> updateMap = new HashMap<>();
                 updateMap.put("userImgUrl", currentFirebaseUser.getPhotoUrl().toString());
                 updateMap.put("userID", currentFirebaseUser.getUid().toString());
                 updateMap.put("commentContent", comment);
+                updateMap.put("time", time);
                 if (list1 != null) {
                     list1.add(updateMap);
                 } else {
@@ -261,7 +272,7 @@ public class CommentFragment extends Fragment {
         updateNoti.put("type", 1);
         updateNoti.put("userID", firebaseAuth.getCurrentUser().getUid().toString());
         updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-        updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString()+ " đã bình luận vào bài viết của bạn");
+        updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString() + " đã bình luận vào bài viết của bạn");
         if (listNoti == null) {
             listNoti = new ArrayList<>();
             listNoti.add(updateNoti);

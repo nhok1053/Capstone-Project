@@ -148,12 +148,12 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Login Successfull", Toast.LENGTH_LONG);
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             final Map<String, Object> data = new HashMap<>();
                             data.put("userID", user.getUid().toString());
-                            Toast.makeText(getContext(), "Login Successfull", Toast.LENGTH_LONG);
                             userRef.whereEqualTo("userID", user.getUid().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

@@ -19,13 +19,20 @@ import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostRecipe;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +59,7 @@ public class UpdateProfileFragment extends Fragment {
     private static final String[] paths = {"Nam", "Nữ", "Giới tính thứ 3"};
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("User");
-    public  boolean isNull = true;
+    public boolean isNull = true;
     String phoneNumber;
     public static final String TAG = "none";
 
@@ -98,6 +105,7 @@ public class UpdateProfileFragment extends Fragment {
                     edt_email.setText(mAuth.getCurrentUser().getEmail());
                     edt_first_name.setText(mAuth.getCurrentUser().getDisplayName());
                     edt_phone_number.setText(mAuth.getCurrentUser().getPhoneNumber());
+
                 } else {
                     edt_phone_number.setText(phoneNumber);
                 }
@@ -111,9 +119,10 @@ public class UpdateProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 User user = new User();
-                if(edt_first_name.getText()==null||edt_second_name.getText()==null||edt_date_of_birth.getText()==null||edt_email.getText()==null||edt_phone_number==null){
+                if (edt_first_name.getText() == null || edt_second_name.getText() == null || edt_date_of_birth.getText() == null || edt_email.getText() == null || edt_phone_number == null) {
                     Toast.makeText(getActivity(), "Wrong input or null blank", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
+                    user.setStatus(true);
                     user.setFirstName(edt_first_name.getText().toString());
                     user.setSecondName(edt_second_name.getText().toString());
                     user.setDateOfBirth(edt_date_of_birth.getText().toString());
@@ -124,16 +133,18 @@ public class UpdateProfileFragment extends Fragment {
                     user.setPostID(null);
                     isNull = false;
                 }
-                if (isNull==false){
+                if (isNull == false) {
                     loadData(user);
                 }
             }
         });
     }
-    private void loadData(User user){
+
+    private void loadData(User user) {
         userRef.add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
+                documentReference.getId();
                 Toast.makeText(getActivity(), "Update data success fully", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
@@ -145,4 +156,5 @@ public class UpdateProfileFragment extends Fragment {
             }
         });
     }
+
 }
