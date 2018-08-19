@@ -113,8 +113,8 @@ public class ProfileFragment extends Fragment {
         clickAllPost(txtNumberAllPost);
         clickFollowing(txtFollowing);
         clickFollowing(txtNumberFollowing);
-        clickFowller(txtFollower);
-        clickFowller(txtNumberFollower);
+        clickFollower(txtFollower);
+        clickFollower(txtNumberFollower);
         settingClick();
         setBtnFavorite();
         cookbookClick();
@@ -167,7 +167,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void clickFowller(TextView tv) {
+    private void clickFollower(TextView tv) {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,7 +201,7 @@ public class ProfileFragment extends Fragment {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                 if (task.getResult() != null && task.getResult().size() != 0) {
-                                    tv.setText(((List<Map<String, Object>>) documentSnapshot.get(s)).size() - 1 + "");
+                                    tv.setText(((ArrayList<String>) documentSnapshot.get(s)).size() - 1 + "");
                                 } else {
                                     tv.setText("0");
                                 }
@@ -230,6 +230,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CookBookActivity.class);
+                intent.putExtra("getUserID", currentUser);
                 startActivity(intent);
             }
         });

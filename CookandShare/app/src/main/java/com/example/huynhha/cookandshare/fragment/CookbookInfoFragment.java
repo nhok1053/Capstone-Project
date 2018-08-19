@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.huynhha.cookandshare.CookBookActivity;
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
@@ -69,12 +71,17 @@ public class CookbookInfoFragment extends Fragment {
     RecyclerView rv;
     @BindView(R.id.btnFragmentCookbookInfoMore)
     Button btnMore;
+    @BindView(R.id.btnFragmentCookbookInfoClose)
+    Button btnClose;
     Cookbook cb;
     private ArrayList<String> listpost;
     private ArrayList<Post> posts = new ArrayList<>();
+    private String userID;
     private String userName;
     private String userUrlImage;
     private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+    private CookbookInfoFragment cookbookInfoFragment;
+
     public CookbookInfoFragment() {
         // Required empty public constructor
     }
@@ -86,12 +93,18 @@ public class CookbookInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_cookbook_info, container, false);
         ButterKnife.bind(this, v);
+        cookbookInfoFragment = this;
         Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.getString("cookbookID") != null) {
                 cookbookID = bundle.getString("cookbookID");
             } else {
                 cookbookID = "";
+            }
+            if (bundle.getString("userID") != null) {
+                userID = bundle.getString("userID");
+            } else {
+                userID = "";
             }
             if (bundle.getString("username") != null) {
                 userName = bundle.getString("username");
@@ -104,11 +117,13 @@ public class CookbookInfoFragment extends Fragment {
                 userUrlImage = "";
             }
         }
-        if(!userName.equals(currentUser)){
+        if (!userID.equals(currentUser)) {
             btnMore.setVisibility(View.GONE);
         }
+
         getInfoCookbook();
         clickMore();
+        close();
         return v;
 
     }
@@ -168,6 +183,10 @@ public class CookbookInfoFragment extends Fragment {
                                                     getFragmentManager().beginTransaction().detach(CookbookInfoFragment.this).commit();
                                                     Toast.makeText(getActivity(), "Đã xóa Cookbook", Toast.LENGTH_SHORT).show();
                                                 }
+//                                                Toast.makeText(getActivity(), "Đã xóa Cookbook", Toast.LENGTH_SHORT).show();
+                                                Intent intent=new Intent(getActivity(), CookBookActivity.class);
+                                                intent.putExtra("getUserID",currentUser);
+                                                startActivity(intent);
                                                 dialog.dismiss();
                                             }
                                         })
@@ -245,6 +264,23 @@ public class CookbookInfoFragment extends Fragment {
         }
     }
 
+    private void close() {
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeFragment(cookbookInfoFragment);
+            }
+        });
+    }
+
+    public void removeFragment(Fragment fragment) {
+        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+
+    }
+
     private void loadListPost(ArrayList<String> list) {
         rv.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
@@ -290,7 +326,7 @@ public class CookbookInfoFragment extends Fragment {
                             Post post = new Post(postRate, userName[0], postID, postTitle, postUrlImage);
                             posts.add(post);
                         }
-                        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts,cookbookID,userName);
+                        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts, cookbookID, userID, userName, userUrlImage);
                         rv.setAdapter(cookbookListPostAdapter);
                     }
                 }

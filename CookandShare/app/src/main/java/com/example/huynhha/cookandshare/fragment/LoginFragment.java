@@ -36,6 +36,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -153,6 +154,12 @@ public class LoginFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
                             final Map<String, Object> data = new HashMap<>();
                             data.put("userID", user.getUid().toString());
+                            ArrayList<String> arrFollow=new ArrayList<>();
+                            arrFollow.add(user.getUid().toString());
+                            final Map<String, Object> dataFollow = new HashMap<>();
+                            dataFollow.put("userID",user.getUid().toString());
+                            dataFollow.put("following",arrFollow);
+                            dataFollow.put("follower",arrFollow);
                             Toast.makeText(getContext(), "Login Successfull", Toast.LENGTH_LONG);
                             userRef.whereEqualTo("userID", user.getUid().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
@@ -168,7 +175,7 @@ public class LoginFragment extends Fragment {
 
                                             }
                                         });
-                                        followRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        followRef.add(dataFollow).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentReference> task) {
 

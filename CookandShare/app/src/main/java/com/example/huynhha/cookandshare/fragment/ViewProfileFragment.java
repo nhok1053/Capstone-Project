@@ -94,11 +94,16 @@ public class ViewProfileFragment extends Fragment {
     private Follow userFollower;
     private String sFollowing;
     private String sFollower;
-    private List<Map<String, Object>> list1;
-    private List<Map<String, Object>> listFollowing;
-    private List<Map<String, Object>> listFollower;
-    private List<Map<String, Object>> listUnFollowing;
-    private List<Map<String, Object>> listUnFollower;
+    //    private List<Map<String, Object>> list1;
+    private ArrayList<String> list;
+    //    private List<Map<String, Object>> listFollowing;
+    private ArrayList<String> listFollowing;
+    //    private List<Map<String, Object>> listFollower;
+    private ArrayList<String> listFollower;
+    //    private List<Map<String, Object>> listUnFollowing;
+    private ArrayList<String> listUnFollowing;
+    //    private List<Map<String, Object>> listUnFollower;
+    private ArrayList<String> listUnFollower;
     private Map<String, Object> mapFollowing = new HashMap<>();
     private Map<String, Object> mapFollower = new HashMap<>();
     private CollectionReference notebookRefUser = MainActivity.db.collection("User");
@@ -188,7 +193,7 @@ public class ViewProfileFragment extends Fragment {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                 if (task.getResult() != null || task.getResult().size() != 0) {
-                                    tv.setText(((List<Map<String, Object>>) documentSnapshot.get(s)).size() - 1 + "");
+                                    tv.setText(((ArrayList<String>) documentSnapshot.get(s)).size() - 1 + "");
                                 } else {
                                     tv.setText("0");
                                 }
@@ -202,21 +207,39 @@ public class ViewProfileFragment extends Fragment {
     }
 
     public void userInfo() {
+        int cnt = 0;
+        if (currentUser.equals(getUserID.toString().trim())) {
+            //vi neu de 2btn gone thi mat ca ten lan ngay sinh nen de 1 cai invisible
+            cnt = 1;
+            btnFollow.setVisibility(View.INVISIBLE);
+            btnUnFollow.setVisibility(View.GONE);
+        }
         //check list following cua minh xem co thang day ko
+        final int finalCnt = cnt;
         notebookRefFollow.whereEqualTo("userID", currentUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 count = 1;
                 for (DocumentSnapshot documentSnapshot : task.getResult()) {
                     if (task.getResult() != null && task.getResult().size() != 0) {
-                        list1 = (List<Map<String, Object>>) documentSnapshot.get("following");
-                        for (int i = 0; i < list1.size(); i++) {
-                            String s = list1.get(i).get("userID").toString();
-                            if (s.equals(getUserID)) {
-                                //co thi btn unfollow hien len de unfollow
-                                btnFollow.setVisibility(View.GONE);
-                                btnUnFollow.setVisibility(View.VISIBLE);
-                                break;
+//                        list1 = (List<Map<String, Object>>) documentSnapshot.get("following");
+//                        for (int i = 0; i < list1.size(); i++) {
+//                            String s = list1.get(i).get("userID").toString();
+//                            if (s.equals(getUserID)) {
+//                                //co thi btn unfollow hien len de unfollow
+//                                btnFollow.setVisibility(View.GONE);
+//                                btnUnFollow.setVisibility(View.VISIBLE);
+//                                break;
+//                            }
+//                        }
+                        list = (ArrayList<String>) documentSnapshot.get("following");
+                        if (finalCnt == 0) {
+                            for (String s : list) {
+                                if (s.equals(getUserID)) {
+                                    btnFollow.setVisibility(View.GONE);
+                                    btnUnFollow.setVisibility(View.VISIBLE);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -232,7 +255,7 @@ public class ViewProfileFragment extends Fragment {
                 for (DocumentSnapshot documentSnapshot : task.getResult()) {
                     if (task.getResult() != null && task.getResult().size() != 0) {
                         String userID = documentSnapshot.get("userID").toString();
-                        String userName = documentSnapshot.get("secondName").toString();
+                        String userName = documentSnapshot.get("firstName").toString();
                         String userImgUrl = documentSnapshot.get("imgUrl").toString();
                         //lay du lieu sau nay unfollow no
                         userFollowing = new Follow(userID, userName, userImgUrl);
@@ -240,11 +263,11 @@ public class ViewProfileFragment extends Fragment {
                         txtUsername.setText(userName);
                         txtUserDateOfBirth.setText(documentSnapshot.get("dateOfBirth").toString());
                         //neu thang day trung voi minh thi ko hien thi btn follow voi unfollow
-                        if (currentUser.equals(getUserID.trim())) {
-                            //vi neu de 2btn gone thi mat ca ten lan ngay sinh nen de 1 cai invisible
-                            btnFollow.setVisibility(View.INVISIBLE);
-                            btnUnFollow.setVisibility(View.GONE);
-                        }
+//                        if (currentUser.equals(getUserID.trim())) {
+//                            //vi neu de 2btn gone thi mat ca ten lan ngay sinh nen de 1 cai invisible
+//                            btnFollow.setVisibility(View.INVISIBLE);
+//                            btnUnFollow.setVisibility(View.GONE);
+//                        }
                     }
                 }
             }
@@ -263,7 +286,7 @@ public class ViewProfileFragment extends Fragment {
                 for (DocumentSnapshot documentSnapshot : task.getResult()) {
                     if (task.getResult() != null && task.getResult().size() != 0) {
                         String userID = documentSnapshot.get("userID").toString();
-                        String userName = documentSnapshot.get("secondName").toString();
+                        String userName = documentSnapshot.get("firstName").toString();
                         String userImgUrl = documentSnapshot.get("imgUrl").toString();
                         userFollower = new Follow(userID, userName, userImgUrl);
                     }
@@ -290,11 +313,12 @@ public class ViewProfileFragment extends Fragment {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             count = 2;
                             sFollowing = documentSnapshot.getId();
-                            listFollowing = (List<Map<String, Object>>) documentSnapshot.get("following");
-                            mapFollowing.put("userID", userFollowing.getUserID());
-                            mapFollowing.put("userName", userFollowing.getUserName());
-                            mapFollowing.put("userUrlImage", userFollowing.getUserUrlImage());
-                            listFollowing.add(mapFollowing);
+                            listFollowing = (ArrayList<String>) documentSnapshot.get("following");
+//                            mapFollowing.put("userID", userFollowing.getUserID());
+//                            mapFollowing.put("userName", userFollowing.getUserName());
+//                            mapFollowing.put("userUrlImage", userFollowing.getUserUrlImage());
+//                            listFollowing.add(mapFollowing);
+                            listFollowing.add(userFollowing.getUserID());
                         }
                     }
                 });
@@ -306,11 +330,12 @@ public class ViewProfileFragment extends Fragment {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             count = 2;
                             sFollower = documentSnapshot.getId();
-                            listFollower = (List<Map<String, Object>>) documentSnapshot.get("follower");
-                            mapFollower.put("userID", userFollower.getUserID());
-                            mapFollower.put("userName", userFollower.getUserName());
-                            mapFollower.put("userUrlImage", userFollower.getUserUrlImage());
-                            listFollower.add(mapFollower);
+                            listFollower = (ArrayList<String>) documentSnapshot.get("follower");
+//                            mapFollower.put("userID", userFollower.getUserID());
+//                            mapFollower.put("userName", userFollower.getUserName());
+//                            mapFollower.put("userUrlImage", userFollower.getUserUrlImage());
+//                            listFollower.add(mapFollower);
+                            listFollower.add(userFollower.getUserID());
                         }
                     }
                 });
@@ -334,20 +359,23 @@ public class ViewProfileFragment extends Fragment {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             if (task.getResult() != null && task.getResult().size() != 0) {
                                 sFollowing = documentSnapshot.getId();
-                                listFollowing = (List<Map<String, Object>>) documentSnapshot.get("following");
-                                for (int i = 0; i < listFollowing.size(); i++) {
-                                    Map<String, Object> updateMap = new HashMap<>();
-                                    if (!listFollowing.get(i).get("userID").equals(userFollowing.getUserID())) {
-                                        updateMap.put("userID", listFollowing.get(i).get("userID"));
-                                        updateMap.put("userName", listFollowing.get(i).get("userName"));
-                                        updateMap.put("userUrlImage", listFollowing.get(i).get("userUrlImage"));
-                                        listUnFollowing.add(updateMap);
+//                                listFollowing = (List<Map<String, Object>>) documentSnapshot.get("following");
+//                                for (int i = 0; i < listFollowing.size(); i++) {
+//                                    Map<String, Object> updateMap = new HashMap<>();
+//                                    if (!listFollowing.get(i).get("userID").equals(userFollowing.getUserID())) {
+//                                        updateMap.put("userID", listFollowing.get(i).get("userID"));
+//                                        updateMap.put("userName", listFollowing.get(i).get("userName"));
+//                                        updateMap.put("userUrlImage", listFollowing.get(i).get("userUrlImage"));
+//                                        listUnFollowing.add(updateMap);
+//                                    }
+//                                }
+                                listFollowing = (ArrayList<String>) documentSnapshot.get("following");
+                                for (String s : listFollowing) {
+                                    if (!s.equals(userFollowing.getUserID())) {
+                                        listUnFollowing.add(s);
                                     }
                                 }
-//                                HashSet<Map<String, Object>> hashSet = new HashSet<>();
-//                                hashSet.addAll(listUnFollowing);
-//                                listUnFollowing.clear();
-//                                listUnFollowing.addAll(hashSet);
+
                             }
                         }
                     }
@@ -361,20 +389,21 @@ public class ViewProfileFragment extends Fragment {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             if (task.getResult() != null && task.getResult().size() != 0) {
                                 sFollower = documentSnapshot.getId();
-                                listFollower = (List<Map<String, Object>>) documentSnapshot.get("follower");
-                                for (int i = 0; i < listFollower.size(); i++) {
-                                    Map<String, Object> updateMap = new HashMap<>();
-                                    if (!listFollower.get(i).get("userID").equals(userFollower.getUserID())) {
-                                        updateMap.put("userID", listFollower.get(i).get("userID"));
-                                        updateMap.put("userName", listFollower.get(i).get("userName"));
-                                        updateMap.put("userUrlImage", listFollower.get(i).get("userUrlImage"));
-                                        listUnFollower.add(updateMap);
+                                listFollower = (ArrayList<String>) documentSnapshot.get("follower");
+//                                for (int i = 0; i < listFollower.size(); i++) {
+//                                    Map<String, Object> updateMap = new HashMap<>();
+//                                    if (!listFollower.get(i).get("userID").equals(userFollower.getUserID())) {
+//                                        updateMap.put("userID", listFollower.get(i).get("userID"));
+//                                        updateMap.put("userName", listFollower.get(i).get("userName"));
+//                                        updateMap.put("userUrlImage", listFollower.get(i).get("userUrlImage"));
+//                                        listUnFollower.add(updateMap);
+//                                    }
+//                                }
+                                for (String s : listFollower) {
+                                    if (!s.equals(userFollower.getUserID())) {
+                                        listUnFollower.add(s);
                                     }
                                 }
-//                                HashSet<Map<String, Object>> hashSet = new HashSet<>();
-//                                hashSet.addAll(listUnFollower);
-//                                listUnFollower.clear();
-//                                listUnFollower.addAll(hashSet);
                             }
                         }
                     }

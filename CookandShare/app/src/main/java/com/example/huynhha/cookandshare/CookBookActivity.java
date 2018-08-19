@@ -50,7 +50,6 @@ public class CookBookActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         context = this;
         count = 0;
-        Intent intent = getIntent();
         if (getIntent().getExtras().getString("getUserID") != null) {
             getUserID = getIntent().getExtras().getString("getUserID").toString();
         } else {

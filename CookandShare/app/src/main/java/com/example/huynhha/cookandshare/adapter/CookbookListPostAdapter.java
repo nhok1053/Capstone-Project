@@ -3,6 +3,7 @@ package com.example.huynhha.cookandshare.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -32,15 +33,20 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
     Context context;
     ArrayList<Post> posts;
     private String cookbookID;
-    private String name;
+    private String userID;
+    private String userName;
+    private String userUrlImage;
     private CollectionReference cookbookRef = MainActivity.db.collection("Cookbook");
     private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+    private ArrayList<String> arrUpdate;
 
-    public CookbookListPostAdapter(Context context, ArrayList<Post> posts, String cookbookID, String name) {
+    public CookbookListPostAdapter(Context context, ArrayList<Post> posts, String cookbookID, String userID, String userName, String userUrlImage) {
         this.context = context;
         this.posts = posts;
         this.cookbookID = cookbookID;
-        this.name = name;
+        this.userID = userID;
+        this.userName = userName;
+        this.userUrlImage = userUrlImage;
     }
 
     public class CookbookListViewHolder extends RecyclerView.ViewHolder {
@@ -52,12 +58,13 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
 
         public CookbookListViewHolder(View itemView) {
             super(itemView);
+            arrUpdate = new ArrayList<>();
             img = itemView.findViewById(R.id.imgCookbookListpostMainImage);
             title = itemView.findViewById(R.id.tvCookbookListpostPostTitle);
             createBy = itemView.findViewById(R.id.tvCookbookListpostUserCreated);
             rb = itemView.findViewById(R.id.rbCookbookListpostPostRate);
             btn = itemView.findViewById(R.id.btnCookbookListpostMore);
-            if (name.equals(currentUser)) {
+            if (!userID.equals(currentUser) || posts.size() < 2) {
                 btn.setVisibility(View.GONE);
             }
         }
@@ -89,17 +96,28 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
                         switch (item.getItemId()) {
                             case R.id.delCookbookPost:
                                 System.out.println("DelCookbookPost");
-                                posts.remove(post.getPostID());
+                                posts.remove(post);
+                                for (Post p : posts) {
+                                    arrUpdate.add(p.getPostID());
+                                }
                                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
                                 alert.setTitle("Xóa công thức");
                                 alert.setMessage("Bạn muốn xóa công thức khỏi cookbook này?")
                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int whichButton) {
-                                                cookbookRef.document(cookbookID).update("postlist", posts);
+                                                cookbookRef.document(cookbookID).update("postlist", arrUpdate);
                                                 Toast.makeText(context, "Đã xóa", Toast.LENGTH_SHORT).show();
                                                 if (((FragmentActivity) context).getSupportFragmentManager() != null) {
                                                     CookbookInfoFragment cookbookInfoFragment = new CookbookInfoFragment();
-                                                    ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().detach(cookbookInfoFragment).attach(cookbookInfoFragment).commit();
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putString("cookbookID", cookbookID);
+                                                    bundle.putString("userID", userID);
+                                                    bundle.putString("username", userName);
+                                                    bundle.putString("userimage", userUrlImage);
+                                                    cookbookInfoFragment.setArguments(bundle);
+                                                    ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fl_cookbook,
+                                                            cookbookInfoFragment)
+                                                            .commit();
                                                 }
                                                 dialog.dismiss();
                                             }

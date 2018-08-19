@@ -77,6 +77,7 @@ public class ListCookbookAdapter extends RecyclerView.Adapter<ListCookbookAdapte
             public void onClick(View view) {
                 CookbookInfoFragment cookbookInfoFragment = new CookbookInfoFragment();
                 Bundle bundle = new Bundle();
+                bundle.putString("userID",getUserID);
                 bundle.putString("username", userName[0]);
                 bundle.putString("userimage", userUrlImage[0]);
                 bundle.putString("cookbookID", cookbook.getCookbookID());
@@ -100,7 +101,6 @@ public class ListCookbookAdapter extends RecyclerView.Adapter<ListCookbookAdapte
     }
 
     public class CookbookViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
         ImageView img;
         TextView tvCookbookName;
         TextView tvNumberRecipe;
@@ -108,7 +108,6 @@ public class ListCookbookAdapter extends RecyclerView.Adapter<ListCookbookAdapte
 
         public CookbookViewHolder(View itemView) {
             super(itemView);
-            cardView = itemView.findViewById(R.id.cvCookbook);
             img = itemView.findViewById(R.id.imgMainCookbook);
             tvCookbookName = itemView.findViewById(R.id.tvCookbookName);
             tvNumberRecipe = itemView.findViewById(R.id.tvNumberRecipe);
