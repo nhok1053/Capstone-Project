@@ -8,4 +8,5 @@
     <color name="cardBackground">#f9ac30</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorTransparent">#cccccc</color>
+    <color name="colorLikeTextt">#2196f3</color>
 </resources>

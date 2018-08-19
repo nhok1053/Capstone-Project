@@ -120,7 +120,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                             Toast.makeText(context, "Chưa có bình luận nào.", Toast.LENGTH_SHORT).show();
                         } else {
                             for (int i = 0; i < list1.size(); i++) {
-                                Comment comment = new Comment("","","");
+                                Comment comment = new Comment();
                                 comment.setUserID(list1.get(i).get("userID").toString());
                                 comment.setUserImgUrl(list1.get(i).get("userImgUrl").toString());
                                 comment.setCommentContent(list1.get(i).get("commentContent").toString());

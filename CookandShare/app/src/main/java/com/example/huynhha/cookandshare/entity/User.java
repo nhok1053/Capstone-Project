@@ -1,6 +1,11 @@
 package com.example.huynhha.cookandshare.entity;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.ServerTimestamp;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class User {
@@ -13,6 +18,63 @@ public class User {
     private String secondName;
     private String dateOfBirth;
     private List<String> postID;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String secondName, String dateOfBirth, List<String> postID, boolean status, Date time) {
+
+        this.userID = userID;
+        this.imgUrl = imgUrl;
+        this.phone = phone;
+        this.sex = sex;
+        this.firstName = firstName;
+        this.firstNameLower = firstNameLower;
+        this.secondName = secondName;
+        this.dateOfBirth = dateOfBirth;
+        this.postID = postID;
+        this.status = status;
+        this.time = time;
+    }
+
+    @ServerTimestamp
+    Date time;
+
+
+    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String secondName, String dateOfBirth, List<String> postID, Date time) {
+        this.userID = userID;
+        this.imgUrl = imgUrl;
+        this.phone = phone;
+        this.sex = sex;
+        this.firstName = firstName;
+        this.firstNameLower = firstNameLower;
+        this.secondName = secondName;
+        this.dateOfBirth = dateOfBirth;
+        this.postID = postID;
+        this.time = time;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public static List<User> getUsers() {
+        return users;
+    }
+
+    public static void setUsers(List<User> users) {
+        User.users = users;
+    }
 
     public List<String> getPostID() {
         return postID;

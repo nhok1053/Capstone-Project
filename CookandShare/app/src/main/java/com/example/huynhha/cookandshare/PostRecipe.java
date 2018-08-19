@@ -216,7 +216,7 @@ public class PostRecipe extends AppCompatActivity {
                             try {
                                 FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                 post.setUserID(currentFirebaseUser.getUid());
-                                post.setUserName(currentFirebaseUser.getDisplayName());
+                                //post.setUserName(currentFirebaseUser.getDisplayName());
                                 post.setUserImgUrl(currentFirebaseUser.getPhotoUrl().toString());
                             } catch (Exception e) {
                                 System.out.println(e);

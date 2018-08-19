@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -36,6 +37,7 @@ import com.example.huynhha.cookandshare.fragment.CommentFragment;
 import com.example.huynhha.cookandshare.fragment.CookbookInfoFragment;
 import com.example.huynhha.cookandshare.fragment.PostDetailsComment;
 import com.example.huynhha.cookandshare.fragment.PostDetailsMaterialFragment;
+import com.example.huynhha.cookandshare.fragment.ViewProfileFragment;
 import com.example.huynhha.cookandshare.model.DBContext;
 import com.example.huynhha.cookandshare.model.DBHelper;
 import com.example.huynhha.cookandshare.model.FavouriteDBHelper;
@@ -110,6 +112,9 @@ public class PostDetails extends AppCompatActivity {
     private TabLayout tabLayout;
     private PostDetailsMaterialFragment postDetailsMaterialFragment;
     private PostDetailsComment postDetailsComment;
+    private String userNamePost = "";
+    private ArrayList<String> postsName;
+    private Boolean isFavourite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +124,11 @@ public class PostDetails extends AppCompatActivity {
         setContentView(R.layout.activity_post_details);
         progressDialog = new ProgressDialog(this);
         postID = getIntent().getExtras().getString("postID");
+        userNamePost = getIntent().getExtras().getString("userName");
         context = this;
         cookbooks = new ArrayList<>();
+        postsName = new ArrayList<>();
+        getDataFromDBOffline();
         cbName = new ArrayList<>();
         setUp();
         getSupportActionBar().hide();
@@ -128,6 +136,12 @@ public class PostDetails extends AppCompatActivity {
         postDetailsMaterialFragment = new PostDetailsMaterialFragment();
         postDetailsComment = new PostDetailsComment();
         getData(postID);
+        isFavourite = checkFavourite();
+        if (isFavourite == true){
+            System.out.println("Check favourite: "+count);
+            btn_favourite.setImageResource(R.drawable.heartactiver);
+            count++;
+        }
         setTabLayout();
         saveDataGoMarket();
         setFavourite();
@@ -135,7 +149,8 @@ public class PostDetails extends AppCompatActivity {
         setRatingBar();
         setBtnBackListener();
     }
-    public void setBtnBackListener(){
+
+    public void setBtnBackListener() {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,6 +158,7 @@ public class PostDetails extends AppCompatActivity {
             }
         });
     }
+
     public void setTabLayout() {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(postDetailsMaterialFragment, "Nguyên liệu");
@@ -300,8 +316,10 @@ public class PostDetails extends AppCompatActivity {
                     values.put(DBContext.FavouriteDB.COLUMN_POST_ID, postID);
                     long row = db1.insert(DBContext.FavouriteDB.TABLE_NAME, null, values);
                     Toast.makeText(PostDetails.this, "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+                    btn_favourite.setImageResource(R.drawable.heartactiver);
                     System.out.println("Row : " + row);
                 } else {
+                    btn_favourite.setImageResource(R.drawable.heartt);
                     String selection = DBContext.FavouriteDB.COLUMN_POST_ID + " LIKE ?";
                     String[] selectionArgs = {postID};
                     int deletedRows = db2.delete(DBContext.FavouriteDB.TABLE_NAME, selection, selectionArgs);
@@ -314,6 +332,18 @@ public class PostDetails extends AppCompatActivity {
         });
     }
 
+
+    public Boolean checkFavourite() {
+        String postID = getIntent().getExtras().getString("postID");
+        for (int i = 0; i < postsName.size(); i++) {
+            if (postID.equals(postsName.get(i).toString())) {
+                isFavourite = true;
+                break;
+            }
+        }
+        return isFavourite;
+    }
+
     public Post getData(String postID) {
         postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -323,7 +353,7 @@ public class PostDetails extends AppCompatActivity {
                         post.setUrlImage(document.get("urlImage").toString());
                         post.setTitle(document.get("title").toString());
                         post.setUserID(document.get("userID").toString());
-                        post.setUserName(document.get("userName").toString());
+                        //  post.setUserName(document.get("userName").toString());
                         post.setNumberOfPeople(document.get("numberOfPeople").toString());
                         post.setDescription(document.get("description").toString());
                         post.setDifficult(document.get("difficult").toString());
@@ -349,11 +379,24 @@ public class PostDetails extends AppCompatActivity {
         return post;
     }
 
-    public void setData(Post post) {
+    public void setData(final Post post) {
         String str = "";
         Picasso.get().load(post.getUrlImage()).fit().centerCrop().into(recipe_detail_image);
         name_of_food.setText(post.getTitle().toString());
-        create_by_name.setText(post.getUserName().toString());
+        create_by_name.setText(userNamePost);
+        create_by_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.FragmentTransaction ft = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("userID", post.getUserID());
+                ViewProfileFragment profileFragment = new ViewProfileFragment();
+                profileFragment.setArguments(bundle);
+                ft.replace(R.id.fl_post_details, profileFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
         ratingBar.setRating(Float.parseFloat(post.getNumberOfRate()));
         progressDialog.dismiss();
     }
@@ -471,6 +514,20 @@ public class PostDetails extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    public void getDataFromDBOffline() {
+        FavouriteDBHelper favouriteDBHelper = new FavouriteDBHelper(getApplicationContext());
+        SQLiteDatabase db = favouriteDBHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + DBContext.FavouriteDB.TABLE_NAME, null);
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String post = cursor.getString(cursor.getColumnIndex("postID"));
+                postsName.add(post);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+    }
 
 }
 
