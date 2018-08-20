@@ -20,11 +20,15 @@ public class TopRecipeAdapter extends RecyclerView.Adapter<TopRecipeAdapter.Post
     public class PostViewHolder extends RecyclerView.ViewHolder {
         TextView tvTopRecipe;
         ImageView imgTopRecipe;
+        TextView tvlike;
+        TextView tvComment;
 
         public PostViewHolder(View itemView) {
             super(itemView);
             tvTopRecipe = itemView.findViewById(R.id.cvTopRecipeTvTopRecipeName);
             imgTopRecipe = itemView.findViewById(R.id.cvTopRecipeImgViewTopRecipe);
+            tvlike = itemView.findViewById(R.id.cvTopRecipeTvTopRecipeLike);
+            tvComment = itemView.findViewById(R.id.cvTopRecipeTvTopRecipeComment);
         }
     }
 
@@ -52,6 +56,8 @@ public class TopRecipeAdapter extends RecyclerView.Adapter<TopRecipeAdapter.Post
         Post recipe = topRecipes.get(position);
         Picasso.get().load(recipe.getUrlImage()).fit().centerCrop().into(holder.imgTopRecipe);
         holder.tvTopRecipe.setText(recipe.getTitle());
+        holder.tvlike.setText(recipe.getLike() + " Thích");
+        holder.tvComment.setText(recipe.getComment() + " Bình luận");
     }
 
     @Override

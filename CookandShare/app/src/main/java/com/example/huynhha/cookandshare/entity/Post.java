@@ -29,6 +29,16 @@ public class Post {
         this.postID = postID;
         this.title = title;
         this.urlImage = urlImage;
+        this.userID=userID;
+    }
+
+    public Post(String postID, String userID, String title, String urlImage, int like, int comment) {
+        this.postID = postID;
+        this.userID = userID;
+        this.title = title;
+        this.urlImage = urlImage;
+        this.like = like;
+        this.comment = comment;
     }
 
     public Post(String postID, String userID, String time, String imgUrl, String title, String description, String userImgUrl, int like, int comment, String userName) {
@@ -84,26 +94,6 @@ public class Post {
         this.postID = postID;
         this.userID = userID;
         this.urlImage = urlImage;
-    }
-
-    public Post(String postID, String title, String urlImage, String postTime) {
-        this.postID = postID;
-        this.title = title;
-        this.urlImage = urlImage;
-        this.postTime = postTime;
-    }
-
-    public Post(String postID, String userID, String time, String imgUrl, String title,
-                String description, String userImgUrl, int like, int comment) {
-        this.postID = postID;
-        this.userID = userID;
-        this.time = time;
-        this.urlImage = imgUrl;
-        this.title = title;
-        this.description = description;
-        this.like = like;
-        this.comment = comment;
-        this.userImgUrl = userImgUrl;
     }
 
     public Post(String postID, String userID, String time, String imgUrl, String title, String titleLower,

@@ -3,9 +3,11 @@ package com.example.huynhha.cookandshare.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.MainActivity;
+import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.Cookbook;
 import com.example.huynhha.cookandshare.entity.Post;
@@ -37,16 +40,27 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
     private String userName;
     private String userUrlImage;
     private CollectionReference cookbookRef = MainActivity.db.collection("Cookbook");
+    private CollectionReference userRef = MainActivity.db.collection("User");
     private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
     private ArrayList<String> arrUpdate;
+    private String userNamex;
 
-    public CookbookListPostAdapter(Context context, ArrayList<Post> posts, String cookbookID, String userID, String userName, String userUrlImage) {
+    public String getUserNamex() {
+        return userNamex;
+    }
+
+    public void setUserNamex(String userNamex) {
+        this.userNamex = userNamex;
+    }
+
+    public CookbookListPostAdapter(Context context, ArrayList<Post> posts, String cookbookID, String userID, String userName, String userUrlImage, String userNamex) {
         this.context = context;
         this.posts = posts;
         this.cookbookID = cookbookID;
         this.userID = userID;
         this.userName = userName;
         this.userUrlImage = userUrlImage;
+        this.userNamex=userNamex;
     }
 
     public class CookbookListViewHolder extends RecyclerView.ViewHolder {
@@ -55,6 +69,7 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
         TextView createBy;
         RatingBar rb;
         Button btn;
+        CardView cv;
 
         public CookbookListViewHolder(View itemView) {
             super(itemView);
@@ -64,7 +79,8 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
             createBy = itemView.findViewById(R.id.tvCookbookListpostUserCreated);
             rb = itemView.findViewById(R.id.rbCookbookListpostPostRate);
             btn = itemView.findViewById(R.id.btnCookbookListpostMore);
-            if (!userID.equals(currentUser) || posts.size() < 2) {
+            cv = itemView.findViewById(R.id.cvPostInCookbook);
+            if (!userNamex.equals(currentUser) || posts.size() < 2) {
                 btn.setVisibility(View.GONE);
             }
         }
@@ -136,6 +152,15 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
                     }
                 });
                 popupMenu.show();
+            }
+        });
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PostDetails.class);
+                intent.putExtra("postID", post.getPostID());
+                intent.putExtra("userName", post.getUserName());
+                context.startActivity(intent);
             }
         });
     }

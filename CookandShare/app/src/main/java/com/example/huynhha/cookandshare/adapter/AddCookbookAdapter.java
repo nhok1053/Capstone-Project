@@ -50,12 +50,13 @@ public class AddCookbookAdapter extends RecyclerView.Adapter<AddCookbookAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull CookbookViewHolder holder, int position) {
-        test = 0;
+
         final Cookbook cookbook = cookbooks.get(position);
         holder.tv.setText(cookbook.getCookbookName());
-        holder.tv.setOnClickListener(new View.OnClickListener() {
+        holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                test = 0;
                 System.out.println(cookbook.getCookbookID() + "|||" + cookbook.getCookbookName());
                 cookbookRef.document(cookbook.getCookbookID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
