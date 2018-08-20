@@ -194,16 +194,18 @@ public class PostRecipeMaterialFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        uri = data.getData();
         Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
-            bitmap = getResizedBitmap(bitmap,960,540);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (requestCode == RESULT_LOAD_IMAGE&& resultCode == Activity.RESULT_OK && data != null ) {
+            try {
+                uri = data.getData();
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
+                bitmap = getResizedBitmap(bitmap,960,540);
+                img_recipe.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("Check data ImG: "+requestCode+" "+resultCode);
-        img_recipe.setImageBitmap(bitmap);
     }
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();

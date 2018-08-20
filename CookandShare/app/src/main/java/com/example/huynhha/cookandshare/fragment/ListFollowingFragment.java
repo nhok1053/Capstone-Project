@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
@@ -36,10 +37,14 @@ import butterknife.ButterKnife;
 public class ListFollowingFragment extends Fragment {
     @BindView(R.id.rvFollow)
     RecyclerView rvFollow;
+    @BindView(R.id.btnFollowClose)
+    Button btnClose;
+
     private CollectionReference notebookRefFollow = MainActivity.db.collection("Follow");
     private CollectionReference notebookRefUser = MainActivity.db.collection("User");
     private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
     String getAttribute;
+    private ListFollowingFragment listFollowingFragment;
     private ArrayList<User> usersFollowing;
     private ArrayList<User> usersFollower;
     private List<Map<String, Object>> list1;
@@ -58,6 +63,7 @@ public class ListFollowingFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_list_following, container, false);
         ButterKnife.bind(this, v);
+        listFollowingFragment = this;
         usersFollower = new ArrayList<>();
         usersFollowing = new ArrayList<>();
         Bundle bundle = getArguments();
@@ -70,13 +76,29 @@ public class ListFollowingFragment extends Fragment {
                 getUserID = currentUser;
             }
         }
-
         importListFollow();
+        close();
         return v;
     }
 
-    public void importListFollow() {
+    public void close() {
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeFragment(listFollowingFragment);
+            }
+        });
+    }
 
+    public void removeFragment(Fragment fragment) {
+        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+
+    }
+
+    public void importListFollow() {
         rvFollow.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rvFollow.setLayoutManager(lln);
@@ -106,7 +128,7 @@ public class ListFollowingFragment extends Fragment {
                                                         usersFollowing.add(user);
                                                     }
                                                     if (usersFollowing.size() == count) {
-                                                        FollowListAdapter followListAdapter = new FollowListAdapter(usersFollowing);
+                                                        FollowListAdapter followListAdapter = new FollowListAdapter(usersFollowing, getActivity());
                                                         rvFollow.setAdapter(followListAdapter);
                                                     }
                                                 }
@@ -165,7 +187,7 @@ public class ListFollowingFragment extends Fragment {
                                                         usersFollower.add(user);
                                                     }
                                                     if (usersFollower.size() == count) {
-                                                        FollowListAdapter followListAdapter = new FollowListAdapter(usersFollower);
+                                                        FollowListAdapter followListAdapter = new FollowListAdapter(usersFollower, getActivity());
                                                         rvFollow.setAdapter(followListAdapter);
                                                     }
                                                 }

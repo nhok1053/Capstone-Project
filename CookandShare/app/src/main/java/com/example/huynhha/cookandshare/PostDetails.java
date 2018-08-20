@@ -286,7 +286,7 @@ public class PostDetails extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(DocumentReference documentReference) {
                                             Toast.makeText(context, "Thêm công thức vào Cookbook mới thành công", Toast.LENGTH_LONG).show();
-                                            cookbook.clear();
+                                            cookbooks.clear();
                                             dialog2.dismiss();
                                             dialog.dismiss();
                                         }

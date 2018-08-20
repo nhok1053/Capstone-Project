@@ -38,6 +38,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -48,7 +50,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment {
     @BindView(R.id.rvChef)
     RecyclerView rvChef;
     @BindView(R.id.rvRecipe)
@@ -60,12 +62,14 @@ public class HomeFragment extends Fragment{
         // Required empty public constructor
     }
 
-    String postID, userID, time, imgUrl, title, description, userImgUrl,userName;
+    String postID, userID, time, imgUrl, title, description, userImgUrl, userName;
     int like, comment;
     TopPostAdapter postAdapter;
-    ArrayList<Post> posts;
-    private CollectionReference notebookRef = MainActivity.db.collection("Post");
-
+    private ArrayList<Post> posts;
+    private ArrayList<Post> topRecipes;
+    private CollectionReference postRef = MainActivity.db.collection("Post");
+    private CollectionReference commentRef = MainActivity.db.collection("Comment");
+    private CollectionReference followRef = MainActivity.db.collection("Follow");
     private OnFragmentCall onFragmentCall;
 
     @Override
@@ -79,6 +83,7 @@ public class HomeFragment extends Fragment{
         rvChef = v.findViewById(R.id.rvChef);
         rvRecipe = v.findViewById(R.id.rvRecipe);
         posts = new ArrayList<>();
+        topRecipes = new ArrayList<>();
         ButterKnife.bind(v);
         importTopPost();
         importTopAttribute();
@@ -113,14 +118,14 @@ public class HomeFragment extends Fragment{
                             userImgUrl = documentSnapshot.get("userImgUrl").toString();
                             like = Integer.parseInt(documentSnapshot.get("like").toString());
                             comment = Integer.parseInt(documentSnapshot.get("comment").toString());
-                            Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment,userName);
+                            Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment, userName);
                             posts.add(post);
                         }
-                        postAdapter = new TopPostAdapter(posts,getContext(),rvPost);
+                        postAdapter = new TopPostAdapter(posts, getContext(), rvPost);
                         postAdapter.setOnAdapterClick(new TopPostAdapter.OnAdapterClick() {
                             @Override
-                            public void OnCommentClicked(String postId,String userID) {
-                                onFragmentCall.onCommentClicked(postId,userID);
+                            public void OnCommentClicked(String postId, String userID) {
+                                onFragmentCall.onCommentClicked(postId, userID);
                             }
                         });
                         rvPost.setAdapter(postAdapter);
@@ -137,6 +142,22 @@ public class HomeFragment extends Fragment{
     public void importTopAttribute() {
         rvChef.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        followRef.orderBy("follower", Query.Direction.DESCENDING).limit(10).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
+
         rvChef.setLayoutManager(lln);
         TopAttributeAdapter postAdapter = new TopAttributeAdapter((ArrayList<User>) User.initDataToTopAttribute());
         rvChef.setAdapter(postAdapter);
@@ -146,12 +167,62 @@ public class HomeFragment extends Fragment{
         rvRecipe.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvRecipe.setLayoutManager(lln);
-        TopRecipeAdapter postAdapter = new TopRecipeAdapter((ArrayList<Post>) Post.initDataToTopRecipe());
-        rvRecipe.setAdapter(postAdapter);
+        postRef.orderBy("like", Query.Direction.DESCENDING).limit(10).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (final QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                        final String title = queryDocumentSnapshot.getString("title");
+                        final String urlImage = queryDocumentSnapshot.getString("urlImage");
+                        final String userID = queryDocumentSnapshot.getString("userID");
+                        final String postID = queryDocumentSnapshot.getString("postID");
+                        final int like = Integer.parseInt(queryDocumentSnapshot.get("like").toString());
+                        final int[] comment = {0};
+                        commentRef.whereEqualTo("postID", postID).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    //doan nay tu tu sua lai dang bi null pointer execption phai dung catch
+                                    for (QueryDocumentSnapshot queryDocumentSnapshot1 : task.getResult()) {
+                                        List<Map<String, Object>> arr = (List<Map<String, Object>>) queryDocumentSnapshot1.get("comment");
+                                        try {
+                                            if (arr != null || arr.size() != 0) {
+                                                comment[0] = arr.size();
+                                            } else {
+                                                comment[0] = 0;
+                                            }
+                                        } catch (Exception ex) {
+                                            comment[0] = 0;
+                                        }
+
+                                    }
+                                }
+                                Post post = new Post(postID, userID, title, urlImage, like, comment[0]);
+                                topRecipes.add(post);
+                                TopRecipeAdapter postAdapter = new TopRecipeAdapter(topRecipes);
+                                rvRecipe.setAdapter(postAdapter);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        });
+
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
     }
 
-    public interface OnFragmentCall{
-        void onCommentClicked(String postID,String userID);
+    public interface OnFragmentCall {
+        void onCommentClicked(String postID, String userID);
     }
 
     public void setOnFragmentCall(OnFragmentCall onFragmentCall) {

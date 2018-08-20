@@ -116,6 +116,7 @@ public class ViewProfileFragment extends Fragment {
     private String documentNoti;
     private List<Map<String, Object>> listNoti;
     private ArrayList<NotificationDetails> listNotiDetails;
+    private ViewProfileFragment viewProfileFragment;
 
     public ViewProfileFragment() {
         // Required empty public constructor
@@ -128,6 +129,7 @@ public class ViewProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_view_profile, container, false);
         ButterKnife.bind(this, v);
+        viewProfileFragment = this;
         count = 0;
         posts = new ArrayList<>();
         Bundle bundle = getArguments();
@@ -161,6 +163,14 @@ public class ViewProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+    }
+
+    public void removeFragment(Fragment fragment) {
+        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
 
     }
 
@@ -549,8 +559,7 @@ public class ViewProfileFragment extends Fragment {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getActivity().finish();
-//                getActivity().dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+                removeFragment(viewProfileFragment);
             }
         });
     }

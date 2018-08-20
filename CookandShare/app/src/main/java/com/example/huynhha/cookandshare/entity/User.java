@@ -131,10 +131,10 @@ public class User {
         this.firstNameLower = firstNameLower;
     }
 
-    public User(String userID, String mail, String imgUrl) {
+    public User(String userID, String firstName, String imgUrl) {
         this.userID = userID;
         this.imgUrl = imgUrl;
-        this.mail = mail;
+        this.firstName = firstName;
     }
 
     public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String mail, String dateOfBirth) {

@@ -81,6 +81,7 @@ public class CookbookInfoFragment extends Fragment {
     private String userUrlImage;
     private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
     private CookbookInfoFragment cookbookInfoFragment;
+    private int count;
 
     public CookbookInfoFragment() {
         // Required empty public constructor
@@ -94,6 +95,7 @@ public class CookbookInfoFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_cookbook_info, container, false);
         ButterKnife.bind(this, v);
         cookbookInfoFragment = this;
+        count = 0;
         Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.getString("cookbookID") != null) {
@@ -184,8 +186,8 @@ public class CookbookInfoFragment extends Fragment {
                                                     Toast.makeText(getActivity(), "Đã xóa Cookbook", Toast.LENGTH_SHORT).show();
                                                 }
 //                                                Toast.makeText(getActivity(), "Đã xóa Cookbook", Toast.LENGTH_SHORT).show();
-                                                Intent intent=new Intent(getActivity(), CookBookActivity.class);
-                                                intent.putExtra("getUserID",currentUser);
+                                                Intent intent = new Intent(getActivity(), CookBookActivity.class);
+                                                intent.putExtra("getUserID", currentUser);
                                                 startActivity(intent);
                                                 dialog.dismiss();
                                             }
@@ -222,6 +224,7 @@ public class CookbookInfoFragment extends Fragment {
                             MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    count++;
                                     if (task.isSuccessful()) {
                                         QuerySnapshot querySnapshot = task.getResult();
                                         if (task.getResult() != null) {
@@ -229,6 +232,9 @@ public class CookbookInfoFragment extends Fragment {
                                                 image[0] = queryDocumentSnapshot.get("urlImage").toString();
                                                 Picasso.get().load(image[0]).fit().centerCrop().into(imgMain);
                                             }
+                                        }
+                                        if (count == task.getResult().size()) {
+                                            loadListPost(listpost);
                                         }
                                     }
                                 }
@@ -244,7 +250,7 @@ public class CookbookInfoFragment extends Fragment {
                             tvDescriptopn.setText(documentSnapshot.get("cookbookDescription").toString());
                             tvNumberPost.setText(numberpost + " công thức");
                             cb = new Cookbook(documentSnapshot.getId().toString(), documentSnapshot.get("cookbookName").toString(), documentSnapshot.get("cookbookDescription").toString());
-                            loadListPost(listpost);
+//                            loadListPost(listpost);
                         } else {
                             System.out.println("Error");
                         }
@@ -298,36 +304,43 @@ public class CookbookInfoFragment extends Fragment {
             MainActivity.db.collection("Post").whereEqualTo("postID", lst).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    final int[] cnt = {0};
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-                            String postID = queryDocumentSnapshot.get("postID").toString();
-                            String postRate = queryDocumentSnapshot.get("numberOfRate").toString();
-                            String postTitle = queryDocumentSnapshot.get("title").toString();
-                            String postUrlImage = queryDocumentSnapshot.get("urlImage").toString();
-                            String userID = queryDocumentSnapshot.get("userID").toString();
+                            final String postID = queryDocumentSnapshot.get("postID").toString();
+                            final String postRate = queryDocumentSnapshot.get("numberOfRate").toString();
+                            final String postTitle = queryDocumentSnapshot.get("title").toString();
+                            final String postUrlImage = queryDocumentSnapshot.get("urlImage").toString();
+                            final String userIDx = queryDocumentSnapshot.get("userID").toString();
                             final String[] userName = new String[1];
-                            MainActivity.db.collection("User").whereEqualTo("userID", userID).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            MainActivity.db.collection("User").whereEqualTo("userID", userIDx).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    cnt[0]++;
                                     if (task.isSuccessful()) {
                                         QuerySnapshot querySnapshot1 = task.getResult();
                                         for (QueryDocumentSnapshot queryDocumentSnapshot1 : querySnapshot1) {
                                             userName[0] = queryDocumentSnapshot1.get("firstName").toString();
                                         }
+                                        Post post = new Post(postRate, userName[0], postID, postTitle, postUrlImage);
+                                        posts.add(post);
+                                    }
+                                    if (cnt[0] == task.getResult().size()) {
+                                        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts, cookbookID, userIDx, userName[0], userUrlImage,userID);
+                                        rv.setAdapter(cookbookListPostAdapter);
                                     }
                                 }
+
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     System.out.println(e.getMessage());
                                 }
                             });
-                            Post post = new Post(postRate, userName[0], postID, postTitle, postUrlImage);
-                            posts.add(post);
+
                         }
-                        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts, cookbookID, userID, userName, userUrlImage);
-                        rv.setAdapter(cookbookListPostAdapter);
+
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
