@@ -20,6 +20,47 @@ public class Post {
     private int like;
     private int comment;
     private String postTime;
+    private int  countRate;
+    private int countView;
+
+    public int getCountRate() {
+        return countRate;
+    }
+
+    public void setCountRate(int countRate) {
+        this.countRate = countRate;
+    }
+
+    public int getCountView() {
+        return countView;
+    }
+
+    public void setCountView(int countView) {
+        this.countView = countView;
+    }
+
+    public Post(String numberOfRate, String userName, String numberOfPeople, String postID, String userID, String userImgUrl, String title, String titleLower, String description, String time, String urlImage, String difficult, int like, int comment, String postTime, int countRate, int countView, List<Material> materials, List<PostStep> postSteps) {
+        this.numberOfRate = numberOfRate;
+        this.userName = userName;
+        this.numberOfPeople = numberOfPeople;
+        this.postID = postID;
+        this.userID = userID;
+        this.userImgUrl = userImgUrl;
+        this.title = title;
+        this.titleLower = titleLower;
+        this.description = description;
+        this.time = time;
+        this.urlImage = urlImage;
+        this.difficult = difficult;
+        this.like = like;
+        this.comment = comment;
+        this.postTime = postTime;
+        this.countRate = countRate;
+        this.countView = countView;
+        this.materials = materials;
+        this.postSteps = postSteps;
+    }
+
     private List<Material> materials;
     private List<PostStep> postSteps;
 

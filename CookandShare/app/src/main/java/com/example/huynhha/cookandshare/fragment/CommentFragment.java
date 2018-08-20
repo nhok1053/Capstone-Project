@@ -194,6 +194,7 @@ public class CommentFragment extends Fragment {
                     list1.add(updateMap);
                 }
                 db.collection("Comment").document(documentID).update("comment", list1);
+
                 edt_comment.setText("");
                 commentAdapter = new CommentAdapter(list, getContext(), postID, rc_comment);
                 rc_comment.setAdapter(commentAdapter);

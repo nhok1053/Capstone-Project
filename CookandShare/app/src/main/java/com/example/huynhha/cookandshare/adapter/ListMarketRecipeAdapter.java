@@ -48,7 +48,6 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         final Post post = posts.get(position);
-        System.out.println("Post size :" + posts.size() + " " + post.getTitle().toString());
         holder.txt_name_recipe.setText(post.getTitle().toString());
         holder.time_create.setText("Thêm vào lúc: " + post.getTime().toString());
         System.out.println("Post IA: "+post.getPostID().toString());

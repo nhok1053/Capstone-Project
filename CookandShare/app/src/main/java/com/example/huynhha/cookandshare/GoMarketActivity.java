@@ -76,7 +76,6 @@ public class GoMarketActivity extends AppCompatActivity {
                 post.setTime(cursor.getString(cursor.getColumnIndex("time")));
                 post.setDescription(cursor.getString(cursor.getColumnIndex("_id")));
                 post.setUserID(cursor.getString(cursor.getColumnIndex("userID")));
-                System.out.println("Name food : "+post.getTitle().toString());
                 posts.add(post);
                 cursor.moveToNext();
             }

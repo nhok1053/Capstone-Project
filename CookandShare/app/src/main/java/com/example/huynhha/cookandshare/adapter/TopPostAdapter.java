@@ -72,6 +72,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     private CollectionReference postRef = FirebaseFirestore.getInstance().collection("Post");
     private CollectionReference userRef = FirebaseFirestore.getInstance().collection("User");
     private CollectionReference notiRef = FirebaseFirestore.getInstance().collection("Notification");
+    private CollectionReference commentRef = FirebaseFirestore.getInstance().collection("Comment");
     private String documentID = "";
     private int count = 0;
     private RecyclerView recyclerView;
@@ -79,8 +80,10 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     private ArrayList<String> listPostID;
     private String documentNoti = "";
     private List<Map<String, Object>> listNoti = new ArrayList<>();
+    private List<Map<String, Object>> listComment = new ArrayList<>();
     private ArrayList<NotificationDetails> listNotiDetails = new ArrayList<>();
     private int checkCount = 0;
+    private int sizeComment = 0;
 
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
@@ -162,11 +165,12 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
 
         final Post post = posts.get(position);
         final int adapterPosition = position;
+        listComment(post.getPostID(),holder);
         if (firebaseAuth.getCurrentUser() != null) {
             currentUser = firebaseAuth.getUid().toString();
 
         }
-        holder.like.setText("Like : " + post.getLike());
+        holder.like.setText("Thích : " + post.getLike());
         if (isLike(post.getPostID())) {
             holder.btnLike.setEnabled(false);
 
@@ -186,7 +190,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                     checkCount++;
                                     int likeNumber = documentSnapshot.getLong("like").intValue() + 1;
                                     postRef.document(documentID).update("like", likeNumber);
-                                    holder.like.setText("Like : " + likeNumber);
+                                    holder.like.setText("Thích : " + likeNumber);
                                 }
                                 if (checkCount == 1) {
                                     getNotification(post1.getUserID().toString(), documentID, post1.getPostID());
@@ -235,15 +239,14 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Picasso.get().load(post.getUrlImage()).resize(pxWidth, 0).into(holder.imgContent);
         holder.title.setText(post.getTitle());
         holder.description.setText(post.getDescription());
-
-        holder.comment.setText("Comment :" + post.getComment());
+        System.out.println("SIZE comment " + sizeComment);
+        holder.comment.setText("Bình luận : "+0);
 
         holder.imgContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PostDetails.class);
                 Bundle bundle = new Bundle();
-
                 bundle.putString("postID", post.getPostID());
                 bundle.putString("userID", post.getUserID());
                 bundle.putString("userName", holder.userName.getText().toString());
@@ -256,14 +259,14 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             @Override
             public void onClick(View v) {
                 Post post1 = posts.get(adapterPosition);
-                System.out.println("ADAPTER position "+adapterPosition);
+                System.out.println("ADAPTER position " + adapterPosition);
                 CommentFragment commentFragment = new CommentFragment();
                 Bundle bundle = new Bundle();
-                System.out.println("POSTID :aa "+post1.getPostID());
+                System.out.println("POSTID :aa " + post1.getPostID());
                 bundle.putString("postID", post1.getPostID());
                 bundle.putString("userID", post1.getUserID());
                 commentFragment.setArguments(bundle);
-                ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main,commentFragment).addToBackStack(null).commit();
+                ((MainActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, commentFragment).addToBackStack(null).commit();
 
             }
         });
@@ -478,5 +481,24 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         System.out.println("check noti comment");
         notiRef.document(documentID).update("notification", listNoti);
         Toast.makeText(context, "Add Noti Success", Toast.LENGTH_SHORT).show();
+    }
+
+    public void listComment(String postID, final PostViewHolder holder) {
+        commentRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        listComment = (List<Map<String, Object>>) document.get("comment");
+                        if (listComment != null) {
+                            sizeComment = listComment.size();
+                            holder.comment.setText("Bình luận : "+sizeComment);
+                            System.out.println("sizeComment " + sizeComment);
+                        }
+
+                    }
+                }
+            }
+        });
     }
 }

@@ -43,6 +43,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:textColor="#000000"
                         android:id="@+id/cvTopPostUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -83,6 +84,7 @@
                 android:layout_marginTop="8dp" />
 
             <TextView
+                android:textColor="#000000"
                 android:id="@+id/cvTopPostTvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,12 +111,14 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:textColor="@color/colorLikeTextt"
                     android:id="@+id/cvTopPostTvLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thích" />
 
                 <TextView
+                    android:textColor="@color/colorLikeTextt"
                     android:id="@+id/cvTopPostTvComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

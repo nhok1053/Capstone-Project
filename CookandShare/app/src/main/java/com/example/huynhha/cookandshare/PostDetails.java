@@ -114,6 +114,7 @@ public class PostDetails extends AppCompatActivity {
     private Boolean isGoMarket = false;
     private ImageView redDot;
     private TextView numberOfMarketRecipe;
+    private int countToast = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +130,7 @@ public class PostDetails extends AppCompatActivity {
         postsName = new ArrayList<>();
         listRated = new ArrayList<>();
         listPostID = new ArrayList<>();
+        list = new ArrayList<>();
         getData(postID);
         cbName = new ArrayList<>();
         setUp();
@@ -141,11 +143,11 @@ public class PostDetails extends AppCompatActivity {
         isFavourite = checkFavourite();
         isRated = checkRated();
         isGoMarket = checkGoMarketList();
-        System.out.println("CHEKC"+isGoMarket);
+        System.out.println("CHEKC" + isGoMarket);
         if (listPostID != null) {
             redDot.setVisibility(View.VISIBLE);
             numberOfMarketRecipe.setVisibility(View.VISIBLE);
-            numberOfMarketRecipe.setText(""+listPostID.size());
+            numberOfMarketRecipe.setText("" + listPostID.size());
         }
 
         System.out.println("israted+ " + isRated.toString());
@@ -179,6 +181,10 @@ public class PostDetails extends AppCompatActivity {
         // editPostViewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
+    }
+
+    public void countViewSet() {
+
     }
 
     private void setupTabIcons() {
@@ -365,6 +371,7 @@ public class PostDetails extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
+                        String docID = document.getId();
                         post.setUrlImage(document.get("urlImage").toString());
                         post.setTitle(document.get("title").toString());
                         post.setUserID(document.get("userID").toString());
@@ -385,6 +392,9 @@ public class PostDetails extends AppCompatActivity {
                         System.out.println("Quatity" + list1.get(0).toString());
                         post.setMaterials(list);
                         setData(post);
+                        int countView = 0;
+                        countView = document.getLong("countView").intValue();
+                        postRef.document(docID).update("countView", (countView + 1));
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -427,14 +437,17 @@ public class PostDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isGoMarket) {
-                    Toast.makeText(context, "Bạn đã thêm món ăn này vào danh sách đi chợ rồi!", Toast.LENGTH_SHORT).show();
+                    countToast++;
+                    if (countToast == 1) {
+                        Toast.makeText(context, "Bạn đã thêm món ăn này vào danh sách đi chợ rồi!", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     saveData();
                     goMarketDataOffline();
                     redDot.setVisibility(View.VISIBLE);
                     numberOfMarketRecipe.setVisibility(View.VISIBLE);
-                    numberOfMarketRecipe.setText(""+listPostID.size());
-
+                    numberOfMarketRecipe.setText("" + listPostID.size());
+                    isGoMarket = true;
                 }
 
             }
@@ -530,9 +543,10 @@ public class PostDetails extends AppCompatActivity {
                                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                             documentID = documentSnapshot.getId();
                                             String strRate = documentSnapshot.getString("numberOfRate");
+                                            int countRate = documentSnapshot.getLong("countRate").intValue();
                                             System.out.println("RATE: " + strRate);
                                             System.out.println("Kaka: " + rateBar.getRating());
-                                            addRate(strRate, rateBar.getRating());
+                                            addRate(strRate, rateBar.getRating(), countRate);
                                             dialog.cancel();
                                         }
                                     }
@@ -580,17 +594,17 @@ public class PostDetails extends AppCompatActivity {
                 }
             }
         }
-        System.out.println("CHeck task : "+isGoMarket);
+        System.out.println("CHeck task : " + isGoMarket);
         return isGoMarket;
     }
 
-    public void addRate(String strRate, float newRate) {
+    public void addRate(String strRate, float newRate, int countRate) {
         float oldRate = Float.parseFloat(strRate);
-        float rate = (oldRate * 2 + newRate) / 3;
+        float rate = (oldRate * countRate + newRate) / (countRate + 1);
         System.out.println("New Rate :" + rate);
         String rateNew = String.valueOf(rate);
         postRef.document(documentID).update("numberOfRate", rateNew);
-
+        postRef.document(documentID).update("countRate", (countRate + 1));
         Toast.makeText(this, "Cảm ơn bạn đã đánh giá công thức!", Toast.LENGTH_SHORT).show();
         finish();
         startActivity(getIntent());

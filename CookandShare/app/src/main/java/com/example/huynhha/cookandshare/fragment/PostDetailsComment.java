@@ -27,11 +27,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.ServerTimestamp;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +45,7 @@ public class PostDetailsComment extends Fragment {
     private RecyclerView rcPostDetailsComment;
     private EditText edtPostDetailsComment;
     private Button btnSendComment;
-    private String postID ="";
+    private String postID = "";
     private String documentID = "";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private List<Map<String, Object>> list1;
@@ -56,11 +58,11 @@ public class PostDetailsComment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private String documentNoti = "";
     private int count = 0;
-    private String userID="";
+    private String userID = "";
     private ArrayList<Comment> list;
     private CommentAdapter commentAdapter;
-
-
+    @ServerTimestamp
+    Date date;
 
 
     public PostDetailsComment() {
@@ -80,16 +82,17 @@ public class PostDetailsComment extends Fragment {
         listNotiDetails = new ArrayList<>();
         postID = getActivity().getIntent().getExtras().getString("postID");
         userID = getActivity().getIntent().getExtras().getString("userID");
-
+        date = new Date();
         loadComment(postID);
         addComment();
         return v;
 
     }
-    public void setUp(View v){
-            rcPostDetailsComment = v.findViewById(R.id.rc_post_comment);
-            edtPostDetailsComment = v.findViewById(R.id.edt_post_comment);
-            btnSendComment = v.findViewById(R.id.btn_send_post_comment);
+
+    public void setUp(View v) {
+        rcPostDetailsComment = v.findViewById(R.id.rc_post_comment);
+        edtPostDetailsComment = v.findViewById(R.id.edt_post_comment);
+        btnSendComment = v.findViewById(R.id.btn_send_post_comment);
     }
 
 
@@ -116,6 +119,7 @@ public class PostDetailsComment extends Fragment {
                                 comment.setUserID(list1.get(i).get("userID").toString());
                                 comment.setUserImgUrl(list1.get(i).get("userImgUrl").toString());
                                 comment.setCommentContent(list1.get(i).get("commentContent").toString());
+
                                 list.add(comment);
                             }
                             System.out.println(list.toString());
@@ -153,6 +157,7 @@ public class PostDetailsComment extends Fragment {
                 updateMap.put("userImgUrl", currentFirebaseUser.getPhotoUrl().toString());
                 updateMap.put("userID", currentFirebaseUser.getUid().toString());
                 updateMap.put("commentContent", comment);
+                updateMap.put("time",date);
                 if (list1 != null) {
                     list1.add(updateMap);
                 } else {
@@ -237,7 +242,7 @@ public class PostDetailsComment extends Fragment {
         updateNoti.put("type", 1);
         updateNoti.put("userID", firebaseAuth.getCurrentUser().getUid().toString());
         updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-        updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString()+ " đã bình luận vào bài viết của bạn");
+        updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString() + " đã bình luận vào bài viết của bạn");
         if (listNoti == null) {
             listNoti = new ArrayList<>();
             listNoti.add(updateNoti);

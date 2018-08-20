@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ServerTimestamp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -45,6 +46,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +74,8 @@ public class PostRecipe extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private TabLayout tabLayout;
     private String uuid;
+    @ServerTimestamp
+    Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,7 @@ public class PostRecipe extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().hide();
         setTabLayout();
+        date = new Date();
         uuid = UUID.randomUUID().toString().replace("-", "");
         setPostListener(uuid, uuid);
         closeActivity();
@@ -204,6 +209,7 @@ public class PostRecipe extends AppCompatActivity {
                         }
                         if (count == postSteps.size()) {
                             System.out.println("Count" + count);
+
                             post.setPostID(postId);
                             post.setTitle(postRecipeMaterialFragment.getRecipeTitle());
                             post.setDescription(postRecipeMaterialFragment.getDescription());
@@ -216,7 +222,7 @@ public class PostRecipe extends AppCompatActivity {
                             try {
                                 FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                 post.setUserID(currentFirebaseUser.getUid());
-                                //post.setUserName(currentFirebaseUser.getDisplayName());
+                                post.setUserName(currentFirebaseUser.getDisplayName());
                                 post.setUserImgUrl(currentFirebaseUser.getPhotoUrl().toString());
                             } catch (Exception e) {
                                 System.out.println(e);
@@ -224,9 +230,11 @@ public class PostRecipe extends AppCompatActivity {
                             DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
                             final String date = df.format(Calendar.getInstance().getTime());
                             post.setPostTime(date.toString());
-                            post.setNumberOfRate("3");
+                            post.setNumberOfRate("0");
                             post.setDifficult("Dễ");
                             post.setPostSteps(postSteps);
+                            post.setCountRate(0);
+                            post.setCountView(0);
                             loadData(post);
                         }
                     }
@@ -245,6 +253,17 @@ public class PostRecipe extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Map<String, Object> data = new HashMap<>();
+                String documentID = documentReference.getId();
+                Map<String, Object> updateMap = new HashMap<>();
+                updateMap.put("postTime",date);
+
+             //   postRef.document(documentID).update("postTime",date);
+                postRef.document(documentID).update(updateMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
                 data.put("postID", uuid);
                 reportRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
