@@ -34,7 +34,7 @@ public class FollowListAdapter extends RecyclerView.Adapter<FollowListAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = users.get(position);
         Picasso.get().load(user.getImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.avatar);
-        holder.name.setText(user.getSecondName());
+        holder.name.setText(user.getFirstName());
     }
 
     @Override

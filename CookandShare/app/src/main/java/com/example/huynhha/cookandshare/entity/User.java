@@ -15,7 +15,7 @@ public class User {
     private String sex;
     private String firstName;
     private String firstNameLower;
-    private String secondName;
+    private String mail;
     private String dateOfBirth;
     private List<String> postID;
     private boolean status;
@@ -28,7 +28,7 @@ public class User {
         this.status = status;
     }
 
-    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String secondName, String dateOfBirth, List<String> postID, boolean status, Date time) {
+    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String mail, String dateOfBirth, List<String> postID, boolean status, Date time) {
 
         this.userID = userID;
         this.imgUrl = imgUrl;
@@ -36,7 +36,7 @@ public class User {
         this.sex = sex;
         this.firstName = firstName;
         this.firstNameLower = firstNameLower;
-        this.secondName = secondName;
+        this.mail = mail;
         this.dateOfBirth = dateOfBirth;
         this.postID = postID;
         this.status = status;
@@ -47,14 +47,13 @@ public class User {
     Date time;
 
 
-    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String secondName, String dateOfBirth, List<String> postID, Date time) {
+    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String mail, String dateOfBirth, List<String> postID, Date time) {
         this.userID = userID;
         this.imgUrl = imgUrl;
         this.phone = phone;
         this.sex = sex;
         this.firstName = firstName;
         this.firstNameLower = firstNameLower;
-        this.secondName = secondName;
         this.dateOfBirth = dateOfBirth;
         this.postID = postID;
         this.time = time;
@@ -108,12 +107,12 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getMail() {
+        return mail;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getDateOfBirth() {
@@ -132,20 +131,20 @@ public class User {
         this.firstNameLower = firstNameLower;
     }
 
-    public User(String userID, String secondName, String imgUrl) {
+    public User(String userID, String mail, String imgUrl) {
         this.userID = userID;
         this.imgUrl = imgUrl;
-        this.secondName = secondName;
+        this.mail = mail;
     }
 
-    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String secondName, String dateOfBirth) {
+    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String mail, String dateOfBirth) {
         this.userID = userID;
         this.imgUrl = imgUrl;
         this.phone = phone;
         this.sex = sex;
         this.firstName = firstName;
         this.firstNameLower = firstNameLower;
-        this.secondName = secondName;
+        this.mail = mail;
         this.dateOfBirth = dateOfBirth;
     }
 

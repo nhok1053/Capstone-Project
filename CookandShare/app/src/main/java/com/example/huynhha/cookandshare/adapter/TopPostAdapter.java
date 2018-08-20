@@ -156,27 +156,27 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         });
     }
 
-    @SuppressLint("ResourceAsColor")
+
     @Override
-    public void onBindViewHolder(final PostViewHolder holder, final int position) {
+    public void onBindViewHolder(final PostViewHolder holder, int position) {
 
         final Post post = posts.get(position);
-
+        final int adapterPosition = position;
         if (firebaseAuth.getCurrentUser() != null) {
             currentUser = firebaseAuth.getUid().toString();
 
         }
         holder.like.setText("Like : " + post.getLike());
         if (isLike(post.getPostID())) {
-            holder.btnLike.setTextColor(R.color.colorLikeTextt);
             holder.btnLike.setEnabled(false);
 
         } else {
             holder.btnLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    saveLike(post);
-                    postRef.whereEqualTo("postID", post.getPostID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    final Post post1 = posts.get(adapterPosition);
+                    saveLike(post1);
+                    postRef.whereEqualTo("postID", post1.getPostID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
@@ -189,13 +189,12 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                     holder.like.setText("Like : " + likeNumber);
                                 }
                                 if (checkCount == 1) {
-                                    getNotification(post.getUserID().toString(), documentID, post.getPostID());
+                                    getNotification(post1.getUserID().toString(), documentID, post1.getPostID());
                                     checkCount = 0;
                                 }
                             }
                         }
                     });
-                    holder.btnLike.setTextColor(R.color.colorLikeTextt);
                     holder.btnLike.setEnabled(false);
                 }
             });
@@ -244,6 +243,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             public void onClick(View v) {
                 Intent intent = new Intent(context, PostDetails.class);
                 Bundle bundle = new Bundle();
+
                 bundle.putString("postID", post.getPostID());
                 bundle.putString("userID", post.getUserID());
                 bundle.putString("userName", holder.userName.getText().toString());
@@ -255,7 +255,16 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         holder.btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onAdapterClick.OnCommentClicked(post.getPostID().toString(), post.getUserID().toString());
+                Post post1 = posts.get(adapterPosition);
+                System.out.println("ADAPTER position "+adapterPosition);
+                CommentFragment commentFragment = new CommentFragment();
+                Bundle bundle = new Bundle();
+                System.out.println("POSTID :aa "+post1.getPostID());
+                bundle.putString("postID", post1.getPostID());
+                bundle.putString("userID", post1.getUserID());
+                commentFragment.setArguments(bundle);
+                ((MainActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main,commentFragment).addToBackStack(null).commit();
+
             }
         });
         holder.cvTopPostBtnShowMore.setOnClickListener(new View.OnClickListener() {
@@ -293,7 +302,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     System.out.println("Vao xoa");
                                                                     Toast.makeText(context, "Xoá thành công", Toast.LENGTH_SHORT).show();
-                                                                    posts.remove(position);
+                                                                    posts.remove(adapterPosition);
                                                                     topPostAdapter = new TopPostAdapter(posts, context, recyclerView);
                                                                     recyclerView.setAdapter(topPostAdapter);
                                                                 }
@@ -374,7 +383,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             for (int i = 0; i < listPostID.size(); i++) {
                 if (!postID.equals(listPostID.get(i))) {
                     isLike = false;
-                }else {
+                } else {
                     isLike = true;
                     break;
                 }

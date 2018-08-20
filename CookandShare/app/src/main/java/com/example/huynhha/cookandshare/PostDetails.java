@@ -42,6 +42,7 @@ import com.example.huynhha.cookandshare.model.DBContext;
 import com.example.huynhha.cookandshare.model.DBHelper;
 import com.example.huynhha.cookandshare.model.FavouriteDBHelper;
 import com.example.huynhha.cookandshare.model.MaterialDBHelper;
+import com.example.huynhha.cookandshare.model.RateDBHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -74,7 +75,6 @@ import java.util.TimeZone;
 public class PostDetails extends AppCompatActivity {
     private static final String TAG = "Loi";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private StorageReference storageReference;
     private CollectionReference postRef = db.collection("Post");
     private ImageView btn_back;
     private ImageView btn_favourite;
@@ -84,13 +84,6 @@ public class PostDetails extends AppCompatActivity {
     private TextView name_of_food;
     private TextView create_by_name;
     private RatingBar ratingBar;
-    private TextView txt_recipe_description;
-    private TextView txt_duration;
-    private TextView txt_number_of_people_eat_details;
-    private TextView txt_difficult;
-    private TextView txt_material;
-    private RecyclerView rc_list_recipe;
-    private Button btn_start_cooking;
     public Post post = new Post();
     private ProgressDialog progressDialog;
     private List<Material> list;
@@ -104,6 +97,7 @@ public class PostDetails extends AppCompatActivity {
     private User user;
     private ArrayList<Cookbook> cookbooks;
     private ArrayList<String> cbName;
+    private ArrayList<String> listPostID;
     private int[] tabIcons = {
             R.drawable.ic_cart,
             R.drawable.ic_categories
@@ -114,7 +108,12 @@ public class PostDetails extends AppCompatActivity {
     private PostDetailsComment postDetailsComment;
     private String userNamePost = "";
     private ArrayList<String> postsName;
+    private ArrayList<String> listRated;
     private Boolean isFavourite = false;
+    private Boolean isRated = false;
+    private Boolean isGoMarket = false;
+    private ImageView redDot;
+    private TextView numberOfMarketRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,17 +127,30 @@ public class PostDetails extends AppCompatActivity {
         context = this;
         cookbooks = new ArrayList<>();
         postsName = new ArrayList<>();
-        getDataFromDBOffline();
+        listRated = new ArrayList<>();
+        listPostID = new ArrayList<>();
+        getData(postID);
         cbName = new ArrayList<>();
         setUp();
         getSupportActionBar().hide();
-        storageReference = FirebaseStorage.getInstance().getReference();
         postDetailsMaterialFragment = new PostDetailsMaterialFragment();
         postDetailsComment = new PostDetailsComment();
-        getData(postID);
+        getDataFromDBOffline();
+        goMarketDataOffline();
+        dataRated();
         isFavourite = checkFavourite();
-        if (isFavourite == true){
-            System.out.println("Check favourite: "+count);
+        isRated = checkRated();
+        isGoMarket = checkGoMarketList();
+        System.out.println("CHEKC"+isGoMarket);
+        if (listPostID != null) {
+            redDot.setVisibility(View.VISIBLE);
+            numberOfMarketRecipe.setVisibility(View.VISIBLE);
+            numberOfMarketRecipe.setText(""+listPostID.size());
+        }
+
+        System.out.println("israted+ " + isRated.toString());
+        if (isFavourite) {
+            System.out.println("Check favourite: " + count);
             btn_favourite.setImageResource(R.drawable.heartactiver);
             count++;
         }
@@ -146,7 +158,7 @@ public class PostDetails extends AppCompatActivity {
         saveDataGoMarket();
         setFavourite();
         addToCookbook();
-        setRatingBar();
+        setRatingBarListener();
         setBtnBackListener();
     }
 
@@ -186,8 +198,10 @@ public class PostDetails extends AppCompatActivity {
         name_of_food = findViewById(R.id.name_of_recipe);
         create_by_name = findViewById(R.id.create_by_name);
         ratingBar = findViewById(R.id.ratingBarSmall);
-
-
+        redDot = findViewById(R.id.red_dot);
+        numberOfMarketRecipe = findViewById(R.id.numberOfMarketRecipe);
+        redDot.setVisibility(View.INVISIBLE);
+        numberOfMarketRecipe.setVisibility(View.INVISIBLE);
     }
 
     public void addToCookbook() {
@@ -340,6 +354,7 @@ public class PostDetails extends AppCompatActivity {
                 isFavourite = true;
                 break;
             }
+
         }
         return isFavourite;
     }
@@ -411,9 +426,28 @@ public class PostDetails extends AppCompatActivity {
         btn_go_market.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData();
+                if (isGoMarket) {
+                    Toast.makeText(context, "Bạn đã thêm món ăn này vào danh sách đi chợ rồi!", Toast.LENGTH_SHORT).show();
+                } else {
+                    saveData();
+                    goMarketDataOffline();
+                    redDot.setVisibility(View.VISIBLE);
+                    numberOfMarketRecipe.setVisibility(View.VISIBLE);
+                    numberOfMarketRecipe.setText(""+listPostID.size());
+
+                }
+
             }
         });
+    }
+
+    public void saveDataRated(String postID) {
+        RateDBHelper rateDBHelper = new RateDBHelper(getApplicationContext());
+        SQLiteDatabase db2 = rateDBHelper.getWritableDatabase();
+        ContentValues contentValues1 = new ContentValues();
+        contentValues1.put(DBContext.RateDB.COLUMN_POST_ID, postID);
+        long newRowRate = db2.insert(DBContext.RateDB.TABLE_NAME, null, contentValues1);
+
     }
 
     public void saveData() {
@@ -424,7 +458,6 @@ public class PostDetails extends AppCompatActivity {
         SQLiteDatabase db1 = materialDBHelper.getWritableDatabase();
         DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
         String date = df.format(Calendar.getInstance().getTime());
-
 // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(DBContext.FeedEntry.COLUMN_NAME_OF_RECIPE, post.getTitle());
@@ -434,11 +467,8 @@ public class PostDetails extends AppCompatActivity {
         values.put(DBContext.FeedEntry.COLUMN_POST_ID, postID);
         System.out.println(values);
 
-
 // Insert the new row, returning the primary key value of the new row
-
         long newRowId = db.insert(DBContext.FeedEntry.TABLE_NAME, null, values);
-
         for (int i = 0; i < list.size(); i++) {
             ContentValues contentValues = new ContentValues();
             System.out.println("RowID " + newRowId);
@@ -457,51 +487,102 @@ public class PostDetails extends AppCompatActivity {
 
     }
 
+    public void goMarketDataOffline() {
+        listPostID.clear();
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + DBContext.FeedEntry.TABLE_NAME, null);
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String post = cursor.getString(cursor.getColumnIndex("postID"));
+                listPostID.add(post);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+    }
+
 
     @SuppressLint("ClickableViewAccessibility")
-    public void setRatingBar() {
+    public void setRatingBarListener() {
         ratingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                final Dialog dialog;
-                dialog = new Dialog(PostDetails.this);
-                dialog.setCancelable(false);
-                dialog.setContentView(R.layout.rating_dialog);
-                final RatingBar rateBar = dialog.findViewById(R.id.ratingBar);
-                Button btnSendRate = dialog.findViewById(R.id.sendRating);
-
-                btnSendRate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                        documentID = documentSnapshot.getId();
-                                        String strRate = documentSnapshot.getString("numberOfRate");
-                                        System.out.println("RATE: " + strRate);
-                                        System.out.println("Kaka: " + rateBar.getRating());
-                                        addRate(strRate, rateBar.getRating());
-                                        dialog.cancel();
+                if (isRated) {
+                    Toast.makeText(context, "Bạn đã đánh giá công thức này rồi!", Toast.LENGTH_SHORT).show();
+                } else {
+                    postID = getIntent().getExtras().getString("postID");
+                    final Dialog dialog;
+                    dialog = new Dialog(PostDetails.this);
+                    dialog.setCancelable(false);
+                    dialog.setContentView(R.layout.rating_dialog);
+                    final RatingBar rateBar = dialog.findViewById(R.id.ratingBar);
+                    Button btnSendRate = dialog.findViewById(R.id.sendRating);
+                    saveDataRated(postID);
+                    btnSendRate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                            documentID = documentSnapshot.getId();
+                                            String strRate = documentSnapshot.getString("numberOfRate");
+                                            System.out.println("RATE: " + strRate);
+                                            System.out.println("Kaka: " + rateBar.getRating());
+                                            addRate(strRate, rateBar.getRating());
+                                            dialog.cancel();
+                                        }
                                     }
                                 }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
 
-                            }
-                        });
-                    }
-                });
-                dialog.show();
-
+                                }
+                            });
+                        }
+                    });
+                    dialog.show();
+                }
                 return false;
             }
         });
     }
 
+    public boolean checkRated() {
+        String postID = getIntent().getExtras().getString("postID");
+        boolean isRated = false;
+        if (listRated != null) {
+            for (int i = 0; i < listRated.size(); i++) {
+                if (postID.equals(listRated.get(i))) {
+                    System.out.println("CHeck task : " + postID + "  " + listRated.get(i));
+                    isRated = true;
+                    break;
+                }
+            }
+        }
+
+        return isRated;
+    }
+
+    public boolean checkGoMarketList() {
+        String postID = getIntent().getExtras().getString("postID");
+        boolean isGoMarket = false;
+        if (listPostID != null) {
+            for (int i = 0; i < listPostID.size(); i++) {
+                if (postID.equals(listPostID.get(i))) {
+                    System.out.println("CHeck task : " + postID + "  " + listPostID.get(i));
+                    isGoMarket = true;
+                    break;
+                }
+            }
+        }
+        System.out.println("CHeck task : "+isGoMarket);
+        return isGoMarket;
+    }
 
     public void addRate(String strRate, float newRate) {
         float oldRate = Float.parseFloat(strRate);
@@ -509,6 +590,7 @@ public class PostDetails extends AppCompatActivity {
         System.out.println("New Rate :" + rate);
         String rateNew = String.valueOf(rate);
         postRef.document(documentID).update("numberOfRate", rateNew);
+
         Toast.makeText(this, "Cảm ơn bạn đã đánh giá công thức!", Toast.LENGTH_SHORT).show();
         finish();
         startActivity(getIntent());
@@ -527,8 +609,26 @@ public class PostDetails extends AppCompatActivity {
             }
         }
         cursor.close();
+
+
     }
 
+    //get rate data
+    public void dataRated() {
+        RateDBHelper rateDBHelper = new RateDBHelper(getApplicationContext());
+        SQLiteDatabase db1 = rateDBHelper.getReadableDatabase();
+        Cursor cursor1 = db1.rawQuery("select * from " + DBContext.RateDB.TABLE_NAME, null);
+        if (cursor1.moveToFirst()) {
+            while (!cursor1.isAfterLast()) {
+                System.out.println("test rated");
+                String post = cursor1.getString(cursor1.getColumnIndex("postID"));
+                System.out.println(post);
+                listRated.add(post);
+                cursor1.moveToNext();
+            }
+        }
+        cursor1.close();
+    }
 }
 
 

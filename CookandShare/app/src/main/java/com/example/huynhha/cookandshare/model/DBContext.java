@@ -77,4 +77,17 @@ public class DBContext {
                 "DROP TABLE IF EXISTS " + LikeDB.TABLE_NAME;
     }
 
+    public static class RateDB implements BaseColumns {
+        public static final String TABLE_NAME = "rateDB";
+        public static final String COLUMN_POST_ID = "postID";
+
+        public static final String SQL_CREATE_RATE =
+                "CREATE TABLE " + RateDB.TABLE_NAME + " (" +
+                        RateDB._ID + " INTEGER PRIMARY KEY," +
+                        RateDB.COLUMN_POST_ID + " TEXT)";
+
+        public static final String SQL_DELETE_RATE =
+                "DROP TABLE IF EXISTS " + RateDB.TABLE_NAME;
+    }
+
 }
