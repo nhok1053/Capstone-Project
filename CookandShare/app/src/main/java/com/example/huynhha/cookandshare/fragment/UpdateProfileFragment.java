@@ -182,10 +182,26 @@ public class UpdateProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int idOfSelected = radioGroup.getCheckedRadioButtonId();
-
                 User user = new User();
-                if (edt_first_name.getText() == null || edt_date_of_birth.getText() == null || edt_email.getText() == null || edt_phone_number == null) {
-                    Toast.makeText(getActivity(), "Wrong input or null blank", Toast.LENGTH_SHORT).show();
+                if (edt_first_name.getText().toString().trim().length() == 0 || edt_date_of_birth.getText().toString().trim().length() == 0 ||
+                        edt_email.getText().toString().trim().length() == 0 || edt_phone_number.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getActivity(), "Vui lòng điền đầy đủ thông tin!!!", Toast.LENGTH_SHORT).show();
+                } else if (!edt_first_name.getText().toString().matches( "^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯẠẢẤẦẨẪẬẮẰẲẴẶ" +
+                        "ẸẺẼỀẾỂưạảấầẩẫậắằẳẵặẹẻẽềếểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +
+                        "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$" )) {
+                    Toast.makeText(getActivity(), "Họ và Tên không được chứa kí tự đặc biệt (trừ khoảng trắng và dấu gạch nối)", Toast.LENGTH_LONG).show();
+                } else if (edt_first_name.getText().toString().trim().length() > 30) {
+                    Toast.makeText(getActivity(), "Họ và Tên không được nhiều hơn 30 kí tự!!!", Toast.LENGTH_SHORT).show();
+                } else if (!edt_email.getText().toString().matches("[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                        "\\@" +
+                        "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                        "(" +
+                        "\\." +
+                        "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                        ")+")) {
+                    Toast.makeText(getActivity(), "Vui lòng điền đúng định dạng email (vd: cookandshare@fpt.edu)", Toast.LENGTH_SHORT).show();
+                } else if (!edt_phone_number.getText().toString().matches("^[+]?[0-9]{10,13}$")) {
+                    Toast.makeText(getActivity(), "Vui lòng nhập số điện thoại đúng định dạng và có độ dài 10-13 kí tự!!!", Toast.LENGTH_SHORT).show();
                 } else {
                     user.setStatus(true);
                     user.setFirstName(edt_first_name.getText().toString());
@@ -212,7 +228,6 @@ public class UpdateProfileFragment extends Fragment {
                     } else {
                         updateProfile(user);
                     }
-
                 }
             }
         });

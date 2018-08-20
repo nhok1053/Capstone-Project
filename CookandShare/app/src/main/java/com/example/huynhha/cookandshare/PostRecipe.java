@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -103,15 +104,15 @@ public class PostRecipe extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("check1", "onActivityResult: " + data);
-        System.out.println(data.getStringExtra("position") + "  check position");
-        if (requestCode == 2) {
-            postRecipeStepFragment.onActivityResult(requestCode, resultCode, data);
-
-        }
-        if (requestCode == 3) {
-            postRecipeMaterialFragment.onActivityResult(requestCode, resultCode, data);
-
+        if(data!=null) {
+            Log.d("check1", "onActivityResult: " + data);
+            System.out.println(data.getStringExtra("position") + "  check position");
+            if (requestCode == 2) {
+                postRecipeStepFragment.onActivityResult(requestCode, resultCode, data);
+            }
+            if (requestCode == 3) {
+                postRecipeMaterialFragment.onActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 
@@ -149,11 +150,61 @@ public class PostRecipe extends AppCompatActivity {
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postSteps = postRecipeStepFragment.a();
-                startPushing(postID);
+                if (validationSuccess())
+                {
+                    postSteps = postRecipeStepFragment.a();
+                    startPushing(postID);
+                }
 
             }
         });
+    }
+
+    private Boolean validationSuccess() {
+        EditText name = findViewById(R.id.edt_recipe_name);
+        EditText description = findViewById(R.id.edt_recipe_description);
+        TextView timecook = findViewById(R.id.tv_time_cook);
+        EditText material = findViewById(R.id.edt_name_of_material);
+        EditText quantity = findViewById(R.id.edt_quatity);
+        if(postRecipeMaterialFragment.getImageUri() == null) {
+            Toast.makeText(getApplicationContext(),"Hãy chọn ảnh của món ăn!!!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(name.getText().toString().trim().length()==0 && name.getText().toString().trim().length() > 50) {
+            Toast.makeText(getApplicationContext(),"Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(description.getText().toString().trim().length()==0 && description.getText().toString().trim().length() > 500) {
+            Toast.makeText(getApplicationContext(),"Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(postRecipeMaterialFragment.getCategory().size() == 0) {
+            Toast.makeText(getApplicationContext(),"Hãy chọn thể loại của món ăn!!!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(timecook.getText().toString().equalsIgnoreCase("0 hour 0 minute") ||
+                timecook.getText().toString().equalsIgnoreCase("0p")  ) {
+            Toast.makeText(getApplicationContext(),"Hãy nhập thời gian!!!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(material.getText().toString().trim().length()==0) {
+            Toast.makeText(getApplicationContext(),"Hãy nhập tên nguyên liệu của món ăn!!!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(quantity.getText().toString().trim().length()==0) {
+            Toast.makeText(getApplicationContext(),"Hãy nhập số lượng của nguyên liệu!!!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+//        if(postSteps == null) {
+//            Toast.makeText(getApplicationContext(),"Hãy chọn ảnh của các bước nấu ăn!!!",Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        if(postSteps.get(count).getDescription().trim().length()==0) {
+//            Toast.makeText(getApplicationContext(),"Hãy viết mô tả của các bước nấu ăn!!!",Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        System.out.println("Post step: " + postSteps.size());
+        return true;
     }
 
     private void startPushing(String postID) {
