@@ -175,11 +175,11 @@ public class PostRecipe extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Hãy chọn ảnh của món ăn!!!",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(name.getText().toString().trim().length()==0 && name.getText().toString().trim().length() > 50) {
+        if(name.getText().toString().trim().length()==0 || name.getText().toString().trim().length() > 50) {
             Toast.makeText(getApplicationContext(),"Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(description.getText().toString().trim().length()==0 && description.getText().toString().trim().length() > 500) {
+        if(description.getText().toString().trim().length()==0 || description.getText().toString().trim().length() > 500) {
             Toast.makeText(getApplicationContext(),"Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!",Toast.LENGTH_SHORT).show();
             return false;
         }
