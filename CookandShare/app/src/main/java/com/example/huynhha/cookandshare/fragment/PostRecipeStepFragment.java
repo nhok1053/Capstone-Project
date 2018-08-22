@@ -106,7 +106,7 @@ public class PostRecipeStepFragment extends Fragment {
         }
     }
 
-    public List<PostStep> a() {
+    public List<PostStep> addPostList() {
         List<PostStep> postStepList = new ArrayList<>();
         postStepAdapter = new PostStepAdapter(getActivity(), postSteps);
         postStepList = postStepAdapter.getPostSteps();

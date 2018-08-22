@@ -77,7 +77,7 @@ public class ReportFragment extends Fragment {
         list = new ArrayList<>();
         listReport = new ArrayList<>();
         date = new Date();
-        getData();
+        loadData();
         closeFragment();
         return v;
 
@@ -100,7 +100,7 @@ public class ReportFragment extends Fragment {
 
     }
 
-    public void getData() {
+    public void loadData() {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -19,6 +19,7 @@ public class User {
     private String dateOfBirth;
     private List<String> postID;
     private boolean status;
+    private int deletePostNum;
 
     public boolean isStatus() {
         return status;
@@ -28,8 +29,15 @@ public class User {
         this.status = status;
     }
 
-    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String mail, String dateOfBirth, List<String> postID, boolean status, Date time) {
+    public int getDeletePostNum() {
+        return deletePostNum;
+    }
 
+    public void setDeletePostNum(int deletePostNum) {
+        this.deletePostNum = deletePostNum;
+    }
+
+    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String mail, String dateOfBirth, List<String> postID, boolean status, int deletePostNum, Date time) {
         this.userID = userID;
         this.imgUrl = imgUrl;
         this.phone = phone;
@@ -40,6 +48,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.postID = postID;
         this.status = status;
+        this.deletePostNum = deletePostNum;
         this.time = time;
     }
 

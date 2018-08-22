@@ -56,10 +56,6 @@ public class CategoryFragment extends Fragment {
 //        setTabLayout();
 //    }
 
-    private void setupTabIcons() {
-        segmentedTab.getTabAt(0).setIcon(tabIcons[0]);
-        segmentedTab.getTabAt(1).setIcon(tabIcons[1]);
-    }
     private void setTabLayout() {
         SubTabAdapter subTabAdapter=new SubTabAdapter(getFragmentManager());
         subTabAdapter.addFragment(new ListAllCategoriesFragment(),"Categories");

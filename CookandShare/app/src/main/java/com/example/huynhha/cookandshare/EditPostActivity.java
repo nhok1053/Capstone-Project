@@ -68,13 +68,13 @@ public class EditPostActivity extends AppCompatActivity {
         postSteps = new ArrayList<>();
         context=this;
         postID = getIntent().getExtras().getString("postID");
-        getDocumentID();
+        loadDocumentID();
         getSupportActionBar().hide();
-        setEditTabLayout();
-        setBtnUpdateRecipe();
+        setUpEditTabLayout();
+        setBtnUpdateRecipeListener();
     }
 
-    public void getDocumentID(){
+    public void loadDocumentID(){
         postRef.whereEqualTo("postID",postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -87,7 +87,7 @@ public class EditPostActivity extends AppCompatActivity {
             }
         });
     }
-    public void setEditTabLayout() {
+    public void setUpEditTabLayout() {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(editMaterialFragment, "Nguyên liệu");
         pagerAdapter.addFragment(editStepFragment, "Bước thực hiện");
@@ -103,7 +103,7 @@ public class EditPostActivity extends AppCompatActivity {
         editTabLayout.getTabAt(1).setIcon(tabIcons[1]);
     }
 
-    private void getListStep() {
+    private void loadListStep() {
         postSteps = editStepFragment.getListStep();
         System.out.println("Demo 1 "+postSteps.size());
         for (int i = 0; i < postSteps.size(); i++) {
@@ -121,7 +121,7 @@ public class EditPostActivity extends AppCompatActivity {
         }
     }
 
-    private void getMaterialRecipe() {
+    private void loadMaterialRecipe() {
         String getDescription = editMaterialFragment.getDescription();
         String getTitle = editMaterialFragment.getRecipeTitle();
         List<Material> getMaterials = editMaterialFragment.getMaterial();
@@ -136,7 +136,7 @@ public class EditPostActivity extends AppCompatActivity {
         postRef.document(documentID).update("title", getTitle);
     }
 
-    private void setBtnUpdateRecipe() {
+    private void setBtnUpdateRecipeListener() {
         updateRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,8 +146,8 @@ public class EditPostActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (validationSuccess()) {
-                            getListStep();
-                            getMaterialRecipe();
+                            loadListStep();
+                            loadMaterialRecipe();
                             Toast.makeText(EditPostActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                             finish();
                             finish();

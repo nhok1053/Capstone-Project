@@ -87,14 +87,14 @@ public class LoginWithPhoneAuthFragment extends Fragment {
         mPhoneAuthProvider = PhoneAuthProvider.getInstance();
         setUpVerifyCallback();
         sendCode();
-        setVerifyCode();
+        setVerifyCodeListener();
         resendCode();
-        setTime();
+        timeCountDown();
         return v;
 
     }
 
-    public void setTime() {
+    public void timeCountDown() {
         new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
                 txtTimeRemaning.setText("" +
@@ -211,7 +211,7 @@ public class LoginWithPhoneAuthFragment extends Fragment {
         });
     }
 
-    public void setVerifyCode() {
+    public void setVerifyCodeListener() {
         btnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

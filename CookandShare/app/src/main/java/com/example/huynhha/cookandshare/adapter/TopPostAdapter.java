@@ -140,11 +140,11 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_top_post, parent, false);
         PostViewHolder pvh = new PostViewHolder(v);
         listPostID = new ArrayList<>();
-        getDataFromDBOffline();
+        loadDataFromDBOffline();
         return pvh;
     }
 
-    public void getUserName(String userID, final PostViewHolder holder) {
+    public void loadUserName(String userID, final PostViewHolder holder) {
         userRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -165,7 +165,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
 
         final Post post = posts.get(position);
         final int adapterPosition = position;
-        listComment(post.getPostID(),holder);
+        loadlistComment(post.getPostID(),holder);
         if (firebaseAuth.getCurrentUser() != null) {
             currentUser = firebaseAuth.getUid().toString();
 
@@ -193,7 +193,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                     holder.like.setText("Thích : " + likeNumber);
                                 }
                                 if (checkCount == 1) {
-                                    getNotification(post1.getUserID().toString(), documentID, post1.getPostID());
+                                    loadNotification(post1.getUserID().toString(), documentID, post1.getPostID());
                                     checkCount = 0;
                                 }
                             }
@@ -203,7 +203,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                 }
             });
         }
-        getUserName(post.getUserID().toString(), holder);
+        loadUserName(post.getUserID().toString(), holder);
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
         holder.userAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -366,7 +366,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         long newRowId = db.insert(DBContext.LikeDB.TABLE_NAME, null, values);
     }
 
-    public void getDataFromDBOffline() {
+    public void loadDataFromDBOffline() {
         LikeDBHelper likeDBHelper = new LikeDBHelper(context);
         SQLiteDatabase db = likeDBHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + DBContext.LikeDB.TABLE_NAME, null);
@@ -409,7 +409,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         this.onAdapterClick = onAdapterClick;
     }
 
-    public void getNotification(String userID, final String documentID, final String postID) {
+    public void loadNotification(String userID, final String documentID, final String postID) {
         System.out.println("Vao day roi:2");
         firebaseAuth = FirebaseAuth.getInstance();
         String currentUser = firebaseAuth.getUid().toString();
@@ -483,7 +483,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         Toast.makeText(context, "Add Noti Success", Toast.LENGTH_SHORT).show();
     }
 
-    public void listComment(String postID, final PostViewHolder holder) {
+    public void loadlistComment(String postID, final PostViewHolder holder) {
         commentRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

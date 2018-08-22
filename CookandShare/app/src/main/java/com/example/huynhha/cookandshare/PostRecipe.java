@@ -67,7 +67,6 @@ public class PostRecipe extends AppCompatActivity {
     private StorageReference storageReference;
     private CollectionReference postRef = db.collection("Post");
     private CollectionReference reportRef = db.collection("Report");
-    private CollectionReference userRef = db.collection("User");
     private CollectionReference commentRef = db.collection("Comment");
 
     final Post post = new Post();
@@ -93,7 +92,7 @@ public class PostRecipe extends AppCompatActivity {
         date = new Date();
         uuid = UUID.randomUUID().toString().replace("-", "");
         setPostListener(uuid, uuid);
-        closeActivity();
+        closeActivityListener();
     }
 
     private void setTabLayout() {
@@ -109,7 +108,7 @@ public class PostRecipe extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data!=null) {
+        if (data != null) {
             Log.d("check1", "onActivityResult: " + data);
             System.out.println(data.getStringExtra("position") + "  check position");
             if (requestCode == 2) {
@@ -122,7 +121,7 @@ public class PostRecipe extends AppCompatActivity {
     }
 
 
-    public void closeActivity() {
+    public void closeActivityListener() {
         btn_close_activity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,33 +130,13 @@ public class PostRecipe extends AppCompatActivity {
         });
     }
 
-    public List<PostStep> getStepImgUrlFromStorage(String postID, int size, final List<PostStep> postSteps) {
-
-        for (int i = 0; i <= postSteps.size(); i++) {
-            final int a = 0;
-            storageReference.child("images/" + postID + (i + 1) + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    postSteps.get(a).setImgURL(uri.toString());
-                    System.out.println("IMG2" + uri);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    System.out.println(e);
-                }
-            });
-        }
-        return postSteps;
-    }
 
     public void setPostListener(final String postID, final String userID) {
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validationSuccess())
-                {
-                    postSteps = postRecipeStepFragment.a();
+                if (validationSuccess()) {
+                    postSteps = postRecipeStepFragment.addPostList();
                     startPushing(postID);
                 }
 
@@ -171,56 +150,58 @@ public class PostRecipe extends AppCompatActivity {
         TextView timecook = findViewById(R.id.tv_time_cook);
         EditText material = findViewById(R.id.edt_name_of_material);
         EditText quantity = findViewById(R.id.edt_quatity);
-        if(postRecipeMaterialFragment.getImageUri() == null) {
-            Toast.makeText(getApplicationContext(),"Hãy chọn ảnh của món ăn!!!",Toast.LENGTH_SHORT).show();
+        if (postRecipeMaterialFragment.getImageUri() == null) {
+            Toast.makeText(getApplicationContext(), "Hãy chọn ảnh của món ăn!!!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(name.getText().toString().trim().length()==0 || name.getText().toString().trim().length() > 50) {
-            Toast.makeText(getApplicationContext(),"Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(description.getText().toString().trim().length()==0 || description.getText().toString().trim().length() > 300) {
-            Toast.makeText(getApplicationContext(),"Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(postRecipeMaterialFragment.getCategory().size() == 0) {
-            Toast.makeText(getApplicationContext(),"Hãy chọn thể loại của món ăn!!!",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(timecook.getText().toString().equalsIgnoreCase("0 hour 0 minute") ||
-                timecook.getText().toString().equalsIgnoreCase("0p")  ) {
-            Toast.makeText(getApplicationContext(),"Hãy nhập thời gian!!!",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-//        if(material.getText().toString().trim().length()==0) {
-//            Toast.makeText(getApplicationContext(),"Hãy nhập tên nguyên liệu của món ăn!!!",Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        if(quantity.getText().toString().trim().length()==0) {
-//            Toast.makeText(getApplicationContext(),"Hãy nhập số lượng của nguyên liệu!!!",Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-        if(postRecipeMaterialFragment.getMaterial().size() == 0) {
-            Toast.makeText(getApplicationContext(),"Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(postRecipeStepFragment.a().size() == 0) {
-            Toast.makeText(getApplicationContext(),"Phải có ít nhất một bước!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        Boolean Check = true;
-        for (int i = 0; i < postRecipeStepFragment.a().size(); i++) {
-            if(postRecipeStepFragment.a().get(i).getUri().trim().length() == 0 ||
-                    postRecipeStepFragment.a().get(i).getDescription().trim().length() == 0 ||
-                    postRecipeStepFragment.a().get(i).getTemp().trim().length() == 0 ||
-                    postRecipeStepFragment.a().get(i).getTime_duration().trim().length() == 0) {
-                Check = false;
-                Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian của các bước thực hiện không được để trống!!!", Toast.LENGTH_SHORT).show();
+            if (name.getText().toString().trim().length() == 0 || name.getText().toString().trim().length() > 50) {
+                Toast.makeText(getApplicationContext(), "Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!", Toast.LENGTH_SHORT).show();
+                return false;
             }
-        }
-        if (Check == false) {
-            return false;
-        }
+            if (description.getText().toString().trim().length() == 0 || description.getText().toString().trim().length() > 300) {
+                Toast.makeText(getApplicationContext(), "Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (postRecipeMaterialFragment.getCategory().size() == 0) {
+                Toast.makeText(getApplicationContext(), "Hãy chọn thể loại của món ăn!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (timecook.getText().toString().equalsIgnoreCase("0 hour 0 minute") ||
+                    timecook.getText().toString().equalsIgnoreCase("0p")) {
+                Toast.makeText(getApplicationContext(), "Hãy nhập thời gian!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (material.getText().toString().trim().length() == 0) {
+                Toast.makeText(getApplicationContext(), "Hãy nhập tên nguyên liệu của món ăn!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (quantity.getText().toString().trim().length() == 0) {
+                Toast.makeText(getApplicationContext(), "Hãy nhập số lượng của nguyên liệu!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            if (postRecipeMaterialFragment.getMaterial().size() == 0) {
+                Toast.makeText(getApplicationContext(), "Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (postRecipeStepFragment.addPostList().size() == 0) {
+                Toast.makeText(getApplicationContext(), "Phải có ít nhất một bước!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            Boolean Check = true;
+            for (int i = 0; i < postRecipeStepFragment.addPostList().size(); i++) {
+                if (postRecipeStepFragment.addPostList().get(i).getUri().trim().length() == 0 ||
+                        postRecipeStepFragment.addPostList().get(i).getDescription().trim().length() == 0 ||
+                        postRecipeStepFragment.addPostList().get(i).getTemp().trim().length() == 0 ||
+                        postRecipeStepFragment.addPostList().get(i).getTime_duration().trim().length() == 0) {
+                    Check = false;
+                    Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian của các bước thực hiện không được để trống!!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            if (Check == false) {
+                return false;
+            }
+
         return true;
     }
 
@@ -232,7 +213,6 @@ public class PostRecipe extends AppCompatActivity {
     }
 
     private void pushRecipeImageToFireStore(final Uri uri, final String postId) {
-//
         StorageReference childStore = storageReference.child("images/" + postId + ".jpg");
         childStore.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -318,9 +298,12 @@ public class PostRecipe extends AppCompatActivity {
                 Map<String, Object> data = new HashMap<>();
                 String documentID = documentReference.getId();
                 Map<String, Object> updateMap = new HashMap<>();
-                updateMap.put("postTime",date);
+                updateMap.put("postTime", date);
+                Map<String, Object> report = new HashMap<>();
+                report.put("postID", uuid);
+                report.put("numOfAcceptReport", 0);
 
-             //   postRef.document(documentID).update("postTime",date);
+                //   postRef.document(documentID).update("postTime",date);
                 postRef.document(documentID).update(updateMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -328,7 +311,7 @@ public class PostRecipe extends AppCompatActivity {
                     }
                 });
                 data.put("postID", uuid);
-                reportRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                reportRef.add(report).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         System.out.println("Report add success!");
@@ -355,3 +338,4 @@ public class PostRecipe extends AppCompatActivity {
         });
     }
 }
+
