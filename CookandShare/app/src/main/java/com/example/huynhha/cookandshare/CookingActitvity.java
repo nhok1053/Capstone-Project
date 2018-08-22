@@ -52,13 +52,13 @@ public class CookingActitvity extends AppCompatActivity {
         btnFinish = findViewById(R.id.btn_finish);
         postSteps = new ArrayList<>();
         String postID = getIntent().getExtras().getString("postIDStep");
-        getData(postID);
-        setFinish();
+        loadPostData(postID);
+        setFinishListener();
         btnFinish.setVisibility(View.INVISIBLE);
         btnFinish.setEnabled(false);
         startCookingViewpager.addOnPageChangeListener(viewListener);
     }
-    public void setFinish(){
+    public void setFinishListener(){
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +66,7 @@ public class CookingActitvity extends AppCompatActivity {
             }
         });
     }
-    public void getData(final String postID) {
+    public void loadPostData(final String postID) {
 
         postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

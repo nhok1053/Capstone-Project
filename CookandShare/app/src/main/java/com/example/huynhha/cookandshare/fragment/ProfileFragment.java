@@ -105,7 +105,7 @@ public class ProfileFragment extends Fragment {
         System.out.println(currentUser);
         userInfo();
         importTopPost();
-        setBtnGoMarket();
+        setBtnGoMarketListener();
         countPost();
         countFollowingFollower("following", txtNumberFollowing);
         countFollowingFollower("follower", txtNumberFollower);
@@ -117,7 +117,7 @@ public class ProfileFragment extends Fragment {
         clickFollower(txtNumberFollower);
         setUpdateListener();
         settingClick();
-        setBtnFavorite();
+        setBtnFavoriteListener();
         cookbookClick();
 
         return v;
@@ -165,7 +165,6 @@ public class ProfileFragment extends Fragment {
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(fragment);
         fragmentTransaction.commit();
-
     }
 
     private void clickFollowing(TextView tv) {
@@ -231,7 +230,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    public void setBtnGoMarket() {
+    public void setBtnGoMarketListener() {
         btnGoMarket.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
@@ -302,7 +301,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void setBtnFavorite() {
+    private void setBtnFavoriteListener() {
         btnFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -123,7 +123,7 @@ public class CookbookInfoFragment extends Fragment {
             btnMore.setVisibility(View.GONE);
         }
 
-        getInfoCookbook();
+        loadInfoCookbook();
         clickMore();
         close();
         return v;
@@ -210,7 +210,7 @@ public class CookbookInfoFragment extends Fragment {
 
     }
 
-    private void getInfoCookbook() {
+    private void loadInfoCookbook() {
         try {
             cookbookRef.document(cookbookID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override

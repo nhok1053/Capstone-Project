@@ -24,9 +24,6 @@ import java.util.List;
 public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.ViewHolder> {
     public List<Post> postsList;
     Context context;
-    public PostsListAdapter(List<Post> postsList){
-        this.postsList = postsList;
-    }
     public PostsListAdapter(List<Post> postsList,Context context){
         this.postsList = postsList;
         this.context = context;

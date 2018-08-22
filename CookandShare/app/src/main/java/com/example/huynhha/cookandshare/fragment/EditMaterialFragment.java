@@ -66,7 +66,7 @@ public class EditMaterialFragment extends Fragment {
         setUp(v);
         postID = getActivity().getIntent().getExtras().getString("postID");
         System.out.println("POSTIDDD: " + postID);
-        getData();
+        loadData();
         addMaterial();
         return v;
     }
@@ -103,7 +103,7 @@ public class EditMaterialFragment extends Fragment {
 
     }
 
-    public void getData() {
+    public void loadData() {
         postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -124,7 +124,7 @@ public class EditMaterialFragment extends Fragment {
                             count++;
                         }
                         if (count == listMaterials.size()) {
-                            setData(post);
+                            loadDataToView(post);
                         }
                     }
                 }
@@ -156,7 +156,7 @@ public class EditMaterialFragment extends Fragment {
         rcEditMaterials.setAdapter(materialAdapter);
     }
 
-    public void setData(Post post) {
+    public void loadDataToView(Post post) {
         Picasso.get().load(post.getUrlImage().toString()).centerCrop().fit().into(imgEditMaterials);
         edtEditRecipeName.setText(post.getTitle().toString());
         edtEditDescription.setText(post.getDescription().toString());

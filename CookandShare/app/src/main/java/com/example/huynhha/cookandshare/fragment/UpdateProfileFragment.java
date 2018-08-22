@@ -97,12 +97,12 @@ public class UpdateProfileFragment extends Fragment {
         if (type.equals("1")) {
             System.out.println("Update:1");
             userID = getArguments().getString("userID");
-            getUserInfoFromProfile();
+            loadUserInfoFromProfile();
         } else if (type.equals("0")) {
             System.out.println("Update:2");
             getInfo();
         }
-        setBtn_Update();
+        setBtn_UpdateListener();
         datePicker();
         return v;
     }
@@ -112,7 +112,7 @@ public class UpdateProfileFragment extends Fragment {
         super.onStart();
     }
 
-    public void getUserInfoFromProfile() {
+    public void loadUserInfoFromProfile() {
         userRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -177,7 +177,7 @@ public class UpdateProfileFragment extends Fragment {
 
 
 
-    public void setBtn_Update() {
+    public void setBtn_UpdateListener() {
         btn_Update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,6 +208,7 @@ public class UpdateProfileFragment extends Fragment {
                     user.setDateOfBirth(edt_date_of_birth.getText().toString());
                     user.setImgUrl(mAuth.getCurrentUser().getPhotoUrl().toString());
                     user.setPhone(edt_phone_number.getText().toString());
+                    user.setDeletePostNum(0);
                     switch (idOfSelected) {
                         case R.id.rdmen:
                             user.setSex("Nam");

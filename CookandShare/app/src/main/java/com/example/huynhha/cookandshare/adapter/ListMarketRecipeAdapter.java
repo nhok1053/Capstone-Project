@@ -69,7 +69,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
                 System.out.println("CLick " + position);
             }
         });
-        getData(post.getDescription().toString());
+        loadData(post.getDescription().toString());
         int countMaterial = 0;
         System.out.println("Size count: "+materials.size());
         for (int i = 0; i < materials.size(); i++) {
@@ -179,7 +179,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
 
     }
 
-    public void getData(String id) {
+    public void loadData(String id) {
 
         MaterialDBHelper materialDBHelper = new MaterialDBHelper(context);
         SQLiteDatabase db1 = materialDBHelper.getReadableDatabase();

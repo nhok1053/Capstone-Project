@@ -59,14 +59,14 @@ public class PostDetailsMaterialFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_post_details_material, container, false);
-        setUp(v);
+        setUpView(v);
         postID = getActivity().getIntent().getExtras().getString("postID");
-        setBtnStartCooking();
+        setBtnStartCookingListener();
         setUpDataLoading();
         return v;
     }
 
-    public void setBtnStartCooking() {
+    public void setBtnStartCookingListener() {
         btn_start_cooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +107,7 @@ public class PostDetailsMaterialFragment extends Fragment {
 
                         System.out.println("Quatity" + list1.get(0).toString());
                         post.setMaterials(list);
-                        setData(post);
+                        loadMaterialData(post);
                     }
                 } else {
                 }
@@ -115,7 +115,7 @@ public class PostDetailsMaterialFragment extends Fragment {
         });
     }
 
-    public void setUp(View v) {
+    public void setUpView(View v) {
         txt_recipe_description = v.findViewById(R.id.tv_description);
         txt_duration = v.findViewById(R.id.txt_duration);
         txt_number_of_people_eat_details = v.findViewById(R.id.number_of_people_eat_detail);
@@ -125,7 +125,7 @@ public class PostDetailsMaterialFragment extends Fragment {
         btn_start_cooking = v.findViewById(R.id.start_cooking);
     }
 
-    public void setData(Post post) {
+    public void loadMaterialData(Post post) {
         txt_recipe_description.setText(post.getDescription().toString());
         txt_difficult.setText(post.getDifficult().toString());
         txt_number_of_people_eat_details.setText(post.getNumberOfPeople().toString());

@@ -70,7 +70,7 @@ public class NotificationFragment extends Fragment {
         return v;
     }
 
-    public void getData(String userID) {
+    public void loadData(String userID) {
         LinearLayoutManager lln = new LinearLayoutManager(getContext());
         rcNoti.setLayoutManager(lln);
 
@@ -147,7 +147,7 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getData(userID);
+        loadData(userID);
         System.out.println("AR: Start");
     }
 }

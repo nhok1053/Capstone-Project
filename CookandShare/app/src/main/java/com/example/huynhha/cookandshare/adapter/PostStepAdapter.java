@@ -92,7 +92,7 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(((Activity)context).getContentResolver(),uri);
-                bitmap = getResizedBitmap(bitmap,960,540);
+                bitmap = resizedBitmap(bitmap,960,540);
                 holder.btn_add_image.setVisibility(View.INVISIBLE);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -108,7 +108,7 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
     public List<PostStep> getPostSteps(){
         return postSteps;
     }
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+    public Bitmap resizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;

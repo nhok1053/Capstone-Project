@@ -59,7 +59,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public void onBindViewHolder(@NonNull final CommentViewHolder holder, final int position) {
         final Comment comment = comments.get(position);
         holder.img_settings.setVisibility(View.INVISIBLE);
-        getUserName(comment.getUserID(), holder);
+        loadUserName(comment.getUserID(), holder);
         Picasso.get().load(comment.getUserImgUrl()).fit().centerCrop().into(holder.imgUser);
         holder.txt_content.setText(comment.getCommentContent());
         if (currentUserID.equals(comment.getUserID())) {
@@ -88,7 +88,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         System.out.println(comment.getCommentContent());
     }
 
-    public void getUserName(String userID, final CommentViewHolder holder) {
+    public void loadUserName(String userID, final CommentViewHolder holder) {
         userRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

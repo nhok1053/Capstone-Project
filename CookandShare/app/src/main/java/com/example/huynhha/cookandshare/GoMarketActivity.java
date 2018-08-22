@@ -42,8 +42,8 @@ public class GoMarketActivity extends AppCompatActivity {
         rcGoMarket = findViewById(R.id.rc_go_market);
         go_market_back_main = findViewById(R.id.go_market_back_main);
         context=this;
-        getData();
-        setClose();
+        loadDataFromDB();
+        setCloseListener();
     }
 
     public void setMarketAdapter(ArrayList<Post> posts) {
@@ -53,7 +53,7 @@ public class GoMarketActivity extends AppCompatActivity {
         rcGoMarket.setAdapter(listMarketRecipeAdapter);
 
     }
-    public void setClose(){
+    public void setCloseListener(){
         go_market_back_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +62,7 @@ public class GoMarketActivity extends AppCompatActivity {
         });
     }
 
-    public void getData() {
+    public void loadDataFromDB() {
         DBHelper mDbHelper = new DBHelper(getApplicationContext());
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + DBContext.FeedEntry.TABLE_NAME, null);

@@ -199,7 +199,7 @@ public class PostRecipeMaterialFragment extends Fragment {
             try {
                 uri = data.getData();
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
-                bitmap = getResizedBitmap(bitmap,960,540);
+                bitmap = resizedBitmap(bitmap,960,540);
                 img_recipe.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -207,7 +207,7 @@ public class PostRecipeMaterialFragment extends Fragment {
         }
         System.out.println("Check data ImG: "+requestCode+" "+resultCode);
     }
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+    public Bitmap resizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;

@@ -59,11 +59,11 @@ public class EditStepFragment extends Fragment {
         btnAddStep = v.findViewById(R.id.btn_add_edit_step);
         rcEditStep = v.findViewById(R.id.rc_edit_post_step);
         postID = getActivity().getIntent().getExtras().getString("postID");
-        getData(postID);
+        loadData(postID);
         return v;
     }
 
-    public void getData(String postID) {
+    public void loadData(String postID) {
         postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -82,7 +82,7 @@ public class EditStepFragment extends Fragment {
                             }
                             if (count == listStep.size()) {
                                 System.out.println("Set dat zo");
-                                setData();
+                                setUpData();
                             }
 
                         }
@@ -97,7 +97,7 @@ public class EditStepFragment extends Fragment {
         });
     }
 
-    public void setData() {
+    public void setUpData() {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rcEditStep.setLayoutManager(lln);
         postStepAdapter = new PostStepAdapter(getContext(), postSteps);
@@ -110,20 +110,4 @@ public class EditStepFragment extends Fragment {
         return postStepList;
     }
 
-    public void demo() {
-        postRef.orderBy("postTime", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                        Map<String, Object> map = queryDocumentSnapshot.getData();
-                        Date date = (Date) map.get("postTime");
-                        System.out.println("I need energy: " + date);
-                        String postID = queryDocumentSnapshot.getString("postID");
-                        System.out.println("I need energy more: " + postID);
-                    }
-                }
-            }
-        });
-    }
 }

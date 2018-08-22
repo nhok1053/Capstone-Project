@@ -1,7 +1,6 @@
 package com.example.huynhha.cookandshare;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,9 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.huynhha.cookandshare.adapter.ListCategoriesAdapter;
 import com.example.huynhha.cookandshare.adapter.ListCookbookAdapter;
-import com.example.huynhha.cookandshare.entity.Category;
 import com.example.huynhha.cookandshare.entity.Cookbook;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,8 +20,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
