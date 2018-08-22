@@ -274,6 +274,13 @@ public class PostDetails extends AppCompatActivity {
                                         cbNameCount = 1;
                                     }
                                 }
+                                if (name.getText().toString().trim().length() == 0 || name.getText().toString().trim().length() > 60) {
+                                    Toast.makeText(context, "Tên cookbook không được để trống và phải ít hơn 60 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                    cbNameCount = 1;
+                                } else if (des.getText().toString().trim().length() == 0 || des.getText().toString().trim().length() > 200) {
+                                    Toast.makeText(context, "Mô tả cookbook không được để trống và phải ít hơn 200 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                    cbNameCount = 1;
+                                }
                                 if (cbNameCount == 0) {
                                     final Map<String, Object> cookbook = new HashMap<>();
                                     ArrayList<String> lp = new ArrayList<>();

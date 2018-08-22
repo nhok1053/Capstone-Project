@@ -149,7 +149,10 @@ public class PostRecipeMaterialFragment extends Fragment {
             public void onClick(View view) {
                 if (edt_namme_of_material.getText().toString().trim().length()==0 || edt_quatity.getText().toString().trim().length()==0) {
                     Toast.makeText(getActivity(),"Tên nguyên liệu và số lượng không được để trống!!!",Toast.LENGTH_SHORT).show();
-                } else {
+                } else if(Double.parseDouble(edt_quatity.getText().toString().trim()) == 0) {
+                    Toast.makeText(getActivity(),"Số lượng không được bằng 0!!!",Toast.LENGTH_SHORT).show();
+                }
+                    else {
                 materials.add(new Material("", edt_namme_of_material.getText().toString(), edt_quatity.getText().toString() + material_quantity_type.getSelectedItem().toString(), ""));
                 importPostMaterial();
                 edt_namme_of_material.setText("");
