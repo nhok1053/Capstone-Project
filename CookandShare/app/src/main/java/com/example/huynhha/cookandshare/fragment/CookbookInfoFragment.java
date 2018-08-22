@@ -155,12 +155,18 @@ public class CookbookInfoFragment extends Fragment {
                                 btnSave.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        cookbookRef.document(cb.getCookbookID()).update("cookbookName", name.getText().toString());
-                                        cookbookRef.document(cb.getCookbookID()).update("cookbookDescription", des.getText().toString());
-                                        dialog.cancel();
-                                        posts.clear();
-                                        if (getFragmentManager() != null) {
-                                            getFragmentManager().beginTransaction().detach(CookbookInfoFragment.this).attach(CookbookInfoFragment.this).commit();
+                                        if (name.getText().toString().trim().length() == 0 || name.getText().toString().trim().length() > 60) {
+                                            Toast.makeText(getActivity(), "Tên cookbook không được để trống và phải ít hơn 60 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                        } else if (des.getText().toString().trim().length() == 0 || des.getText().toString().trim().length() > 200) {
+                                            Toast.makeText(getActivity(), "Mô tả cookbook không được để trống và phải ít hơn 200 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            cookbookRef.document(cb.getCookbookID()).update("cookbookName", name.getText().toString());
+                                            cookbookRef.document(cb.getCookbookID()).update("cookbookDescription", des.getText().toString());
+                                            dialog.cancel();
+                                            posts.clear();
+                                            if (getFragmentManager() != null) {
+                                                getFragmentManager().beginTransaction().detach(CookbookInfoFragment.this).attach(CookbookInfoFragment.this).commit();
+                                            }
                                         }
                                     }
                                 });

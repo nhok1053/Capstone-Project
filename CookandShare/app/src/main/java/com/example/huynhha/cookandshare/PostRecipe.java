@@ -67,7 +67,6 @@ public class PostRecipe extends AppCompatActivity {
     private StorageReference storageReference;
     private CollectionReference postRef = db.collection("Post");
     private CollectionReference reportRef = db.collection("Report");
-    private CollectionReference userRef = db.collection("User");
     private CollectionReference commentRef = db.collection("Comment");
 
     final Post post = new Post();
@@ -155,40 +154,54 @@ public class PostRecipe extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Hãy chọn ảnh của món ăn!!!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (name.getText().toString().trim().length() == 0 && name.getText().toString().trim().length() > 50) {
-            Toast.makeText(getApplicationContext(), "Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (description.getText().toString().trim().length() == 0 && description.getText().toString().trim().length() > 500) {
-            Toast.makeText(getApplicationContext(), "Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (postRecipeMaterialFragment.getCategory().size() == 0) {
-            Toast.makeText(getApplicationContext(), "Hãy chọn thể loại của món ăn!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (timecook.getText().toString().equalsIgnoreCase("0 hour 0 minute") ||
-                timecook.getText().toString().equalsIgnoreCase("0p")) {
-            Toast.makeText(getApplicationContext(), "Hãy nhập thời gian!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (material.getText().toString().trim().length() == 0) {
-            Toast.makeText(getApplicationContext(), "Hãy nhập tên nguyên liệu của món ăn!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (quantity.getText().toString().trim().length() == 0) {
-            Toast.makeText(getApplicationContext(), "Hãy nhập số lượng của nguyên liệu!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-//        if(postSteps == null) {
-//            Toast.makeText(getApplicationContext(),"Hãy chọn ảnh của các bước nấu ăn!!!",Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        if(postSteps.get(count).getDescription().trim().length()==0) {
-//            Toast.makeText(getApplicationContext(),"Hãy viết mô tả của các bước nấu ăn!!!",Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        System.out.println("Post step: " + postSteps.size());
+            if (name.getText().toString().trim().length() == 0 || name.getText().toString().trim().length() > 50) {
+                Toast.makeText(getApplicationContext(), "Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (description.getText().toString().trim().length() == 0 || description.getText().toString().trim().length() > 300) {
+                Toast.makeText(getApplicationContext(), "Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (postRecipeMaterialFragment.getCategory().size() == 0) {
+                Toast.makeText(getApplicationContext(), "Hãy chọn thể loại của món ăn!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (timecook.getText().toString().equalsIgnoreCase("0 hour 0 minute") ||
+                    timecook.getText().toString().equalsIgnoreCase("0p")) {
+                Toast.makeText(getApplicationContext(), "Hãy nhập thời gian!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (material.getText().toString().trim().length() == 0) {
+                Toast.makeText(getApplicationContext(), "Hãy nhập tên nguyên liệu của món ăn!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (quantity.getText().toString().trim().length() == 0) {
+                Toast.makeText(getApplicationContext(), "Hãy nhập số lượng của nguyên liệu!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            if (postRecipeMaterialFragment.getMaterial().size() == 0) {
+                Toast.makeText(getApplicationContext(), "Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (postRecipeStepFragment.addPostList().size() == 0) {
+                Toast.makeText(getApplicationContext(), "Phải có ít nhất một bước!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            Boolean Check = true;
+            for (int i = 0; i < postRecipeStepFragment.addPostList().size(); i++) {
+                if (postRecipeStepFragment.addPostList().get(i).getUri().trim().length() == 0 ||
+                        postRecipeStepFragment.addPostList().get(i).getDescription().trim().length() == 0 ||
+                        postRecipeStepFragment.addPostList().get(i).getTemp().trim().length() == 0 ||
+                        postRecipeStepFragment.addPostList().get(i).getTime_duration().trim().length() == 0) {
+                    Check = false;
+                    Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian của các bước thực hiện không được để trống!!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            if (Check == false) {
+                return false;
+            }
+
         return true;
     }
 
@@ -200,7 +213,6 @@ public class PostRecipe extends AppCompatActivity {
     }
 
     private void pushRecipeImageToFireStore(final Uri uri, final String postId) {
-//
         StorageReference childStore = storageReference.child("images/" + postId + ".jpg");
         childStore.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -326,3 +338,4 @@ public class PostRecipe extends AppCompatActivity {
         });
     }
 }
+

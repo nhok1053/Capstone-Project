@@ -103,6 +103,7 @@ public class EditStepFragment extends Fragment {
         postStepAdapter = new PostStepAdapter(getContext(), postSteps);
         rcEditStep.setAdapter(postStepAdapter);
     }
+
     public List<PostStep> getListStep() {
         List<PostStep> postStepList;
         postStepAdapter = new PostStepAdapter(getContext(), postSteps);
