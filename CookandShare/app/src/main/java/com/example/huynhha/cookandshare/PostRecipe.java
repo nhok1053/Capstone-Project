@@ -171,15 +171,6 @@ public class PostRecipe extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Hãy nhập thời gian!!!", Toast.LENGTH_SHORT).show();
                 return false;
             }
-            if (material.getText().toString().trim().length() == 0) {
-                Toast.makeText(getApplicationContext(), "Hãy nhập tên nguyên liệu của món ăn!!!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if (quantity.getText().toString().trim().length() == 0) {
-                Toast.makeText(getApplicationContext(), "Hãy nhập số lượng của nguyên liệu!!!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
             if (postRecipeMaterialFragment.getMaterial().size() == 0) {
                 Toast.makeText(getApplicationContext(), "Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
                 return false;
