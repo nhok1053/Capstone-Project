@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.adapter.MaterialAdapter;
@@ -137,14 +139,20 @@ public class EditMaterialFragment extends Fragment {
         });
     }
 
+
+
     public void addMaterial() {
         btnAddEditMaterials.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                materials.add(new Material("", edtEditNameMaterials.getText().toString(), edtEditQuatityMaterials.getText().toString() + spinnerEditMaterials.getSelectedItem().toString(), ""));
-                importPostMaterial();
-                edtEditNameMaterials.setText("");
-                edtEditQuatityMaterials.setText("");
+                if (edtEditNameMaterials.getText().toString().trim().length()==0 || edtEditQuatityMaterials.getText().toString().trim().length()==0) {
+                    Toast.makeText(getActivity(),"Tên nguyên liệu và số lượng không được để trống!!!",Toast.LENGTH_SHORT).show();
+                } else {
+                    materials.add(new Material("", edtEditNameMaterials.getText().toString(), edtEditQuatityMaterials.getText().toString() + spinnerEditMaterials.getSelectedItem().toString(), ""));
+                    importPostMaterial();
+                    edtEditNameMaterials.setText("");
+                    edtEditQuatityMaterials.setText("");
+                }
             }
         });
     }

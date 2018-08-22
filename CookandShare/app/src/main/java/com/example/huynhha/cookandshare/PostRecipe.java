@@ -192,23 +192,35 @@ public class PostRecipe extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Hãy nhập thời gian!!!",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(material.getText().toString().trim().length()==0) {
-            Toast.makeText(getApplicationContext(),"Hãy nhập tên nguyên liệu của món ăn!!!",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(quantity.getText().toString().trim().length()==0) {
-            Toast.makeText(getApplicationContext(),"Hãy nhập số lượng của nguyên liệu!!!",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-//        if(postSteps == null) {
-//            Toast.makeText(getApplicationContext(),"Hãy chọn ảnh của các bước nấu ăn!!!",Toast.LENGTH_SHORT).show();
+//        if(material.getText().toString().trim().length()==0) {
+//            Toast.makeText(getApplicationContext(),"Hãy nhập tên nguyên liệu của món ăn!!!",Toast.LENGTH_SHORT).show();
 //            return false;
 //        }
-//        if(postSteps.get(count).getDescription().trim().length()==0) {
-//            Toast.makeText(getApplicationContext(),"Hãy viết mô tả của các bước nấu ăn!!!",Toast.LENGTH_SHORT).show();
+//        if(quantity.getText().toString().trim().length()==0) {
+//            Toast.makeText(getApplicationContext(),"Hãy nhập số lượng của nguyên liệu!!!",Toast.LENGTH_SHORT).show();
 //            return false;
 //        }
-//        System.out.println("Post step: " + postSteps.size());
+        if(postRecipeMaterialFragment.getMaterial().size() == 0) {
+            Toast.makeText(getApplicationContext(),"Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(postRecipeStepFragment.a().size() == 0) {
+            Toast.makeText(getApplicationContext(),"Phải có ít nhất một bước!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        Boolean Check = true;
+        for (int i = 0; i < postRecipeStepFragment.a().size(); i++) {
+            if(postRecipeStepFragment.a().get(i).getUri().trim().length() == 0 ||
+                    postRecipeStepFragment.a().get(i).getDescription().trim().length() == 0 ||
+                    postRecipeStepFragment.a().get(i).getTemp().trim().length() == 0 ||
+                    postRecipeStepFragment.a().get(i).getTime_duration().trim().length() == 0) {
+                Check = false;
+                Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian của các bước thực hiện không được để trống!!!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (Check == false) {
+            return false;
+        }
         return true;
     }
 

@@ -64,8 +64,13 @@ public class PostRecipeStepFragment extends Fragment {
         btn_add_step.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postSteps.add(new PostStep("", "",  "", "", "",""));
-                importPostStep();
+                if (a().get(a().size()-1).getUri().trim().length()==0 || a().get(a().size()-1).getDescription().trim().length()==0
+                        || a().get(a().size()-1).getTemp().trim().length() == 0 || a().get(a().size()-1).getTime_duration().trim().length() == 0) {
+                    Toast.makeText(getActivity(),"Trước khi thêm bước mới, hãy điền hết thông tin của bước hiện tại!!!",Toast.LENGTH_LONG).show();
+                } else {
+                    postSteps.add(new PostStep("", "", "", "", "", ""));
+                    importPostStep();
+                }
             }
         });
     }

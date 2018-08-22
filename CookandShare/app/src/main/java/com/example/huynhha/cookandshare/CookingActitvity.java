@@ -85,8 +85,6 @@ public class CookingActitvity extends AppCompatActivity {
                             count++;
                         }
                         if (count == list1.size()) {
-                            System.out.println("" + postSteps.get(0).getDescription().toString());
-                            System.out.println("" + postSteps.get(1).getDescription().toString());
                             sliderCookingAdapter = new SliderCookingAdapter(context, postID, count, postSteps);
                             startCookingViewpager.setAdapter(sliderCookingAdapter);
                             addDot(0);

@@ -119,7 +119,6 @@ public class EditPostActivity extends AppCompatActivity {
         if(count == postSteps.size()){
             postRef.document(documentID).update("postSteps", listStep);
         }
-
     }
 
     private void getMaterialRecipe() {
@@ -142,17 +141,19 @@ public class EditPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(context);
-                alert.setTitle("Xác nhận cập nhập bài viết");
+                alert.setTitle("Xác nhận cập nhật bài viết");
                 alert.setMessage("Bạn đã hoàn thành tất cả rồi chứ?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        getListStep();
-                        getMaterialRecipe();
-                        Toast.makeText(EditPostActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
-                        finish();
-                        finish();
-                        Intent intent = new Intent(context,MainActivity.class);
-                        startActivity(intent);
+                        if (validationSuccess()) {
+                            getListStep();
+                            getMaterialRecipe();
+                            Toast.makeText(EditPostActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                            finish();
+                            finish();
+                            Intent intent = new Intent(context, MainActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     @Override
@@ -163,6 +164,39 @@ public class EditPostActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private Boolean validationSuccess() {
+        if(editMaterialFragment.getRecipeTitle().trim().length()==0 || editMaterialFragment.getRecipeTitle().trim().length() > 50) {
+            Toast.makeText(getApplicationContext(),"Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(editMaterialFragment.getDescription().trim().length()==0 || editMaterialFragment.getDescription().trim().length() > 500) {
+            Toast.makeText(getApplicationContext(),"Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(editMaterialFragment.getMaterial().size() == 0) {
+            Toast.makeText(getApplicationContext(),"Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(editStepFragment.getListStep().size() == 0) {
+            Toast.makeText(getApplicationContext(),"Phải có ít nhất một bước!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        Boolean Check = true;
+        for (int i = 0; i < editStepFragment.getListStep().size(); i++) {
+            if(editStepFragment.getListStep().get(i).getImgURL().trim().length() == 0 ||
+                    editStepFragment.getListStep().get(i).getDescription().trim().length() == 0 ||
+                    editStepFragment.getListStep().get(i).getTemp().trim().length() == 0 ||
+                    editStepFragment.getListStep().get(i).getTime_duration().trim().length() == 0) {
+                Check = false;
+                Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian không được để trống!!!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (Check == false) {
+            return false;
+        }
+        return true;
     }
 
     @Override
