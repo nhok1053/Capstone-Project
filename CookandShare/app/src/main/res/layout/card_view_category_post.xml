@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/cvCategoryPost"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -34,17 +36,17 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="title"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
-            <TextView
-                android:textStyle="italic"
-                android:id="@+id/txtCategoryPostCreatedBy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="Created by: " />
+            <!--<TextView-->
+                <!--android:textStyle="italic"-->
+                <!--android:id="@+id/txtCategoryPostCreatedBy"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:ellipsize="end"-->
+                <!--android:maxLines="2"-->
+                <!--android:text="Created by: " />-->
 
             <RatingBar
                 android:id="@+id/ratingBarCategoryPost"

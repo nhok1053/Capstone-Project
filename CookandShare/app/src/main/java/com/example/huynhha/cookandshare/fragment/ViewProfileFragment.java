@@ -442,6 +442,7 @@ public class ViewProfileFragment extends Fragment {
 
                                         notebookRefFollow.document(sFollowing).update("following", listFollowing);
                                         notebookRefFollow.document(sFollower).update("follower", listFollower);
+                                        notebookRefFollow.document(sFollower).update("countFollower", listFollower.size());
                                         if (getFragmentManager() != null) {
                                             getFragmentManager().beginTransaction().detach(ViewProfileFragment.this).attach(ViewProfileFragment.this).commit();
                                         }
@@ -475,6 +476,7 @@ public class ViewProfileFragment extends Fragment {
                                     if (listUnFollower.size() > 0 && listUnFollowing.size() > 0) {
                                         notebookRefFollow.document(sFollowing).update("following", listUnFollowing);
                                         notebookRefFollow.document(sFollower).update("follower", listUnFollower);
+                                        notebookRefFollow.document(sFollower).update("countFollower", listUnFollower.size());
                                         if (getFragmentManager() != null) {
                                             getFragmentManager().beginTransaction().detach(ViewProfileFragment.this).attach(ViewProfileFragment.this).commit();
                                         }

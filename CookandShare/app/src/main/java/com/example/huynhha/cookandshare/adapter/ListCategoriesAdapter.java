@@ -68,7 +68,7 @@ public class ListCategoriesAdapter extends RecyclerView.Adapter<ListCategoriesAd
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ctx, PostActivity.class);
-                intent.putStringArrayListExtra("categorypost", category.getPostCategory());
+                intent.putExtra("categoryID", category.getCategoryID()+"");
                 ctx.startActivity(intent);
             }
         });

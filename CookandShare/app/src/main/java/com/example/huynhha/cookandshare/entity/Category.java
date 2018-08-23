@@ -9,6 +9,8 @@ public class Category {
     private String categoryImgUrl;
     private ArrayList<String> postCategory;
 
+
+
     public Category(int categoryID, String categoryName, String categoryImgUrl, ArrayList<String> postCategory) {
         this.categoryID = categoryID;
         this.categoryName = categoryName;
