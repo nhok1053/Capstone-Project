@@ -53,6 +53,8 @@ public class PersonalAllPostAdapter extends RecyclerView.Adapter<PersonalAllPost
                 Intent intent = new Intent(ctx, PostDetails.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("postID", post.getPostID());
+                bundle.putString("userID",post.getUserID());
+                bundle.putString("type","1");
                 intent.putExtras(bundle);
                 ctx.startActivity(intent);
             }

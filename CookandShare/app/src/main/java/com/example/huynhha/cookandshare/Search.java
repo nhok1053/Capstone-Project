@@ -42,7 +42,6 @@ import java.util.regex.Pattern;
 
 public class Search extends AppCompatActivity {
     private static final String TAG = "SEARCH_TAG";
-    SegmentedTab segmentedTab;
     ViewPager viewPager;
     Button btn_close_activity;
     Button btn_title,btn_user,btn_tag,btn_material;
@@ -53,11 +52,8 @@ public class Search extends AppCompatActivity {
     private PostsListAdapter postsListAdapter;
     private UsersListAdapter usersListAdapter;
     private EditText mSearchField;
-    private FirebaseFirestore mFirestore;
-    public List<PostStep> postSteps;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
-    private CollectionReference postRef = db.collection("Title");
     final Post post = new Post();
     private int count = 0;
     private RecyclerView mResultList;

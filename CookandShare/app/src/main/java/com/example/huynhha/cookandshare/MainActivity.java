@@ -1,6 +1,7 @@
 package com.example.huynhha.cookandshare;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -42,14 +43,15 @@ import butterknife.ButterKnife;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentCall,CommentFragment.onCloseClick {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentCall, CommentFragment.onCloseClick {
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     Button btn_add_recipe;
     Button btn_seach;
-    View view ;
+    View view;
+    private Context context;
     private AppBarLayout appBarLayout;
     private int[] tabIcons = {
             R.drawable.ic_home,
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         btn_seach = findViewById(R.id.btn_search);
         view = findViewById(R.id.checkFragment);
         view.setVisibility(View.GONE);
+        context = this;
 //        appIntro();
         sharePrefIntro();
         setTabLayout();
@@ -87,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         });
     }
 
-    public void searchAction(){
+    public void searchAction() {
         btn_seach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,Search.class);
+                Intent intent = new Intent(MainActivity.this, Search.class);
                 startActivity(intent);
             }
         });
@@ -148,13 +151,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 
 
     @Override
-    public void onCommentClicked(String postID,String userID) {
+    public void onCommentClicked(String postID, String userID) {
         CommentFragment commentFragment = new CommentFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("postID",postID);
-        bundle.putString("userID",userID);
+        bundle.putString("postID", postID);
+        bundle.putString("userID", userID);
         commentFragment.setArguments(bundle);
-        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().add(R.id.fl_main,commentFragment).addToBackStack(null);
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().add(R.id.fl_main, commentFragment).addToBackStack(null);
         transaction.commit();
     }
 
@@ -162,5 +165,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     public void onCloseCommentClick() {
         view.setVisibility(View.GONE);
         System.out.println("Tat roi nha");
+    }
+
+    public Context addContext() {
+        Context context1 = context;
+        return context1;
     }
 }

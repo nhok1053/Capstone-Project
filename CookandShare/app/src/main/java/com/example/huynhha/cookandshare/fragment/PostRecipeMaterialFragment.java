@@ -2,6 +2,7 @@ package com.example.huynhha.cookandshare.fragment;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,12 +23,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.huynhha.cookandshare.MainActivity;
+import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.adapter.MaterialAdapter;
 import com.example.huynhha.cookandshare.adapter.TopRecipeAdapter;
@@ -115,6 +120,7 @@ public class PostRecipeMaterialFragment extends Fragment {
     private Context context;
     private static final int RESULT_LOAD_IMAGE = 3;
     private Uri uri;
+
     public PostRecipeMaterialFragment() {
         // Required empty public constructor
     }
@@ -132,6 +138,7 @@ public class PostRecipeMaterialFragment extends Fragment {
         spinner_people_use.setAdapter(adapter);
         pickTime();
         btnAddImageListener();
+        addDifficultListener();
         return view;
     }
 
@@ -143,20 +150,66 @@ public class PostRecipeMaterialFragment extends Fragment {
 
     }
 
+    public void addDifficultListener() {
+        tv_difficult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog;
+                dialog = new Dialog(getContext());
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.layout_dialog_difficult);
+                Button btnCancel = dialog.findViewById(R.id.btn_huy);
+                Button btnAccpet = dialog.findViewById(R.id.btn_xac_nhan);
+                final RadioGroup radioGroup = dialog.findViewById(R.id.radioGroupDifficult);
+                btnAccpet.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int idOfSelected = radioGroup.getCheckedRadioButtonId();
+                        System.out.println("Easy:::" + idOfSelected);
+                        System.out.println("Easy " + R.id.easy);
+                        System.out.println("Easy: " + R.id.medium);
+                        System.out.println("Easy:: " + R.id.hard);
+                        switch (idOfSelected) {
+                            case R.id.easy:
+                                tv_difficult.setText("Dễ");
+                                break;
+                            case R.id.medium:
+                                tv_difficult.setText("Trung bình");
+                                break;
+                            case R.id.hard:
+                                tv_difficult.setText("Khó");
+                                break;
+                        }
+                        dialog.cancel();
+                    }
+
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
+            }
+
+        });
+
+    }
+
     public void addMaterial() {
         btn_add_material.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edt_namme_of_material.getText().toString().trim().length()==0 || edt_quatity.getText().toString().trim().length()==0) {
-                    Toast.makeText(getActivity(),"Tên nguyên liệu và số lượng không được để trống!!!",Toast.LENGTH_SHORT).show();
-                } else if(Double.parseDouble(edt_quatity.getText().toString().trim()) == 0) {
-                    Toast.makeText(getActivity(),"Số lượng không được bằng 0!!!",Toast.LENGTH_SHORT).show();
-                }
-                    else {
-                materials.add(new Material("", edt_namme_of_material.getText().toString(), edt_quatity.getText().toString() + material_quantity_type.getSelectedItem().toString(), ""));
-                importPostMaterial();
-                edt_namme_of_material.setText("");
-                edt_quatity.setText("");
+                if (edt_namme_of_material.getText().toString().trim().length() == 0 || edt_quatity.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getActivity(), "Tên nguyên liệu và số lượng không được để trống!!!", Toast.LENGTH_SHORT).show();
+                } else if (Double.parseDouble(edt_quatity.getText().toString().trim()) == 0) {
+                    Toast.makeText(getActivity(), "Số lượng không được bằng 0!!!", Toast.LENGTH_SHORT).show();
+                } else {
+                    materials.add(new Material("", edt_namme_of_material.getText().toString(), edt_quatity.getText().toString() + material_quantity_type.getSelectedItem().toString(), ""));
+                    importPostMaterial();
+                    edt_namme_of_material.setText("");
+                    edt_quatity.setText("");
                 }
             }
         });
@@ -165,7 +218,7 @@ public class PostRecipeMaterialFragment extends Fragment {
     public void importPostMaterial() {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rc_material.setLayoutManager(lln);
-        MaterialAdapter materialAdapter = new MaterialAdapter(materials,0);
+        MaterialAdapter materialAdapter = new MaterialAdapter(materials, 0);
         rc_material.setAdapter(materialAdapter);
     }
 
@@ -183,7 +236,8 @@ public class PostRecipeMaterialFragment extends Fragment {
             }
         });
     }
-    public void btnAddImageListener(){
+
+    public void btnAddImageListener() {
         btn_add_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,7 +246,8 @@ public class PostRecipeMaterialFragment extends Fragment {
             }
         });
     }
-    public void openGallery(){
+
+    public void openGallery() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         getActivity().startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
@@ -202,18 +257,19 @@ public class PostRecipeMaterialFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = null;
-        if (requestCode == RESULT_LOAD_IMAGE&& resultCode == Activity.RESULT_OK && data != null ) {
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
             try {
                 uri = data.getData();
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
-                bitmap = resizedBitmap(bitmap,960,540);
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                bitmap = resizedBitmap(bitmap, 960, 540);
                 img_recipe.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("Check data ImG: "+requestCode+" "+resultCode);
+        System.out.println("Check data ImG: " + requestCode + " " + resultCode);
     }
+
     public Bitmap resizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
@@ -231,88 +287,95 @@ public class PostRecipeMaterialFragment extends Fragment {
     }
 
     //get data
-    public List<Material> getMaterial(){
+    public List<Material> getMaterial() {
         return materials;
     }
-    public String getDescription(){
+
+    public String getDescription() {
         String description = edt_recipe_description.getText().toString();
         return description;
     }
-    public String getRecipeTitle(){
+
+    public String getRecipeTitle() {
         String title = edt_recipe_name.getText().toString();
         return title;
     }
-    public String getDuration(){
+
+    public String getDuration() {
         String duration = tv_time_cook.getText().toString();
         return duration;
     }
-    public String getRecipeDifficult(){
-        String difficult = "easy";
+
+    public String getRecipeDifficult() {
+        String difficult = tv_difficult.getText().toString();
         return difficult;
     }
-    public String getNumberOfPeople(){
+
+    public String getNumberOfPeople() {
         String numberPeople = spinner_people_use.getSelectedItem().toString();
         return numberPeople;
     }
-    public Uri getImageUri(){
+
+    public Uri getImageUri() {
         return uri;
     }
-    public List getCategory(){
+
+    public List getCategory() {
         List<Integer> list = new ArrayList();
         System.out.println("checkbox" + cb_breakfast.isChecked());
-        if(cb_breakfast.isChecked()==true){
+        if (cb_breakfast.isChecked() == true) {
             System.out.println("checkbox" + cb_breakfast.isChecked());
             list.add(1);
         }
-        if (cb_healthy.isChecked()){
+        if (cb_healthy.isChecked()) {
             list.add(2);
         }
-        if (cb_diet.isChecked()){
+        if (cb_diet.isChecked()) {
             list.add(3);
         }
-        if(cb_dessert.isChecked()){
+        if (cb_dessert.isChecked()) {
             list.add(4);
         }
-        if(cb_salad.isChecked()){
+        if (cb_salad.isChecked()) {
             list.add(5);
         }
-        if(cb_noodle.isChecked()){
+        if (cb_noodle.isChecked()) {
             list.add(6);
         }
-        if (cb_hotpot.isChecked()){
+        if (cb_hotpot.isChecked()) {
             list.add(7);
         }
-        if (cb_for_kid.isChecked()){
+        if (cb_for_kid.isChecked()) {
             list.add(8);
         }
-        if (cb_lunch.isChecked()){
+        if (cb_lunch.isChecked()) {
             list.add(9);
         }
-        if (cb_vegetable.isChecked()){
+        if (cb_vegetable.isChecked()) {
             list.add(10);
         }
-        if (cb_cookie.isChecked()){
+        if (cb_cookie.isChecked()) {
             list.add(11);
         }
-        if (cb_drink.isChecked()){
+        if (cb_drink.isChecked()) {
             list.add(12);
         }
-        if (cb_fast_food.isChecked()){
+        if (cb_fast_food.isChecked()) {
             list.add(13);
         }
-        if (cb_dinner.isChecked()){
+        if (cb_dinner.isChecked()) {
             list.add(14);
         }
-        if (cb_sauce.isChecked()){
+        if (cb_sauce.isChecked()) {
             list.add(15);
         }
-        if (cb_for_gym.isChecked()){
+        if (cb_for_gym.isChecked()) {
             list.add(16);
         }
-        if (cb_soup.isChecked()){
+        if (cb_soup.isChecked()) {
             list.add(17);
         }
-        if (cb_fast_and_easy.isChecked()){
+        if (cb_fast_and_easy.isChecked()) {
             list.add(18);
         }
         return list;

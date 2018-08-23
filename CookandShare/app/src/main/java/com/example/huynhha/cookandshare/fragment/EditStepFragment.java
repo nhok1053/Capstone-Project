@@ -40,7 +40,7 @@ public class EditStepFragment extends Fragment {
     private PostStepAdapter postStepAdapter;
     public List<Map<String, Object>> listStep;
     public ArrayList<PostStep> postSteps;
-    private Button btnAddStep;
+
     private int count = 0;
     private String postID ="";
 
@@ -56,7 +56,6 @@ public class EditStepFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_edit_step, container, false);
         listStep = new ArrayList<>();
         postSteps = new ArrayList<>();
-        btnAddStep = v.findViewById(R.id.btn_add_edit_step);
         rcEditStep = v.findViewById(R.id.rc_edit_post_step);
         postID = getActivity().getIntent().getExtras().getString("postID");
         loadData(postID);

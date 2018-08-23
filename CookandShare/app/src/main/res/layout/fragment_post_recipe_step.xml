@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rc_post_step"
         android:background="#64DD17"
-        android:text="Thêm nguyên liệu"
+        android:text="Thêm bước thực hiện"
         android:textColor="#ffffff" />
 </RelativeLayout>
 

@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment {
     }
 
     String postID, userID, time, imgUrl, title, description, userImgUrl, userName;
-    int like, comment;
+    int like, comment,countView;
     TopPostAdapter postAdapter;
     private ArrayList<Post> posts;
     private ArrayList<Post> topRecipes;
@@ -85,9 +85,6 @@ public class HomeFragment extends Fragment {
         posts = new ArrayList<>();
         topRecipes = new ArrayList<>();
         ButterKnife.bind(v);
-        importTopPost();
-        importTopAttribute();
-        importTopRecipes();
 
         return v;
     }
@@ -96,9 +93,26 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        System.out.println("MainActivity : Start");
+        importTopPost();
+        importTopAttribute();
+        importTopRecipes();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println("MainActivity : Pause");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("MainActivity : Resume");
     }
 
     public void importTopPost() {
+        posts.clear();
         rvPost.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rvPost.setLayoutManager(lln);
@@ -118,10 +132,13 @@ public class HomeFragment extends Fragment {
                             userImgUrl = documentSnapshot.get("userImgUrl").toString();
                             like = Integer.parseInt(documentSnapshot.get("like").toString());
                             comment = Integer.parseInt(documentSnapshot.get("comment").toString());
-                            Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment, userName);
+                            countView = documentSnapshot.getLong("countView").intValue();
+                            Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment, userName,countView);
                             posts.add(post);
                         }
+
                         postAdapter = new TopPostAdapter(posts, getContext(), rvPost);
+                        postAdapter.notifyDataSetChanged();
                         postAdapter.setOnAdapterClick(new TopPostAdapter.OnAdapterClick() {
                             @Override
                             public void OnCommentClicked(String postId, String userID) {

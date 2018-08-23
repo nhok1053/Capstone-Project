@@ -73,6 +73,7 @@ public class ReportFragment extends Fragment {
         groupReport = v.findViewById(R.id.group_report);
         userID = getArguments().getString("userID");
         postID = getArguments().getString("postID");
+        System.out.println("AZS: "+postID);
         userName = getArguments().getString("userName");
         list = new ArrayList<>();
         listReport = new ArrayList<>();
@@ -156,6 +157,7 @@ public class ReportFragment extends Fragment {
         updateMap.put("userID", userID);
         updateMap.put("userName", userName);
         updateMap.put("time", date);
+        updateMap.put("status",0);
         reportRef.document(documentID).collection("listreport").add(updateMap);
     }
 

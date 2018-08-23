@@ -6,52 +6,68 @@
     android:background="#fff"
     tools:context=".fragment.HomeFragment">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
     <!-- TODO: Update blank fragment layout -->
     <FrameLayout
         android:id="@+id/fl_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:background="#cccccc"/>
+                    android:background="#cccccc" />
+
                 <TextView
-                    android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:text="Top đầu bếp"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvChef"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </android.support.v7.widget.RecyclerView>
+                    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
                 <TextView
-                    android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:text="Top công thức nấu ăn"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvRecipe"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </android.support.v7.widget.RecyclerView>
+                    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
                 <android.support.v7.widget.RecyclerView
-                    android:layout_marginTop="4dp"
                     android:id="@+id/rvPost"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                </android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
 
         </ScrollView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_home_replace"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     </FrameLayout>
 </FrameLayout>

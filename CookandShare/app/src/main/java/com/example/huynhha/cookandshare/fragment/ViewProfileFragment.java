@@ -607,14 +607,6 @@ public class ViewProfileFragment extends Fragment {
                                 }
                                 System.out.println("Vao cai nay");
                                 addNoti(documentNoti);
-//                                if (listNotiDetails == null) {
-//                                    addNoti(documentNoti);
-//                                    System.out.println("Add noti success");
-//                                } else if (count == listNotiDetails.size()) {
-//                                    addNoti(documentNoti);
-//                                    System.out.println("Add noti success");
-//                                    count = 0;
-//                                }
                             }
 
                         }

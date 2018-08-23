@@ -1,6 +1,8 @@
 package com.example.huynhha.cookandshare.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -74,7 +76,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                         public boolean onMenuItemClick(MenuItem item) {
 //                            LinearLayoutManager lln = new LinearLayoutManager(context);
 //                            holder.rc_comment.setLayoutManager(lln);
-                            loadComment(postID, position);
+                            AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                            alert.setTitle("Xác nhận");
+                            alert.setMessage("Bạn muốn xoá bài viết này?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    loadComment(postID, position);
+                                }
+                            }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
                             return true;
                         }
                     });

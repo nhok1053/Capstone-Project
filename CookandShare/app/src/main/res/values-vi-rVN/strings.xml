@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Xin chào</string>
     <string name="update_button">"Cập nhật "</string>
     <string name="update_email">Email: </string>
-    <string name="update_first_name">Họ: </string>
+    <string name="update_first_name">Họ và tên:</string>
     <string name="update_second_name">Tên: </string>
     <string name="update_DOB">Ngày sinh: </string>
     <string name="update_sex">Giới tính:</string>

@@ -50,6 +50,7 @@ public class EditPostActivity extends AppCompatActivity {
     private String documentID = "";
     private int count = 0;
     String postID ="";
+    String type ="";
     private Context context;
 
 
@@ -68,6 +69,7 @@ public class EditPostActivity extends AppCompatActivity {
         postSteps = new ArrayList<>();
         context=this;
         postID = getIntent().getExtras().getString("postID");
+        type = getIntent().getExtras().getString("type");
         loadDocumentID();
         getSupportActionBar().hide();
         setUpEditTabLayout();
@@ -151,8 +153,14 @@ public class EditPostActivity extends AppCompatActivity {
                             Toast.makeText(EditPostActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                             finish();
                             finish();
-                            Intent intent = new Intent(context, MainActivity.class);
-                            startActivity(intent);
+                            if(type.equals("0")){
+                                Intent intent = new Intent(context,PostDetails.class);
+                                startActivity(intent);
+                            }else {
+                                Intent intent = new Intent(context, MainActivity.class);
+                                startActivity(intent);
+                            }
+
                         }
                     }
                 }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

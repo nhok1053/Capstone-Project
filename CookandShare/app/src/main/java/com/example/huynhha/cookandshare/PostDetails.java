@@ -1,10 +1,12 @@
 package com.example.huynhha.cookandshare;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,12 +18,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +33,18 @@ import android.widget.Toast;
 import com.example.huynhha.cookandshare.adapter.AddCookbookAdapter;
 import com.example.huynhha.cookandshare.adapter.CategoryPostAdapter;
 import com.example.huynhha.cookandshare.adapter.PagerAdapter;
+import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.entity.Cookbook;
 import com.example.huynhha.cookandshare.entity.Material;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.example.huynhha.cookandshare.entity.User;
 import com.example.huynhha.cookandshare.fragment.CommentFragment;
 import com.example.huynhha.cookandshare.fragment.CookbookInfoFragment;
+import com.example.huynhha.cookandshare.fragment.HomeFragment;
 import com.example.huynhha.cookandshare.fragment.PostDetailsComment;
 import com.example.huynhha.cookandshare.fragment.PostDetailsMaterialFragment;
+import com.example.huynhha.cookandshare.fragment.ProfileFragment;
+import com.example.huynhha.cookandshare.fragment.ReportFragment;
 import com.example.huynhha.cookandshare.fragment.ViewProfileFragment;
 import com.example.huynhha.cookandshare.model.DBContext;
 import com.example.huynhha.cookandshare.model.DBHelper;
@@ -93,6 +101,7 @@ public class PostDetails extends AppCompatActivity {
     Context context;
     private CollectionReference cookbookRef = db.collection("Cookbook");
     private CollectionReference userRef = db.collection("User");
+    private CollectionReference categoryRef = db.collection("Category");
     private String currentUser = FirebaseAuth.getInstance().getUid().toString();
     private User user;
     private ArrayList<Cookbook> cookbooks;
@@ -115,21 +124,27 @@ public class PostDetails extends AppCompatActivity {
     private ImageView redDot;
     private TextView numberOfMarketRecipe;
     private int countToast = 0;
+    private ImageView setting;
+    private String userID = "";
+    private String type = "";
+    private MainActivity mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_post_details);
         progressDialog = new ProgressDialog(this);
         postID = getIntent().getExtras().getString("postID");
         userNamePost = getIntent().getExtras().getString("userName");
+        userID = getIntent().getExtras().getString("userID");
+        type = getIntent().getExtras().getString("type");
         context = this;
         cookbooks = new ArrayList<>();
         postsName = new ArrayList<>();
         listRated = new ArrayList<>();
         listPostID = new ArrayList<>();
+        mainActivity = new MainActivity();
         list = new ArrayList<>();
         loadPostData(postID);
         cbName = new ArrayList<>();
@@ -162,6 +177,7 @@ public class PostDetails extends AppCompatActivity {
         addToCookbook();
         setRatingBarListenerListener();
         setBtnBackListener();
+        settingsListener();
     }
 
     public void setBtnBackListener() {
@@ -183,10 +199,6 @@ public class PostDetails extends AppCompatActivity {
         setupTabIcons();
     }
 
-    public void countViewSet() {
-
-    }
-
     private void setupTabIcons() {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
@@ -194,6 +206,7 @@ public class PostDetails extends AppCompatActivity {
 
 
     public void setUpView() {
+        setting = findViewById(R.id.post_details_setting);
         tabLayout = findViewById(R.id.tab_post_details);
         viewPager = findViewById(R.id.view_pager_postDetails);
         btn_back = findViewById(R.id.btn_back);
@@ -208,6 +221,133 @@ public class PostDetails extends AppCompatActivity {
         numberOfMarketRecipe = findViewById(R.id.numberOfMarketRecipe);
         redDot.setVisibility(View.INVISIBLE);
         numberOfMarketRecipe.setVisibility(View.INVISIBLE);
+    }
+
+    public void settingsListener() {
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUser.equals(userID)) {
+                    PopupMenu popupMenu = new PopupMenu(getApplicationContext(), setting);
+                    popupMenu.getMenuInflater().inflate(R.menu.post_option_user, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.editPost:
+                                    System.out.println("AS: edit");
+                                    final Intent intent = new Intent(context, EditPostActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.putExtra("postID", postID);
+                                    intent.putExtra("type", "0");
+                                    context.startActivity(intent);
+                                    ((PostDetails) context).finish();
+                                    return true;
+                                case R.id.deletePost:
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                                    alert.setTitle("Xác nhận");
+                                    alert.setMessage("Bạn muốn xoá bài viết này?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                                            documentID = queryDocumentSnapshot.getId();
+                                                            ArrayList<Integer> listCategory = new ArrayList<>();
+                                                            listCategory = (ArrayList<Integer>) queryDocumentSnapshot.get("listCategory");
+                                                            deleteCategory(postID, listCategory);
+                                                            postRef.document(documentID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    System.out.println("Vao xoa");
+                                                                    Toast.makeText(context, "Xoá thành công", Toast.LENGTH_SHORT).show();
+                                                                    finish();
+//                                                                    ((PostDetails) context).getSupportFragmentManager().beginTransaction().replace(R.id.fl_home_replace, new HomeFragment()).addToBackStack(null).commit();
+                                                                }
+                                                            });
+
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                    System.out.println("AS: delete");
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                    });
+                    popupMenu.show();
+                } else {
+                    PopupMenu popupMenu = new PopupMenu(getApplicationContext(), setting);
+                    popupMenu.getMenuInflater().inflate(R.menu.post_option, popupMenu.getMenu());
+                    System.out.println("AZZ:" + userID);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            userRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            ReportFragment reportFragment = new ReportFragment();
+                                            String userName = "";
+                                            userName = "" + document.get("firstName").toString();
+                                            System.out.println("AZZ: " + userName);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("postID", postID);
+                                            bundle.putString("userID", userID);
+                                            bundle.putString("userName", userName);
+                                            System.out.println("AZZ " + userName);
+                                            reportFragment.setArguments(bundle);
+                                            ((PostDetails) context).getSupportFragmentManager().beginTransaction().replace(R.id.fl_post_details, reportFragment).setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right).addToBackStack(null).commit();
+                                        }
+                                    }
+                                }
+                            });
+                            return true;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            }
+        });
+    }
+
+    public void deleteCategory(final String postID, final ArrayList<Integer> listCategory) {
+        for (int i = 0; i < listCategory.size(); i++) {
+            categoryRef.whereEqualTo("categoryID", listCategory.get(i)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                            String documentID = "";
+                            System.out.println("");
+                            documentID = queryDocumentSnapshot.getId();
+                            ArrayList<String> listPostID = new ArrayList<>();
+                            listPostID = (ArrayList<String>) queryDocumentSnapshot.get("postID");
+                            for (int i = 0; i < listPostID.size(); i++) {
+                                System.out.println("");
+                                if (postID.equals(listPostID.get(i))) {
+                                    listPostID.remove(i);
+                                    categoryRef.document(documentID).update("postID", listPostID);
+                                    System.out.println("ACC:Xoa in category thanh cong");
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
     public void addToCookbook() {
@@ -275,10 +415,10 @@ public class PostDetails extends AppCompatActivity {
                                     }
                                 }
                                 if (name.getText().toString().trim().length() == 0 || name.getText().toString().trim().length() > 60) {
-                                    Toast.makeText(context, "Tên cookbook không được để trống và phải ít hơn 60 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Tên cookbook không được để trống và phải ít hơn 60 kí tự!!!", Toast.LENGTH_SHORT).show();
                                     cbNameCount = 1;
                                 } else if (des.getText().toString().trim().length() == 0 || des.getText().toString().trim().length() > 200) {
-                                    Toast.makeText(context, "Mô tả cookbook không được để trống và phải ít hơn 200 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Mô tả cookbook không được để trống và phải ít hơn 200 kí tự!!!", Toast.LENGTH_SHORT).show();
                                     cbNameCount = 1;
                                 }
                                 if (cbNameCount == 0) {
@@ -650,6 +790,7 @@ public class PostDetails extends AppCompatActivity {
         }
         cursor1.close();
     }
+
 }
 
 

@@ -102,28 +102,64 @@
                 android:layout_marginTop="8dp"
                 android:text="Description"
                 android:textSize="15sp" />
+            <View
+                android:layout_margin="4dp"
+                android:background="#BDBDBD"
+                android:layout_width="match_parent"
+                android:layout_height="1dp">
 
+            </View>
             <LinearLayout
+                android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
-
+                <ImageView
+                    android:id="@+id/cvTopPostBtnLike"
+                    android:src="@drawable/likeunactive"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
                 <TextView
+                    android:textSize="18sp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
                     android:textColor="@color/colorLikeTextt"
                     android:id="@+id/cvTopPostTvLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thích" />
-
+                    android:text="0" />
+                <ImageView
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/cvTopPostBtnComment"
+                    android:layout_marginLeft="16dp"
+                    android:src="@drawable/commenting"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
                 <TextView
+                    android:textSize="18sp"
+                    android:layout_gravity="center_vertical"
                     android:textColor="@color/colorLikeTextt"
                     android:id="@+id/cvTopPostTvComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="Bình luận" />
+                    android:layout_marginLeft="10dp"
+                    android:text="0" />
+                <ImageView
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="100dp"
+                    android:src="@drawable/countview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:id="@+id/tv_numver_view"
+                    android:text="100 View"
+                    android:textColor="@color/colorLikeTextt"
+                    android:layout_marginLeft="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <View
@@ -134,36 +170,36 @@
                 android:layout_marginTop="5dp"
                 android:background="#EEEEEE" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:orientation="horizontal">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="3dp"-->
+                <!--android:orientation="horizontal">-->
 
-                <Button
-                    android:id="@+id/cvTopPostBtnLike"
-                    android:layout_width="175dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/button_background"
-                    android:drawableLeft="@drawable/like_set"
-                    android:paddingLeft="50dp"
-                    android:paddingRight="50dp"
-                    android:text="@string/card_view_top_post_like"
-                    android:textAlignment="inherit"
-                    android:textColor="#757575" />
+                <!--<Button-->
+                    <!--android:id="@+id/cvTopPostBtnLike"-->
+                    <!--android:layout_width="175dp"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--android:background="@drawable/button_background"-->
+                    <!--android:drawableLeft="@drawable/like_set"-->
+                    <!--android:paddingLeft="50dp"-->
+                    <!--android:paddingRight="50dp"-->
+                    <!--android:text="@string/card_view_top_post_like"-->
+                    <!--android:textAlignment="inherit"-->
+                    <!--android:textColor="#757575" />-->
 
-                <Button
-                    android:id="@+id/cvTopPostBtnComment"
-                    android:layout_width="190dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/button_background"
-                    android:drawableLeft="@drawable/comment_set"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp"
-                    android:text="@string/card_view_top_post_comment"
-                    android:textAlignment="inherit"
-                    android:textColor="#757575" />
-            </LinearLayout>
+                <!--<Button-->
+                    <!--android:id="@+id/cvTopPostBtnComment"-->
+                    <!--android:layout_width="190dp"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--android:background="@drawable/button_background"-->
+                    <!--android:drawableLeft="@drawable/comment_set"-->
+                    <!--android:paddingLeft="30dp"-->
+                    <!--android:paddingRight="30dp"-->
+                    <!--android:text="@string/card_view_top_post_comment"-->
+                    <!--android:textAlignment="inherit"-->
+                    <!--android:textColor="#757575" />-->
+            <!--</LinearLayout>-->
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

@@ -52,6 +52,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,6 +75,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
     private CollectionReference userRef = FirebaseFirestore.getInstance().collection("User");
     private CollectionReference notiRef = FirebaseFirestore.getInstance().collection("Notification");
     private CollectionReference commentRef = FirebaseFirestore.getInstance().collection("Comment");
+    private CollectionReference categoryRef = FirebaseFirestore.getInstance().collection("Category");
     private String documentID = "";
     private int count = 0;
     private RecyclerView recyclerView;
@@ -96,12 +99,13 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         private TextView description;
         private TextView like;
         private TextView comment;
-        private Button btnLike;
-        private Button btnComment;
+        private ImageView btnLike;
+        private ImageView btnComment;
         private View view2;
         private FrameLayout fl_comment;
         private Button cvTopPostBtnShowMore;
         private RecyclerView rc_top_post;
+        private TextView tvNumberView;
 
 
         public PostViewHolder(final View itemView) {
@@ -119,6 +123,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             cvTopPostBtnShowMore = itemView.findViewById(R.id.cvTopPostBtnShowMore);
             rc_top_post = itemView.findViewById(R.id.rvPost);
             btnLike = itemView.findViewById(R.id.cvTopPostBtnLike);
+            tvNumberView = itemView.findViewById(R.id.tv_numver_view);
         }
     }
 
@@ -170,8 +175,9 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             currentUser = firebaseAuth.getUid().toString();
 
         }
-        holder.like.setText("Thích : " + post.getLike());
+        holder.like.setText("" + post.getLike());
         if (isLike(post.getPostID())) {
+            holder.btnLike.setImageResource(R.drawable.likeactive);
             holder.btnLike.setEnabled(false);
 
         } else {
@@ -190,7 +196,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                     checkCount++;
                                     int likeNumber = documentSnapshot.getLong("like").intValue() + 1;
                                     postRef.document(documentID).update("like", likeNumber);
-                                    holder.like.setText("Thích : " + likeNumber);
+                                    holder.like.setText("" + likeNumber);
                                 }
                                 if (checkCount == 1) {
                                     loadNotification(post1.getUserID().toString(), documentID, post1.getPostID());
@@ -199,12 +205,14 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                             }
                         }
                     });
+                    holder.btnLike.setImageResource(R.drawable.likeactive);
                     holder.btnLike.setEnabled(false);
                 }
             });
         }
         loadUserName(post.getUserID().toString(), holder);
         Picasso.get().load(post.getUserImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.userAvatar);
+        holder.tvNumberView.setText(""+post.getCountView()+" View");
         holder.userAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -240,7 +248,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
         holder.title.setText(post.getTitle());
         holder.description.setText(post.getDescription());
         System.out.println("SIZE comment " + sizeComment);
-        holder.comment.setText("Bình luận : "+0);
+        holder.comment.setText(""+0);
 
         holder.imgContent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,6 +258,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                 bundle.putString("postID", post.getPostID());
                 bundle.putString("userID", post.getUserID());
                 bundle.putString("userName", holder.userName.getText().toString());
+                bundle.putString("type","0");
                 intent.putExtras(bundle);
                 context.startActivity(intent);
 
@@ -285,6 +294,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                     Intent intent = new Intent(context, EditPostActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.putExtra("postID", post.getPostID());
+                                    intent.putExtra("type","1");
                                     context.startActivity(intent);
                                     ((MainActivity) context).finish();
                                     return true;
@@ -300,10 +310,14 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                                     if (task.isSuccessful()) {
                                                         for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
                                                             documentID = queryDocumentSnapshot.getId();
+                                                            ArrayList<Integer> listCategory = new ArrayList<>();
+                                                            listCategory = (ArrayList<Integer>) queryDocumentSnapshot.get("listCategory");
+                                                            deleteCategory(post.getPostID(), listCategory);
                                                             postRef.document(documentID).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     System.out.println("Vao xoa");
+
                                                                     Toast.makeText(context, "Xoá thành công", Toast.LENGTH_SHORT).show();
                                                                     posts.remove(adapterPosition);
                                                                     topPostAdapter = new TopPostAdapter(posts, context, recyclerView);
@@ -356,6 +370,32 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
 
 //        holder.like.setText(post.getLike()+" "+holder.like.getText());
 //        holder.comment.setText(post.getComment()+" "+holder.comment.getText());
+    }
+    public void deleteCategory(final String postID, final ArrayList<Integer> listCategory) {
+        for (int i = 0; i < listCategory.size(); i++) {
+            categoryRef.whereEqualTo("categoryID", listCategory.get(i)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                            String documentID = "";
+                            System.out.println("");
+                            documentID = queryDocumentSnapshot.getId();
+                            ArrayList<String> listPostID = new ArrayList<>();
+                            listPostID = (ArrayList<String>) queryDocumentSnapshot.get("postID");
+                            for (int i = 0; i < listPostID.size(); i++) {
+                                System.out.println("");
+                                if (postID.equals(listPostID.get(i))) {
+                                    listPostID.remove(i);
+                                    categoryRef.document(documentID).update("postID", listPostID);
+                                    System.out.println("ACC:Xoa in category thanh cong");
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
     public void saveLike(Post post) {
@@ -492,7 +532,7 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                         listComment = (List<Map<String, Object>>) document.get("comment");
                         if (listComment != null) {
                             sizeComment = listComment.size();
-                            holder.comment.setText("Bình luận : "+sizeComment);
+                            holder.comment.setText(""+sizeComment);
                             System.out.println("sizeComment " + sizeComment);
                         }
 

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.huynhha.cookandshare.adapter.PagerAdapter;
 import com.example.huynhha.cookandshare.adapter.PostRecipeTabLayoutAdapter;
 import com.example.huynhha.cookandshare.adapter.PostStepAdapter;
+import com.example.huynhha.cookandshare.entity.Comment;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.example.huynhha.cookandshare.entity.PostStep;
 import com.example.huynhha.cookandshare.fragment.PostRecipeMaterialFragment;
@@ -34,6 +35,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.ServerTimestamp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -46,6 +49,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,12 +67,15 @@ public class PostRecipe extends AppCompatActivity {
     private PostRecipeStepFragment postRecipeStepFragment;
     private PostRecipeMaterialFragment postRecipeMaterialFragment;
     public List<PostStep> postSteps;
+    private List<Map<String, Object>> list1;
+    private List<Integer> listCategory;
+    private List<String> listPostID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
     private CollectionReference postRef = db.collection("Post");
     private CollectionReference reportRef = db.collection("Report");
     private CollectionReference commentRef = db.collection("Comment");
-
+    private CollectionReference categoryRef = db.collection("Category");
     final Post post = new Post();
     private int count = 0;
     private ProgressDialog progressDialog;
@@ -86,6 +93,8 @@ public class PostRecipe extends AppCompatActivity {
         btn_close_activity = findViewById(R.id.btn_close);
         btn_finish = findViewById(R.id.btn_add_recipe);
         tabLayout = findViewById(R.id.post_recipe_tab_layout);
+        listCategory = new ArrayList<>();
+        listPostID = new ArrayList<>();
         storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().hide();
         setTabLayout();
@@ -154,53 +163,53 @@ public class PostRecipe extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Hãy chọn ảnh của món ăn!!!", Toast.LENGTH_SHORT).show();
             return false;
         }
-            if (name.getText().toString().trim().length() == 0 || name.getText().toString().trim().length() > 50) {
-                Toast.makeText(getApplicationContext(), "Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if (description.getText().toString().trim().length() == 0 || description.getText().toString().trim().length() > 300) {
-                Toast.makeText(getApplicationContext(), "Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if (postRecipeMaterialFragment.getCategory().size() == 0) {
-                Toast.makeText(getApplicationContext(), "Hãy chọn thể loại của món ăn!!!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if (timecook.getText().toString().equalsIgnoreCase("0 hour 0 minute") ||
-                    timecook.getText().toString().equalsIgnoreCase("0p")) {
-                Toast.makeText(getApplicationContext(), "Hãy nhập thời gian!!!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if (material.getText().toString().trim().length() == 0) {
-                Toast.makeText(getApplicationContext(), "Hãy nhập tên nguyên liệu của món ăn!!!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if (quantity.getText().toString().trim().length() == 0) {
-                Toast.makeText(getApplicationContext(), "Hãy nhập số lượng của nguyên liệu!!!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
+        if (name.getText().toString().trim().length() == 0 || name.getText().toString().trim().length() > 50) {
+            Toast.makeText(getApplicationContext(), "Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (description.getText().toString().trim().length() == 0 || description.getText().toString().trim().length() > 300) {
+            Toast.makeText(getApplicationContext(), "Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (postRecipeMaterialFragment.getCategory().size() == 0) {
+            Toast.makeText(getApplicationContext(), "Hãy chọn thể loại của món ăn!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (timecook.getText().toString().equalsIgnoreCase("0 hour 0 minute") ||
+                timecook.getText().toString().equalsIgnoreCase("0p")) {
+            Toast.makeText(getApplicationContext(), "Hãy nhập thời gian!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (material.getText().toString().trim().length() == 0) {
+            Toast.makeText(getApplicationContext(), "Hãy nhập tên nguyên liệu của món ăn!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (quantity.getText().toString().trim().length() == 0) {
+            Toast.makeText(getApplicationContext(), "Hãy nhập số lượng của nguyên liệu!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
-            if (postRecipeMaterialFragment.getMaterial().size() == 0) {
-                Toast.makeText(getApplicationContext(), "Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
-                return false;
+        if (postRecipeMaterialFragment.getMaterial().size() == 0) {
+            Toast.makeText(getApplicationContext(), "Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (postRecipeStepFragment.addPostList().size() == 0) {
+            Toast.makeText(getApplicationContext(), "Phải có ít nhất một bước!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        Boolean Check = true;
+        for (int i = 0; i < postRecipeStepFragment.addPostList().size(); i++) {
+            if (postRecipeStepFragment.addPostList().get(i).getUri().trim().length() == 0 ||
+                    postRecipeStepFragment.addPostList().get(i).getDescription().trim().length() == 0 ||
+                    postRecipeStepFragment.addPostList().get(i).getTemp().trim().length() == 0 ||
+                    postRecipeStepFragment.addPostList().get(i).getTime_duration().trim().length() == 0) {
+                Check = false;
+                Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian của các bước thực hiện không được để trống!!!", Toast.LENGTH_SHORT).show();
             }
-            if (postRecipeStepFragment.addPostList().size() == 0) {
-                Toast.makeText(getApplicationContext(), "Phải có ít nhất một bước!!!", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            Boolean Check = true;
-            for (int i = 0; i < postRecipeStepFragment.addPostList().size(); i++) {
-                if (postRecipeStepFragment.addPostList().get(i).getUri().trim().length() == 0 ||
-                        postRecipeStepFragment.addPostList().get(i).getDescription().trim().length() == 0 ||
-                        postRecipeStepFragment.addPostList().get(i).getTemp().trim().length() == 0 ||
-                        postRecipeStepFragment.addPostList().get(i).getTime_duration().trim().length() == 0) {
-                    Check = false;
-                    Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian của các bước thực hiện không được để trống!!!", Toast.LENGTH_SHORT).show();
-                }
-            }
-            if (Check == false) {
-                return false;
-            }
+        }
+        if (Check == false) {
+            return false;
+        }
 
         return true;
     }
@@ -261,7 +270,7 @@ public class PostRecipe extends AppCompatActivity {
                             post.setTime(postRecipeMaterialFragment.getDuration());
                             post.setComment(0);
                             post.setLike(0);
-                            post.setNumberOfPeople("0");
+                            post.setNumberOfPeople("" + postRecipeMaterialFragment.getNumberOfPeople());
                             try {
                                 FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                 post.setUserID(currentFirebaseUser.getUid());
@@ -274,10 +283,39 @@ public class PostRecipe extends AppCompatActivity {
                             final String date = df.format(Calendar.getInstance().getTime());
                             post.setPostTime(date.toString());
                             post.setNumberOfRate("0");
-                            post.setDifficult("Dễ");
+                            post.setDifficult(postRecipeMaterialFragment.getRecipeDifficult());
                             post.setPostSteps(postSteps);
                             post.setCountRate(0);
                             post.setCountView(0);
+                            listCategory = postRecipeMaterialFragment.getCategory();
+                            post.setListCategory(listCategory);
+                            for (int i = 0; i < listCategory.size(); i++) {
+                                categoryRef.whereEqualTo("categoryID", listCategory.get(i)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                                String documentID = documentSnapshot.getId();
+                                                try {
+                                                    listPostID = (ArrayList<String>) documentSnapshot.get("postID");
+                                                } catch (Exception e) {
+                                                    System.out.println(e);
+                                                }
+                                                if (listPostID == null) {
+                                                    listPostID = new ArrayList<>();
+                                                    listPostID.add(postId);
+
+                                                } else {
+                                                    listPostID.add(postId);
+                                                }
+                                                categoryRef.document(documentID).update("postID", listPostID);
+                                                System.out.println("Add to category Success");
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                            System.out.println("List category:" + postRecipeMaterialFragment.getCategory());
                             loadData(post);
                         }
                     }

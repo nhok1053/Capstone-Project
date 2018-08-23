@@ -1,6 +1,8 @@
 package com.example.huynhha.cookandshare.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
@@ -50,7 +52,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
         final Post post = posts.get(position);
         holder.txt_name_recipe.setText(post.getTitle().toString());
         holder.time_create.setText("Thêm vào lúc: " + post.getTime().toString());
-        System.out.println("Post IA: "+post.getPostID().toString());
+        System.out.println("Post IA: " + post.getPostID().toString());
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
@@ -60,8 +62,8 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
                 bundle.putString("name", post.getTitle().toString());
                 bundle.putString("time", post.getTime().toString());
                 bundle.putString("img", post.getUrlImage().toString());
-                bundle.putString("userID",post.getUserID().toString());
-                bundle.putString("postID",post.getPostID().toString());
+                bundle.putString("userID", post.getUserID().toString());
+                bundle.putString("postID", post.getPostID().toString());
                 goMarketDetails.setArguments(bundle);
                 ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fl_go_market, goMarketDetails).addToBackStack(null)
@@ -71,7 +73,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
         });
         loadData(post.getDescription().toString());
         int countMaterial = 0;
-        System.out.println("Size count: "+materials.size());
+        System.out.println("Size count: " + materials.size());
         for (int i = 0; i < materials.size(); i++) {
             System.out.println("zo zo");
             if (materials.get(i).isCheckGoMarket().equals("1")) {
@@ -117,6 +119,7 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
             img_recipe = itemView.findViewById(R.id.market_img);
             img_delete = itemView.findViewById(R.id.go_market_delete);
             txt_number = itemView.findViewById(R.id.number_go_market);
+
             img_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -127,14 +130,25 @@ public class ListMarketRecipeAdapter extends RecyclerView.Adapter<ListMarketReci
                         public boolean onMenuItemClick(MenuItem item) {
                             // System.out.println("Adapter position:"+getAdapterPosition());
                             // System.out.println("IDD: "+posts.get(getAdapterPosition()).getPostID().toString());
-                            deleteDBOffline(Integer.parseInt(posts.get(getAdapterPosition()).getDescription().toString()));
-                            posts.remove(getAdapterPosition());
-                            notifyItemRemoved(getAdapterPosition());
-                            Toast.makeText(context, "Xoá khỏi đi chợ thành công!", Toast.LENGTH_SHORT).show();
+                            AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                            alert.setTitle("Xác nhận");
+                            alert.setMessage("Bạn muốn xoá bài viết　khỏi đi chợ này?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    deleteDBOffline(Integer.parseInt(posts.get(getAdapterPosition()).getDescription().toString()));
+                                    posts.remove(getAdapterPosition());
+                                    notifyItemRemoved(getAdapterPosition());
+                                    Toast.makeText(context, "Xoá khỏi đi chợ thành công!", Toast.LENGTH_SHORT).show();
+                                }
+                            }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
                             return true;
                         }
                     });
-
                     popupMenu.show();
                 }
             });

@@ -91,7 +91,9 @@
         //date time pick edit later
 
         <EditText
-            android:editable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:id="@+id/edt_date_of_birth"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

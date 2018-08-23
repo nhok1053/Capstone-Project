@@ -166,7 +166,8 @@ public class UpdateProfileFragment extends Fragment {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                edt_date_of_birth.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
+                        edt_date_of_birth.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
+
                     }
                 }, year, month, day);
                 datePickerDialog.show();
@@ -270,7 +271,7 @@ public class UpdateProfileFragment extends Fragment {
                         userRef.document(userID).update("firstName", user.getFirstName());
                         userRef.document(userID).update("phone", user.getPhone());
                         userRef.document(userID).update("mail", user.getMail());
-                        Toast.makeText(getActivity(), "Update data success fully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Cập nhập thông tin thành công!", Toast.LENGTH_SHORT).show();
                         removeFragment(updateProfileFragment);
                         ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fl_profile,new ProfileFragment()).commit();
                     }

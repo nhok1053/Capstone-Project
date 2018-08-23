@@ -22,6 +22,23 @@ public class Post {
     private String postTime;
     private int  countRate;
     private int countView;
+    private List<Integer> listCategory;
+    private List<Material> materials;
+    private List<PostStep> postSteps;
+
+    public Post(String postID, String userID, String time, String imgUrl, String title, String description, String userImgUrl, int like, int comment, String userName, int countView) {
+        this.userName = userName;
+        this.urlImage = imgUrl;
+        this.postID = postID;
+        this.userID = userID;
+        this.userImgUrl = userImgUrl;
+        this.title = title;
+        this.description = description;
+        this.time = time;
+        this.like = like;
+        this.comment = comment;
+        this.countView = countView;
+    }
 
     public int getCountRate() {
         return countRate;
@@ -61,8 +78,7 @@ public class Post {
         this.postSteps = postSteps;
     }
 
-    private List<Material> materials;
-    private List<PostStep> postSteps;
+
 
     public Post(String numberOfRate, String userName, String postID, String title, String urlImage) {
         this.numberOfRate = numberOfRate;
@@ -111,8 +127,38 @@ public class Post {
         this.difficult = difficult;
     }
 
+    public List<Integer> getListCategory() {
+        return listCategory;
+    }
 
-    public Post(String difficult,String numberOfRate, String userName, String postTime, String numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
+    public void setListCategory(List<Integer> listCategory) {
+        this.listCategory = listCategory;
+    }
+
+    public Post(String numberOfRate, String userName, String numberOfPeople, String postID, String userID, String userImgUrl, String title, String titleLower, String description, String time, String urlImage, String difficult, int like, int comment, String postTime, int countRate, int countView, List<Integer> listCategory, List<Material> materials, List<PostStep> postSteps) {
+        this.numberOfRate = numberOfRate;
+        this.userName = userName;
+        this.numberOfPeople = numberOfPeople;
+        this.postID = postID;
+        this.userID = userID;
+        this.userImgUrl = userImgUrl;
+        this.title = title;
+        this.titleLower = titleLower;
+        this.description = description;
+        this.time = time;
+        this.urlImage = urlImage;
+        this.difficult = difficult;
+        this.like = like;
+        this.comment = comment;
+        this.postTime = postTime;
+        this.countRate = countRate;
+        this.countView = countView;
+        this.listCategory = listCategory;
+        this.materials = materials;
+        this.postSteps = postSteps;
+    }
+
+    public Post(String difficult, String numberOfRate, String userName, String postTime, String numberOfPeople, String postID, String userID, String userImgUrl, String title, String description, String time, String imgUrl, int like, int commentNumber, List<Material> materials, List<PostStep> postSteps) {
         this.numberOfRate = numberOfRate;
         this.difficult = difficult;
         this.userName = userName;
