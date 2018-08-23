@@ -35,10 +35,10 @@ public class LoginWithPhoneFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login_with_phone, container, false);
         ButterKnife.bind(this,v);
-        setSendPhoneNumber();
+        setSendPhoneNumberListener();
         return v;
     }
-    public void setSendPhoneNumber(){
+    public void setSendPhoneNumberListener(){
         btnSignInWithPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

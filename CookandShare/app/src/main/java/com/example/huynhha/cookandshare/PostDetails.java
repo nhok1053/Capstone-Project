@@ -131,15 +131,15 @@ public class PostDetails extends AppCompatActivity {
         listRated = new ArrayList<>();
         listPostID = new ArrayList<>();
         list = new ArrayList<>();
-        getData(postID);
+        loadPostData(postID);
         cbName = new ArrayList<>();
-        setUp();
+        setUpView();
         getSupportActionBar().hide();
         postDetailsMaterialFragment = new PostDetailsMaterialFragment();
         postDetailsComment = new PostDetailsComment();
-        getDataFromDBOffline();
+        loadDataFromDBOffline();
         goMarketDataOffline();
-        dataRated();
+        loadDataRated();
         isFavourite = checkFavourite();
         isRated = checkRated();
         isGoMarket = checkGoMarketList();
@@ -158,9 +158,9 @@ public class PostDetails extends AppCompatActivity {
         }
         setTabLayout();
         saveDataGoMarket();
-        setFavourite();
+        setFavouriteListener();
         addToCookbook();
-        setRatingBarListener();
+        setRatingBarListenerListener();
         setBtnBackListener();
     }
 
@@ -193,7 +193,7 @@ public class PostDetails extends AppCompatActivity {
     }
 
 
-    public void setUp() {
+    public void setUpView() {
         tabLayout = findViewById(R.id.tab_post_details);
         viewPager = findViewById(R.id.view_pager_postDetails);
         btn_back = findViewById(R.id.btn_back);
@@ -274,6 +274,13 @@ public class PostDetails extends AppCompatActivity {
                                         cbNameCount = 1;
                                     }
                                 }
+                                if (name.getText().toString().trim().length() == 0 || name.getText().toString().trim().length() > 60) {
+                                    Toast.makeText(context, "Tên cookbook không được để trống và phải ít hơn 60 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                    cbNameCount = 1;
+                                } else if (des.getText().toString().trim().length() == 0 || des.getText().toString().trim().length() > 200) {
+                                    Toast.makeText(context, "Mô tả cookbook không được để trống và phải ít hơn 200 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                    cbNameCount = 1;
+                                }
                                 if (cbNameCount == 0) {
                                     final Map<String, Object> cookbook = new HashMap<>();
                                     ArrayList<String> lp = new ArrayList<>();
@@ -322,7 +329,7 @@ public class PostDetails extends AppCompatActivity {
         });
     }
 
-    public void setFavourite() {
+    public void setFavouriteListener() {
         btn_favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -365,7 +372,7 @@ public class PostDetails extends AppCompatActivity {
         return isFavourite;
     }
 
-    public Post getData(String postID) {
+    public Post loadPostData(String postID) {
         postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -518,7 +525,7 @@ public class PostDetails extends AppCompatActivity {
 
 
     @SuppressLint("ClickableViewAccessibility")
-    public void setRatingBarListener() {
+    public void setRatingBarListenerListener() {
         ratingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -610,7 +617,7 @@ public class PostDetails extends AppCompatActivity {
         startActivity(getIntent());
     }
 
-    public void getDataFromDBOffline() {
+    public void loadDataFromDBOffline() {
         FavouriteDBHelper favouriteDBHelper = new FavouriteDBHelper(getApplicationContext());
         SQLiteDatabase db = favouriteDBHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + DBContext.FavouriteDB.TABLE_NAME, null);
@@ -628,7 +635,7 @@ public class PostDetails extends AppCompatActivity {
     }
 
     //get rate data
-    public void dataRated() {
+    public void loadDataRated() {
         RateDBHelper rateDBHelper = new RateDBHelper(getApplicationContext());
         SQLiteDatabase db1 = rateDBHelper.getReadableDatabase();
         Cursor cursor1 = db1.rawQuery("select * from " + DBContext.RateDB.TABLE_NAME, null);

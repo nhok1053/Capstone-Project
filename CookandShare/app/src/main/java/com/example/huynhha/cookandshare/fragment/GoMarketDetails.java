@@ -95,16 +95,16 @@ public class GoMarketDetails extends Fragment {
         listNotiDetails = new ArrayList<>();
         System.out.println("Get ID :" + id);
         goMarketDetails = this;
-        getData();
-        setData();
+        loadDataOffline();
+        setDataAdapter();
         saveData();
-        setBtnGoMarketClose();
-        setStartCooking();
+        setBtnGoMarketCloseListener();
+        startCookingListener();
         return v;
 
     }
 
-    public void setBtnGoMarketClose() {
+    public void setBtnGoMarketCloseListener() {
         btn_go_market_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +128,7 @@ public class GoMarketDetails extends Fragment {
                 }
                 if (countCheck / materials.size() > 0.8) {
                     System.out.println("ZOooo");
-                    getNotification();
+                    loadNotification();
                 }
                 // New value for one column
                 for (int i = 0; i < materials.size(); i++) {
@@ -175,7 +175,7 @@ public class GoMarketDetails extends Fragment {
 
     }
 
-    public void setData() {
+    public void setDataAdapter() {
         String name = getArguments().getString("name");
         String date = getArguments().getString("date");
         String urlImage = getArguments().getString("img");
@@ -189,7 +189,7 @@ public class GoMarketDetails extends Fragment {
 
     }
 
-    public void setStartCooking() {
+    public void startCookingListener() {
         startCooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +200,7 @@ public class GoMarketDetails extends Fragment {
         });
     }
 
-    public void getData() {
+    public void loadDataOffline() {
 
         MaterialDBHelper materialDBHelper = new MaterialDBHelper(getContext());
         SQLiteDatabase db1 = materialDBHelper.getReadableDatabase();
@@ -242,7 +242,7 @@ public class GoMarketDetails extends Fragment {
         cursor.close();
     }
 
-    public void getNotification() {
+    public void loadNotification() {
         firebaseAuth = FirebaseAuth.getInstance();
         String currentUser = firebaseAuth.getUid().toString();
         System.out.println("UserID " + userID);

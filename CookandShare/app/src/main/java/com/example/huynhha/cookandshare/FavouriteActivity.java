@@ -49,8 +49,8 @@ public class FavouriteActivity extends AppCompatActivity {
         posts = new ArrayList<>();
         listUserName = new ArrayList<>();
         context = this;
-        getDataFromDBOffline();
-        getData();
+        loadDataFromDBOffline();
+        loadPostData();
         LinearLayoutManager lln = new LinearLayoutManager(this);
         rcFavourite.setLayoutManager(lln);
 
@@ -66,7 +66,7 @@ public class FavouriteActivity extends AppCompatActivity {
         int deletedRows = db.delete(DBContext.FavouriteDB.TABLE_NAME, selection, selectionArgs);
     }
 
-    public void getDataFromDBOffline() {
+    public void loadDataFromDBOffline() {
         FavouriteDBHelper favouriteDBHelper = new FavouriteDBHelper(getApplicationContext());
         SQLiteDatabase db = favouriteDBHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + DBContext.FavouriteDB.TABLE_NAME, null);
@@ -81,7 +81,7 @@ public class FavouriteActivity extends AppCompatActivity {
         cursor.close();
     }
 
-    public void getData() {
+    public void loadPostData() {
         if (postsName.size() == 0) {
             Toast.makeText(context, "Bạn chưa có công thức yêu thích nào", Toast.LENGTH_SHORT).show();
         } else {

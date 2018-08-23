@@ -438,7 +438,7 @@ public class ViewProfileFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 if (count > 1) {
                                     if (listFollower.size() > 0 && listFollowing.size() > 0) {
-                                        getNotification();
+                                        loadNotification();
 
                                         notebookRefFollow.document(sFollowing).update("following", listFollowing);
                                         notebookRefFollow.document(sFollower).update("follower", listFollower);
@@ -575,7 +575,7 @@ public class ViewProfileFragment extends Fragment {
         });
     }
 
-    public void getNotification() {
+    public void loadNotification() {
         firebaseAuth = FirebaseAuth.getInstance();
         String currentUser = firebaseAuth.getUid().toString();
         if (currentUser.equals(getUserID)) {

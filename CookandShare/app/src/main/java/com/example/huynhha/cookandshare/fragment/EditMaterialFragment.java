@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.adapter.MaterialAdapter;
@@ -66,7 +68,7 @@ public class EditMaterialFragment extends Fragment {
         setUp(v);
         postID = getActivity().getIntent().getExtras().getString("postID");
         System.out.println("POSTIDDD: " + postID);
-        getData();
+        loadData();
         addMaterial();
         return v;
     }
@@ -103,7 +105,7 @@ public class EditMaterialFragment extends Fragment {
 
     }
 
-    public void getData() {
+    public void loadData() {
         postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -124,7 +126,7 @@ public class EditMaterialFragment extends Fragment {
                             count++;
                         }
                         if (count == listMaterials.size()) {
-                            setData(post);
+                            loadDataToView(post);
                         }
                     }
                 }
@@ -137,14 +139,20 @@ public class EditMaterialFragment extends Fragment {
         });
     }
 
+
+
     public void addMaterial() {
         btnAddEditMaterials.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                materials.add(new Material("", edtEditNameMaterials.getText().toString(), edtEditQuatityMaterials.getText().toString() + spinnerEditMaterials.getSelectedItem().toString(), ""));
-                importPostMaterial();
-                edtEditNameMaterials.setText("");
-                edtEditQuatityMaterials.setText("");
+                if (edtEditNameMaterials.getText().toString().trim().length()==0 || edtEditQuatityMaterials.getText().toString().trim().length()==0) {
+                    Toast.makeText(getActivity(),"Tên nguyên liệu và số lượng không được để trống!!!",Toast.LENGTH_SHORT).show();
+                } else {
+                    materials.add(new Material("", edtEditNameMaterials.getText().toString(), edtEditQuatityMaterials.getText().toString() + spinnerEditMaterials.getSelectedItem().toString(), ""));
+                    importPostMaterial();
+                    edtEditNameMaterials.setText("");
+                    edtEditQuatityMaterials.setText("");
+                }
             }
         });
     }
@@ -156,7 +164,7 @@ public class EditMaterialFragment extends Fragment {
         rcEditMaterials.setAdapter(materialAdapter);
     }
 
-    public void setData(Post post) {
+    public void loadDataToView(Post post) {
         Picasso.get().load(post.getUrlImage().toString()).centerCrop().fit().into(imgEditMaterials);
         edtEditRecipeName.setText(post.getTitle().toString());
         edtEditDescription.setText(post.getDescription().toString());

@@ -66,6 +66,7 @@ public class LoginFragment extends Fragment {
     private CollectionReference userRef = db.collection("User");
     private CollectionReference followRef = db.collection("Follow");
     private CollectionReference notiRef = db.collection("Notification");
+    private String account = "";
 
     public LoginFragment() {
         // Required empty public constructor
@@ -212,4 +213,5 @@ public class LoginFragment extends Fragment {
                     }
                 });
     }
+
 }

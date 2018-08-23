@@ -147,10 +147,17 @@ public class PostRecipeMaterialFragment extends Fragment {
         btn_add_material.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (edt_namme_of_material.getText().toString().trim().length()==0 || edt_quatity.getText().toString().trim().length()==0) {
+                    Toast.makeText(getActivity(),"Tên nguyên liệu và số lượng không được để trống!!!",Toast.LENGTH_SHORT).show();
+                } else if(Double.parseDouble(edt_quatity.getText().toString().trim()) == 0) {
+                    Toast.makeText(getActivity(),"Số lượng không được bằng 0!!!",Toast.LENGTH_SHORT).show();
+                }
+                    else {
                 materials.add(new Material("", edt_namme_of_material.getText().toString(), edt_quatity.getText().toString() + material_quantity_type.getSelectedItem().toString(), ""));
                 importPostMaterial();
                 edt_namme_of_material.setText("");
                 edt_quatity.setText("");
+                }
             }
         });
     }
@@ -199,7 +206,7 @@ public class PostRecipeMaterialFragment extends Fragment {
             try {
                 uri = data.getData();
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
-                bitmap = getResizedBitmap(bitmap,960,540);
+                bitmap = resizedBitmap(bitmap,960,540);
                 img_recipe.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -207,7 +214,7 @@ public class PostRecipeMaterialFragment extends Fragment {
         }
         System.out.println("Check data ImG: "+requestCode+" "+resultCode);
     }
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+    public Bitmap resizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
         float scaleWidth = ((float) newWidth) / width;

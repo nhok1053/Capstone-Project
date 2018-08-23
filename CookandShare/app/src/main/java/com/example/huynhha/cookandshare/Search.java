@@ -95,10 +95,10 @@ public class Search extends AppCompatActivity {
         addUserDataToList();
         searchButtonActivity();
         searchTextFieldChange();
-        closeActivity();
+        closeActivityListener();
     }
 
-    public void closeActivity() {
+    public void closeActivityListener() {
         btn_close_activity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

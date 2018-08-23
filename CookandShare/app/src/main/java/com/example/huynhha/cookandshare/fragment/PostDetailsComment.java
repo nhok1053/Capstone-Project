@@ -168,7 +168,7 @@ public class PostDetailsComment extends Fragment {
                 edtPostDetailsComment.setText("");
                 commentAdapter = new CommentAdapter(list, getContext(), postID, rcPostDetailsComment);
                 rcPostDetailsComment.setAdapter(commentAdapter);
-                getNotification();
+                loadNotification();
             }
 
         });
@@ -176,7 +176,7 @@ public class PostDetailsComment extends Fragment {
 
     }
 
-    public void getNotification() {
+    public void loadNotification() {
         firebaseAuth = FirebaseAuth.getInstance();
         String currentUser = firebaseAuth.getUid().toString();
         if (currentUser.equals(userID)) {

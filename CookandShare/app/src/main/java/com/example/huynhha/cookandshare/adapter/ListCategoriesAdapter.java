@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import com.example.huynhha.cookandshare.PostActivity;
 import com.example.huynhha.cookandshare.R;
-import com.example.huynhha.cookandshare.RoundedTransformation;
-import com.example.huynhha.cookandshare.YoutubeActivity;
 import com.example.huynhha.cookandshare.entity.Category;
 import com.squareup.picasso.Picasso;
 
