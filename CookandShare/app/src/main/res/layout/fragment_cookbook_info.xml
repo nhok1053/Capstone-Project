@@ -82,7 +82,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:maxLines="1"
-                    android:text="user name"
+                    android:text="username"
                     android:textColor="#fff"
                     android:textSize="18sp" />
 
@@ -93,7 +93,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:maxLines="2"
-                    android:text="cook title"
+                    android:text="title"
                     android:textColor="#fff"
                     android:textSize="16sp" />
 
@@ -103,18 +103,19 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:text="post number"
+                    android:text="number"
                     android:textColor="#fff"
                     android:textSize="12sp" />
             </LinearLayout>
 
             <TextView
+                android:background="@drawable/editext_border"
                 android:id="@+id/tvCookbookInfoCookbookDescription"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llCookbookInfo"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:text="Cookbook description" />
 
             <android.support.v7.widget.RecyclerView

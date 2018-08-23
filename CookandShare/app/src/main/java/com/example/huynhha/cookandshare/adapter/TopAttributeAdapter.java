@@ -1,6 +1,10 @@
 package com.example.huynhha.cookandshare.adapter;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +14,7 @@ import android.widget.ImageView;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
 import com.example.huynhha.cookandshare.entity.User;
+import com.example.huynhha.cookandshare.fragment.ViewProfileFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,16 +23,20 @@ public class TopAttributeAdapter extends RecyclerView.Adapter<TopAttributeAdapte
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
+        CardView cv;
 
         public PostViewHolder(View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.cvTopChefImgViewTopChef);
+            cv = itemView.findViewById(R.id.cvTopChef);
         }
     }
 
+    private Context context;
     private ArrayList<User> topAttributes;
 
-    public TopAttributeAdapter(ArrayList<User> topAttributes) {
+    public TopAttributeAdapter(Context context, ArrayList<User> topAttributes) {
+        this.context = context;
         this.topAttributes = topAttributes;
     }
 
@@ -46,8 +55,21 @@ public class TopAttributeAdapter extends RecyclerView.Adapter<TopAttributeAdapte
 
     @Override
     public void onBindViewHolder(@NonNull TopAttributeAdapter.PostViewHolder holder, int position) {
-        User topAttribute=topAttributes.get(position);
+        final User topAttribute = topAttributes.get(position);
         Picasso.get().load(topAttribute.getImgUrl()).transform(new RoundedTransformation()).fit().centerCrop().into(holder.img);
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.support.v4.app.FragmentTransaction ft = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("userID", topAttribute.getUserID());
+                ViewProfileFragment profileFragment = new ViewProfileFragment();
+                profileFragment.setArguments(bundle);
+                ft.replace(R.id.fl_main, profileFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
     }
 
     @Override

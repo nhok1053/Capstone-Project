@@ -71,8 +71,8 @@ public class Search extends AppCompatActivity {
         btn_close_activity = findViewById(R.id.btn_close);
         btn_title = findViewById(R.id.btn_title);
         btn_user = findViewById(R.id.btn_user);
-        btn_tag =findViewById(R.id.btn_tag);
-        btn_material = findViewById(R.id.btn_material);
+//        btn_tag =findViewById(R.id.btn_tag);
+//        btn_material = findViewById(R.id.btn_material);
         mSearchField = (EditText) findViewById(R.id.search_field);
         mResultList = (RecyclerView) findViewById(R.id.result_list);
         strCheckBtnClickValue = "Title";
@@ -130,18 +130,18 @@ public class Search extends AppCompatActivity {
                 firestoreUserSearch(searchText);
             }
         });
-        btn_tag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                strCheckBtnClickValue = "Tag";
-            }
-        });
-        btn_material.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                strCheckBtnClickValue = "Material";
-            }
-        });
+//        btn_tag.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                strCheckBtnClickValue = "Tag";
+//            }
+//        });
+//        btn_material.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                strCheckBtnClickValue = "Material";
+//            }
+//        });
     }
 
     public String covertStringToUnsigned(String str) {
@@ -243,8 +243,8 @@ public class Search extends AppCompatActivity {
     @SuppressLint("NewApi")
     public void setButtonBackground(){
         btn_title.setBackground(getDrawable(R.drawable.button_background));
-        btn_material.setBackground(getDrawable(R.drawable.button_background));
-        btn_tag.setBackground(getDrawable(R.drawable.button_background));
+//        btn_material.setBackground(getDrawable(R.drawable.button_background));
+//        btn_tag.setBackground(getDrawable(R.drawable.button_background));
         btn_user.setBackground(getDrawable(R.drawable.button_background));
     }
 

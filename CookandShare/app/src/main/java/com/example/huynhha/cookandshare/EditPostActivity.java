@@ -67,7 +67,7 @@ public class EditPostActivity extends AppCompatActivity {
         listStep = new ArrayList<>();
         listMaterials = new ArrayList<>();
         postSteps = new ArrayList<>();
-        context=this;
+        context = this;
         postID = getIntent().getExtras().getString("postID");
         type = getIntent().getExtras().getString("type");
         loadDocumentID();
@@ -80,15 +80,16 @@ public class EditPostActivity extends AppCompatActivity {
         postRef.whereEqualTo("postID",postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         documentID = documentSnapshot.getId();
-                        System.out.println("documentIDDD: a "+documentID);
+                        System.out.println("documentIDDD: a " + documentID);
                     }
                 }
             }
         });
     }
+
     public void setUpEditTabLayout() {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(editMaterialFragment, "Nguyên liệu");
@@ -107,7 +108,7 @@ public class EditPostActivity extends AppCompatActivity {
 
     private void loadListStep() {
         postSteps = editStepFragment.getListStep();
-        System.out.println("Demo 1 "+postSteps.size());
+        System.out.println("Demo 1 " + postSteps.size());
         for (int i = 0; i < postSteps.size(); i++) {
             Map<String, Object> updateStep = new HashMap<>();
             updateStep.put("description", postSteps.get(i).getDescription());
@@ -117,8 +118,8 @@ public class EditPostActivity extends AppCompatActivity {
             listStep.add(updateStep);
             count++;
         }
-        System.out.println("documentIDDD: "+documentID);
-        if(count == postSteps.size()){
+        System.out.println("documentIDDD: " + documentID);
+        if (count == postSteps.size()) {
             postRef.document(documentID).update("postSteps", listStep);
         }
     }
@@ -142,6 +143,7 @@ public class EditPostActivity extends AppCompatActivity {
         updateRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
             final android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(context);
                 alert.setTitle("Xác nhận cập nhật bài viết");
                 alert.setMessage("Bạn đã hoàn thành tất cả rồi chứ?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -210,7 +212,7 @@ public class EditPostActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(context,MainActivity.class);
+        Intent intent = new Intent(context, MainActivity.class);
         startActivity(intent);
     }
 }

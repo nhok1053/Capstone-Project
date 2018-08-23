@@ -45,35 +45,37 @@
         tools:ignore="UnknownId">
 
         <Button
+            android:layout_marginLeft="5dp"
             android:id="@+id/btn_title"
-            android:layout_width="wrap_content"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:background="@drawable/button_background"
             android:text="Tiêu Đề" />
 
         <Button
+            android:layout_marginLeft="10dp"
             android:id="@+id/btn_user"
-            android:layout_width="wrap_content"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/btn_title"
             android:background="@drawable/button_background"
             android:text="Người Dùng" />
-        <Button
-            android:id="@+id/btn_material"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/btn_user"
-            android:background="@drawable/button_background"
-            android:text="Nguyên Liệu" />
-        <Button
-            android:id="@+id/btn_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/btn_material"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/button_background"
-            android:text="#Tags" />
+        <!--<Button-->
+            <!--android:id="@+id/btn_material"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@id/btn_user"-->
+            <!--android:background="@drawable/button_background"-->
+            <!--android:text="Nguyên Liệu" />-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_tag"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@id/btn_material"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:background="@drawable/button_background"-->
+            <!--android:text="#Tags" />-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/result_list"

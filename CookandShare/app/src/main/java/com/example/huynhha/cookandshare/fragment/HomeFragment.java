@@ -38,6 +38,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -63,13 +66,15 @@ public class HomeFragment extends Fragment {
     }
 
     String postID, userID, time, imgUrl, title, description, userImgUrl, userName;
-    int like, comment,countView;
+    int like, comment, countView;
+
     TopPostAdapter postAdapter;
     private ArrayList<Post> posts;
     private ArrayList<Post> topRecipes;
     private CollectionReference postRef = MainActivity.db.collection("Post");
     private CollectionReference commentRef = MainActivity.db.collection("Comment");
     private CollectionReference followRef = MainActivity.db.collection("Follow");
+    private CollectionReference userRef = MainActivity.db.collection("User");
     private OnFragmentCall onFragmentCall;
 
     @Override
@@ -133,7 +138,7 @@ public class HomeFragment extends Fragment {
                             like = Integer.parseInt(documentSnapshot.get("like").toString());
                             comment = Integer.parseInt(documentSnapshot.get("comment").toString());
                             countView = documentSnapshot.getLong("countView").intValue();
-                            Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment, userName,countView);
+                            Post post = new Post(postID, userID, time, imgUrl, title, description, userImgUrl, like, comment, userName, countView);
                             posts.add(post);
                         }
 
@@ -157,14 +162,46 @@ public class HomeFragment extends Fragment {
     }
 
     public void importTopAttribute() {
+        final int[] countTopAttribute = {0};
+        final ArrayList<User> users = new ArrayList<>();
         rvChef.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        followRef.orderBy("follower", Query.Direction.DESCENDING).limit(10).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        rvChef.setLayoutManager(lln);
+        followRef.orderBy("countFollower", Query.Direction.DESCENDING).limit(10).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-
+                    for (final QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                        final String userID = queryDocumentSnapshot.getString("userID");
+                        final int countFollow = Integer.parseInt(queryDocumentSnapshot.get("countFollower").toString());
+                        userRef.whereEqualTo("userID", userID).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                countTopAttribute[0]++;
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot queryDocumentSnapshot1 : task.getResult()) {
+                                        String userUrlImg = queryDocumentSnapshot1.getString("imgUrl");
+                                        User user = new User(userID, userUrlImg, countFollow);
+                                        users.add(user);
+                                    }
+                                }
+                                if (countTopAttribute[0] == 10) {
+                                    Collections.sort(users, new Comparator<User>() {
+                                        @Override
+                                        public int compare(User user, User t1) {
+                                            return Integer.valueOf(t1.getCountFollow()).compareTo(user.getCountFollow());
+                                        }
+                                    });
+                                    TopAttributeAdapter postAdapter = new TopAttributeAdapter(getActivity(), users);
+                                    rvChef.setAdapter(postAdapter);
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        });
                     }
                 }
             }
@@ -175,16 +212,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        rvChef.setLayoutManager(lln);
-        TopAttributeAdapter postAdapter = new TopAttributeAdapter((ArrayList<User>) User.initDataToTopAttribute());
-        rvChef.setAdapter(postAdapter);
+
     }
 
     public void importTopRecipes() {
         rvRecipe.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvRecipe.setLayoutManager(lln);
-        postRef.orderBy("like", Query.Direction.DESCENDING).limit(10).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        postRef.orderBy("like", Query.Direction.DESCENDING).limit(5).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -212,12 +247,17 @@ public class HomeFragment extends Fragment {
                                         } catch (Exception ex) {
                                             comment[0] = 0;
                                         }
-
                                     }
                                 }
                                 Post post = new Post(postID, userID, title, urlImage, like, comment[0]);
                                 topRecipes.add(post);
-                                TopRecipeAdapter postAdapter = new TopRecipeAdapter(topRecipes);
+                                Collections.sort(topRecipes, new Comparator<Post>() {
+                                    @Override
+                                    public int compare(Post post, Post t1) {
+                                        return Integer.valueOf(t1.getLike()).compareTo(post.getLike());
+                                    }
+                                });
+                                TopRecipeAdapter postAdapter = new TopRecipeAdapter(getActivity(), topRecipes);
                                 rvRecipe.setAdapter(postAdapter);
                             }
                         }).addOnFailureListener(new OnFailureListener() {

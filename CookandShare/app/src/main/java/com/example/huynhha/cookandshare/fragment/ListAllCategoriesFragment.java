@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class ListAllCategoriesFragment extends Fragment {
     public void importListCategories() {
         GridLayoutManager gln = new GridLayoutManager(this.getActivity(), 2, GridLayoutManager.VERTICAL, false);
         rvCategories.setLayoutManager(gln);
-        MainActivity.db.collection("Category").orderBy("categoryID")
+        MainActivity.db.collection("Category").orderBy("categoryID", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -63,8 +64,8 @@ public class ListAllCategoriesFragment extends Fragment {
                             categoryID = Integer.parseInt(documentSnapshot.get("categoryID").toString());
                             categoryName = documentSnapshot.get("categoryName").toString();
                             categoryUrlImg = documentSnapshot.get("categoryUrlImage").toString();
-                            postID = (ArrayList<String>) documentSnapshot.get("postID");
-                            Category category = new Category(categoryID, categoryName, categoryUrlImg, postID);
+//                            postID = (ArrayList<String>) documentSnapshot.get("postID");
+                            Category category = new Category(categoryID, categoryName, categoryUrlImg);
                             categories.add(category);
                         }
                         listCategoriesAdapter = new ListCategoriesAdapter(getActivity(), categories);

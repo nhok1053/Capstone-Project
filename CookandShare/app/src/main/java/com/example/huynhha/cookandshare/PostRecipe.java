@@ -180,14 +180,6 @@ public class PostRecipe extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Hãy nhập thời gian!!!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (material.getText().toString().trim().length() == 0) {
-            Toast.makeText(getApplicationContext(), "Hãy nhập tên nguyên liệu của món ăn!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (quantity.getText().toString().trim().length() == 0) {
-            Toast.makeText(getApplicationContext(), "Hãy nhập số lượng của nguyên liệu!!!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
 
         if (postRecipeMaterialFragment.getMaterial().size() == 0) {
             Toast.makeText(getApplicationContext(), "Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
@@ -205,6 +197,7 @@ public class PostRecipe extends AppCompatActivity {
                     postRecipeStepFragment.addPostList().get(i).getTime_duration().trim().length() == 0) {
                 Check = false;
                 Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian của các bước thực hiện không được để trống!!!", Toast.LENGTH_SHORT).show();
+
             }
         }
         if (Check == false) {
@@ -213,6 +206,7 @@ public class PostRecipe extends AppCompatActivity {
 
         return true;
     }
+
 
     private void startPushing(String postID) {
         progressDialog.setTitle("Uploading...");

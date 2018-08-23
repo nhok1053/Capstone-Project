@@ -163,6 +163,8 @@ public class LoginFragment extends Fragment {
                             dataFollow.put("userID", user.getUid().toString());
                             dataFollow.put("following", arrFollow);
                             dataFollow.put("follower", arrFollow);
+                            int countFollower = 1;
+                            dataFollow.put("countFollower", countFollower);
                             Toast.makeText(getContext(), "Login Successfull", Toast.LENGTH_LONG);
                             userRef.whereEqualTo("userID", user.getUid().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
