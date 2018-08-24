@@ -240,7 +240,8 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
             }
         });
 
-        //holder.userName.setText(post.getUserID());
+        //holder.userName.setText(post.getUserID());time
+
         holder.time.setText(post.getTime());
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int pxWidth = displayMetrics.widthPixels;
@@ -317,7 +318,6 @@ public class TopPostAdapter extends RecyclerView.Adapter<TopPostAdapter.PostView
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     System.out.println("Vao xoa");
-
                                                                     Toast.makeText(context, "Xoá thành công", Toast.LENGTH_SHORT).show();
                                                                     posts.remove(adapterPosition);
                                                                     topPostAdapter = new TopPostAdapter(posts, context, recyclerView);

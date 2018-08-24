@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -76,6 +77,7 @@ public class HomeFragment extends Fragment {
     private CollectionReference followRef = MainActivity.db.collection("Follow");
     private CollectionReference userRef = MainActivity.db.collection("User");
     private OnFragmentCall onFragmentCall;
+    private TopAttributeAdapter postAtributeAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,9 +130,14 @@ public class HomeFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             //userName = documentSnapshot.get("userName").toString();
+                            Map<String, Object> map = documentSnapshot.getData();
+                            Date date = (Date) map.get("postTime");
+
+                            String timeconvert = convertDate(date);
+                            System.out.println("Timestamp " + timeconvert);
                             postID = documentSnapshot.get("postID").toString();
                             userID = documentSnapshot.get("userID").toString();
-                            time = documentSnapshot.get("time").toString();
+                            time = "Ngày tạo: " +timeconvert;
                             imgUrl = documentSnapshot.get("urlImage").toString();
                             title = documentSnapshot.get("title").toString();
                             description = documentSnapshot.get("description").toString();
@@ -159,6 +166,38 @@ public class HomeFragment extends Fragment {
                 System.out.println(e.getMessage());
             }
         });
+    }
+
+    public String convertDate(Date date) {
+        String str = "";
+        String month, day, minutes, hour, second;
+        if (date.getMonth() < 9) {
+            month = "0" + (date.getMonth() + 1);
+        } else {
+            month = "" + (date.getMonth() + 1);
+        }
+        if (date.getDay() < 10) {
+            day = "0" + date.getDay();
+        } else {
+            day = "" + date.getDay();
+        }
+        if (date.getHours() < 10) {
+            hour = "0" + date.getHours();
+        } else {
+            hour = "" + date.getHours();
+        }
+        if (date.getMinutes() < 10) {
+            minutes = "0" + date.getMinutes();
+        } else {
+            minutes = "" + date.getMinutes();
+        }
+        if (date.getSeconds() < 10) {
+            second = "0" + date.getSeconds();
+        } else {
+            second = "" + date.getSeconds();
+        }
+        str = day + "." + month + "." + "2018" + " " + hour + ":" + minutes + ":" + second;
+        return str;
     }
 
     public void importTopAttribute() {
@@ -192,8 +231,8 @@ public class HomeFragment extends Fragment {
                                             return Integer.valueOf(t1.getCountFollow()).compareTo(user.getCountFollow());
                                         }
                                     });
-                                    TopAttributeAdapter postAdapter = new TopAttributeAdapter(getActivity(), users);
-                                    rvChef.setAdapter(postAdapter);
+                                    postAtributeAdapter = new TopAttributeAdapter(getActivity(), users);
+                                    rvChef.setAdapter(postAtributeAdapter);
                                 }
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -216,6 +255,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void importTopRecipes() {
+        topRecipes.clear();
         rvRecipe.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvRecipe.setLayoutManager(lln);
@@ -258,6 +298,7 @@ public class HomeFragment extends Fragment {
                                     }
                                 });
                                 TopRecipeAdapter postAdapter = new TopRecipeAdapter(getActivity(), topRecipes);
+                                postAdapter.notifyDataSetChanged();
                                 rvRecipe.setAdapter(postAdapter);
                             }
                         }).addOnFailureListener(new OnFailureListener() {

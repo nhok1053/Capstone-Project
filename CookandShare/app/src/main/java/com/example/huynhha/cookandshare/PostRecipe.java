@@ -157,8 +157,6 @@ public class PostRecipe extends AppCompatActivity {
         EditText name = findViewById(R.id.edt_recipe_name);
         EditText description = findViewById(R.id.edt_recipe_description);
         TextView timecook = findViewById(R.id.tv_time_cook);
-        EditText material = findViewById(R.id.edt_name_of_material);
-        EditText quantity = findViewById(R.id.edt_quatity);
         if (postRecipeMaterialFragment.getImageUri() == null) {
             Toast.makeText(getApplicationContext(), "Hãy chọn ảnh của món ăn!!!", Toast.LENGTH_SHORT).show();
             return false;
@@ -203,7 +201,6 @@ public class PostRecipe extends AppCompatActivity {
         if (Check == false) {
             return false;
         }
-
         return true;
     }
 

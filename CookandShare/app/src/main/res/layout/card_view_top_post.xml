@@ -57,7 +57,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="11:20 thu 2 6-3-2018"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <RelativeLayout

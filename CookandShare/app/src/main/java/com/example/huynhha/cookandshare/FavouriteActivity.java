@@ -35,7 +35,7 @@ public class FavouriteActivity extends AppCompatActivity {
     private CollectionReference postRef = db.collection("Post");
     private CollectionReference userRef = db.collection("User");
     private Post post;
-    private int count = 0;
+    private int count = 1;
     private int countID = 0;
 
     private List<String> listUserName;
@@ -74,6 +74,7 @@ public class FavouriteActivity extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 String post = cursor.getString(cursor.getColumnIndex("postID"));
+                System.out.println("FAVOURITE+ "+post);
                 postsName.add(post);
                 cursor.moveToNext();
             }
@@ -86,17 +87,18 @@ public class FavouriteActivity extends AppCompatActivity {
             Toast.makeText(context, "Bạn chưa có công thức yêu thích nào", Toast.LENGTH_SHORT).show();
         } else {
             for (int i = 0; i < postsName.size(); i++) {
-                postRef.whereEqualTo("postID", postsName.get(i)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                final String postID = postsName.get(i);
+                System.out.println("FAVOURITE+ postID"+postID);
+                postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (final QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-
                                 final String title = documentSnapshot.get("title").toString();
                                 final String urlImage = documentSnapshot.get("urlImage").toString();
-                                final String postID = documentSnapshot.get("postID").toString();
-                                final String rate = "4";
-
+                               // final String postID = documentSnapshot.get("postID").toString();
+                                final String rate = documentSnapshot.get("numberOfRate").toString();
+                                System.out.println("FAVOURITE+ startload");
                                 // post.setUserName(documentSnapshot.get("userName").toString());
                                 postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
@@ -110,9 +112,11 @@ public class FavouriteActivity extends AppCompatActivity {
                                             }
                                             post = new Post(rate, userName, postID, title, urlImage);
                                             posts.add(post);
-
                                         }
+                                        System.out.println("FAVOURITE+ count "+count +" postsize "+postsName.size());
+
                                         if (postsName.size() == count) {
+                                            System.out.println("FAVOURITE+ addAdapter");
                                             favouriteAdapter = new FavouriteAdapter(posts, context);
                                             rcFavourite.setAdapter(favouriteAdapter);
                                         }

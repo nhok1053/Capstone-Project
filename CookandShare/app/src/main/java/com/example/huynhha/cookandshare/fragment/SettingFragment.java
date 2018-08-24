@@ -73,7 +73,7 @@ public class SettingFragment extends Fragment {
 
     public void removeFragment(Fragment fragment) {
         android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right);
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right);
         fragmentTransaction.remove(fragment);
         fragmentTransaction.commit();
 
@@ -100,7 +100,7 @@ public class SettingFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 firebaseAuth.signOut();
-                                ((MainActivity) getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, new LoginFragment()).setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right).addToBackStack(null).commit();
+                                ((MainActivity) getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, new LoginFragment()).setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right).addToBackStack(null).commit();
                                 removeFragment(settingFragment);
                             }
                         }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -114,9 +114,7 @@ public class SettingFragment extends Fragment {
     }
 
     public void feedbackClick() {
-        String info = "OS version: " + System.getProperty("os.version") + "\n" + "API Level: " + android.os.Build.VERSION.SDK
-                + "\n" + "Device: " + android.os.Build.DEVICE + "\n" + "Model: " + android.os.Build.MODEL
-                + "\n" + "Product: " + android.os.Build.PRODUCT;
+        String info = "";
         Intent intent = new Intent(Intent.ACTION_SEND);
         String[] recipientList = new String[1];
         recipientList[0] = "cooknsharefu@gmail.com";
@@ -130,7 +128,7 @@ public class SettingFragment extends Fragment {
     }
 
     public void aboutUsClick() {
-        android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right);
+        android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right);
         AboutUsFragment auf = new AboutUsFragment();
         ft.replace(R.id.fl_setting, auf);
         ft.addToBackStack(null);

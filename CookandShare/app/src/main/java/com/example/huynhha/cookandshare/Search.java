@@ -195,7 +195,6 @@ public class Search extends AppCompatActivity {
                             userID = documentSnapshot.get("userID").toString();
                             dateOfBirth = documentSnapshot.get("dateOfBirth").toString();
                             firstName = documentSnapshot.get("firstName").toString();
-                            secondName = documentSnapshot.get("secondName").toString();
                             userImgUrl = documentSnapshot.get("imgUrl").toString();
                             sex = documentSnapshot.get("sex").toString();
                             phone = documentSnapshot.get("phone").toString();
