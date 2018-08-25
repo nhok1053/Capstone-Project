@@ -239,6 +239,8 @@ public class PostDetails extends AppCompatActivity {
                                     final Intent intent = new Intent(context, EditPostActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.putExtra("postID", postID);
+                                    intent.putExtra("userID",userID);
+                                    intent.putExtra("userName",userNamePost);
                                     intent.putExtra("type", "0");
                                     context.startActivity(intent);
                                     ((PostDetails) context).finish();

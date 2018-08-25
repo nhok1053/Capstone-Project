@@ -98,7 +98,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(context, "Xoa manh", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Xoá thành công", Toast.LENGTH_SHORT).show();
                             deleteDBOffline(getAdapterPosition());
                             posts.get(getAdapterPosition()).getPostID();
                             posts.remove(getAdapterPosition());

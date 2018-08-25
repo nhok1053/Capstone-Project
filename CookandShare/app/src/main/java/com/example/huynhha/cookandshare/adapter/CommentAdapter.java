@@ -74,21 +74,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-//                            LinearLayoutManager lln = new LinearLayoutManager(context);
-//                            holder.rc_comment.setLayoutManager(lln);
+
                             AlertDialog.Builder alert = new AlertDialog.Builder(context);
                             alert.setTitle("Xác nhận");
                             alert.setMessage("Bạn muốn xoá bài viết này?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     loadComment(postID, position);
+                                    
+
                                 }
                             }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                 }
-                            });
+
+                            }).show();
 
                             return true;
                         }

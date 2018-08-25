@@ -22,4 +22,29 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("com.example.huynhha.cookandshare", appContext.getPackageName());
     }
+    @Test
+    public void useAppContext2() {
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        assertEquals("com.example.huynhha.cookandshare", appContext.getPackageName());
+    }
+    @Test
+    public void useAppContext3() {
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        assertEquals("com.example.huynhha.cookandshare", appContext.getPackageName());
+    }
+    @Test
+    public void useAppContext4() {
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        assertEquals("com.example.huynhha.cookandshare", appContext.getPackageName());
+    }
+    @Test
+    public void useAppContext5() {
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        assertEquals("com.example.huynhha.cookandshare", appContext.getPackageName());
+    }
+
 }
