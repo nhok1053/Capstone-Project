@@ -3,6 +3,8 @@ package com.example.huynhha.cookandshare.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,7 +26,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
     public List<User> userList;
     Context context;
 
-    public UsersListAdapter(List<User> userList) {
+    public UsersListAdapter(List<User> userList, Context context) {
         this.userList = userList;
         this.context = context;
     }
@@ -53,6 +55,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
                 ft.replace(R.id.fl_main, profileFragment);
                 ft.addToBackStack(null);
                 ft.commit();
+
             }
         });
     }

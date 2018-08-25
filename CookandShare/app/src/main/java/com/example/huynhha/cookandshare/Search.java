@@ -81,7 +81,7 @@ public class Search extends AppCompatActivity {
         userList = new ArrayList<>();
         userListData = new ArrayList<>();
         postsListAdapter = new PostsListAdapter(postsList,this);
-        usersListAdapter = new UsersListAdapter(userList);
+        usersListAdapter = new UsersListAdapter(userList,this);
         mResultList.setHasFixedSize(true);
         mResultList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -195,7 +195,6 @@ public class Search extends AppCompatActivity {
                             userID = documentSnapshot.get("userID").toString();
                             dateOfBirth = documentSnapshot.get("dateOfBirth").toString();
                             firstName = documentSnapshot.get("firstName").toString();
-                            secondName = documentSnapshot.get("secondName").toString();
                             userImgUrl = documentSnapshot.get("imgUrl").toString();
                             sex = documentSnapshot.get("sex").toString();
                             phone = documentSnapshot.get("phone").toString();

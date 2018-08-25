@@ -7,11 +7,12 @@
     android:background="#fafafa"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:padding="8dp"
+
     app:cardElevation="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:padding="2.5dp"
         android:layout_height="match_parent">
 
         <ImageView

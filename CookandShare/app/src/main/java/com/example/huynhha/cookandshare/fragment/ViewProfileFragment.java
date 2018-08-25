@@ -533,7 +533,7 @@ public class ViewProfileFragment extends Fragment {
                 bundle.putString("getUserID", getUserID);
                 ListFollowingFragment listFollowingFragment = new ListFollowingFragment();
                 listFollowingFragment.setArguments(bundle);
-                ft.replace(R.id.fl_main, listFollowingFragment);
+                ft.replace(R.id.fl_view_profile, listFollowingFragment);
                 ft.addToBackStack(null);
                 ft.commit();
             }
@@ -550,7 +550,7 @@ public class ViewProfileFragment extends Fragment {
                 bundle.putString("getUserID", getUserID);
                 ListFollowingFragment listFollowingFragment = new ListFollowingFragment();
                 listFollowingFragment.setArguments(bundle);
-                ft.replace(R.id.fl_main, listFollowingFragment);
+                ft.replace(R.id.fl_view_profile, listFollowingFragment);
                 ft.addToBackStack(null);
                 ft.commit();
             }

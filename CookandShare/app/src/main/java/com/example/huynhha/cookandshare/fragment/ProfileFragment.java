@@ -109,8 +109,8 @@ public class ProfileFragment extends Fragment {
         countPost();
         countFollowingFollower("following", txtNumberFollowing);
         countFollowingFollower("follower", txtNumberFollower);
-        clickAllPost(txtAllPost);
-        clickAllPost(txtNumberAllPost);
+//        clickAllPost(txtAllPost);
+//        clickAllPost(txtNumberAllPost);
         clickFollowing(txtFollowing);
         clickFollowing(txtNumberFollowing);
         clickFollower(txtFollower);
