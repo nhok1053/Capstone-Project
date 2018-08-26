@@ -11,16 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:gravity="center">
-
-        <Button
-            android:id="@+id/btnAddNewCookbook"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/plus_icon"
-            android:textSize="10sp" />
-
         <TextView
-            android:layout_width="235dp"
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Thêm vào Cookbook"
@@ -41,4 +33,12 @@
         android:layout_marginTop="5dp">
 
     </android.support.v7.widget.RecyclerView>
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btnAddNewCookbook"
+        android:layout_marginBottom="2dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/plus_icon"
+        android:textSize="10sp" />
 </LinearLayout>

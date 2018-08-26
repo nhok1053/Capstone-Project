@@ -14,10 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.huynhha.cookandshare.CircleTransform;
+import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.User;
 import com.example.huynhha.cookandshare.fragment.ViewProfileFragment;
+import com.google.firebase.firestore.CollectionReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -39,6 +41,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
 
     @Override
     public void onBindViewHolder(UsersListAdapter.ViewHolder holder, final int position) {
+
         holder.nameText.setText(userList.get(position).getFirstName());
         Picasso.get().load(userList.get(position).getImgUrl())
                 .resize(100, 100)
