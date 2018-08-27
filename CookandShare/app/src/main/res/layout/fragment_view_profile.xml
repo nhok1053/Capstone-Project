@@ -218,8 +218,14 @@
                     android:id="@+id/rvViewProfileImgPost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-                s
             </LinearLayout>
         </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
+    <FrameLayout
+        android:id="@+id/fl_view_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 </RelativeLayout>

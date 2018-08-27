@@ -156,9 +156,9 @@ public class CookbookInfoFragment extends Fragment {
                                     @Override
                                     public void onClick(View view) {
                                         if (name.getText().toString().trim().length() == 0 || name.getText().toString().trim().length() > 60) {
-                                            Toast.makeText(getActivity(), "Tên cookbook không được để trống và phải ít hơn 60 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Tên cookbook không được để trống và phải ít hơn 60 kí tự!!!", Toast.LENGTH_SHORT).show();
                                         } else if (des.getText().toString().trim().length() == 0 || des.getText().toString().trim().length() > 200) {
-                                            Toast.makeText(getActivity(), "Mô tả cookbook không được để trống và phải ít hơn 200 kí tự!!!",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Mô tả cookbook không được để trống và phải ít hơn 200 kí tự!!!", Toast.LENGTH_SHORT).show();
                                         } else {
                                             cookbookRef.document(cb.getCookbookID()).update("cookbookName", name.getText().toString());
                                             cookbookRef.document(cb.getCookbookID()).update("cookbookDescription", des.getText().toString());
@@ -320,6 +320,10 @@ public class CookbookInfoFragment extends Fragment {
                             final String postUrlImage = queryDocumentSnapshot.get("urlImage").toString();
                             final String userIDx = queryDocumentSnapshot.get("userID").toString();
                             final String[] userName = new String[1];
+                            if (postTitle == null || postTitle.trim().equals("")) {
+                                Post postnull = new Post("0", "Cong thuc bi xoa", "xx", "Cong thuc bi xoa", "");
+                                posts.add(postnull);
+                            }
                             MainActivity.db.collection("User").whereEqualTo("userID", userIDx).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -329,11 +333,12 @@ public class CookbookInfoFragment extends Fragment {
                                         for (QueryDocumentSnapshot queryDocumentSnapshot1 : querySnapshot1) {
                                             userName[0] = queryDocumentSnapshot1.get("firstName").toString();
                                         }
+
                                         Post post = new Post(postRate, userName[0], postID, postTitle, postUrlImage);
                                         posts.add(post);
                                     }
                                     if (cnt[0] == task.getResult().size()) {
-                                        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts, cookbookID, userIDx, userName[0], userUrlImage,userID);
+                                        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts, cookbookID, userIDx, userName[0], userUrlImage, userID);
                                         rv.setAdapter(cookbookListPostAdapter);
                                     }
                                 }
@@ -344,9 +349,7 @@ public class CookbookInfoFragment extends Fragment {
                                     System.out.println(e.getMessage());
                                 }
                             });
-
                         }
-
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {

@@ -5,7 +5,7 @@
     android:layout_gravity="center"
     android:elevation="5dp"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -61,14 +61,15 @@
 
         <Button
             android:id="@+id/btnAddNewCookbookSave"
-            android:layout_width="170dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="Lưu" />
 
         <Button
             android:id="@+id/btnAddNewCookbookCancel"
-            android:layout_width="170dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="7.5dp"
             android:text="Hủy" />
     </LinearLayout>
 </LinearLayout>

@@ -10,9 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.Post;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,6 +27,7 @@ import java.util.ArrayList;
 public class PersonalAllPostAdapter extends RecyclerView.Adapter<PersonalAllPostAdapter.AllPostViewHolder> {
     ArrayList<Post> posts;
     Context ctx;
+    private CollectionReference notebookRefUser = MainActivity.db.collection("User");
 
     public PersonalAllPostAdapter(ArrayList<Post> posts, Context ctx) {
         this.posts = posts;
@@ -50,13 +58,30 @@ public class PersonalAllPostAdapter extends RecyclerView.Adapter<PersonalAllPost
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ctx, PostDetails.class);
-                Bundle bundle = new Bundle();
+                final Intent intent = new Intent(ctx, PostDetails.class);
+                final Bundle bundle = new Bundle();
                 bundle.putString("postID", post.getPostID());
-                bundle.putString("userID",post.getUserID());
-                bundle.putString("type","1");
-                intent.putExtras(bundle);
-                ctx.startActivity(intent);
+                final String[] userName = {""};
+                notebookRefUser.whereEqualTo("userID", post.getUserID()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot queryDocumentSnapshot :
+                                task.getResult()) {
+                            userName[0] = queryDocumentSnapshot.getString("firstName");
+                        }
+                        bundle.putString("userName", userName[0]);
+                        bundle.putString("userID", post.getUserID());
+                        bundle.putString("type", "1");
+                        intent.putExtras(bundle);
+                        ctx.startActivity(intent);
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                });
             }
         });
     }

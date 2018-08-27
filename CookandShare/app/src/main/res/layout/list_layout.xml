@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view_search_post"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/image_data"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        app:srcCompat="@drawable/border_circle_image" />
-    <TextView
-        android:id="@+id/name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="110dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="15dp"
-        android:text="Name"
-        android:textColor="#555555"
-        android:textSize="16sp" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/description_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/name_text"
-        android:layout_marginLeft="110dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="5dp"
-        android:text="Something here"
-        android:textColor="#999999"
-        android:textSize="14sp"
-        android:ellipsize="end"
-        android:maxLines="2"/>
+        <ImageView
+            android:id="@+id/image_data"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/border_circle_image" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="110dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:text="Name"
+            android:textColor="#555555"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/description_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_text"
+            android:layout_marginLeft="110dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Something here"
+            android:textColor="#999999"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

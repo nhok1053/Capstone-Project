@@ -3,6 +3,8 @@ package com.example.huynhha.cookandshare.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,10 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.huynhha.cookandshare.CircleTransform;
+import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.User;
 import com.example.huynhha.cookandshare.fragment.ViewProfileFragment;
+import com.google.firebase.firestore.CollectionReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -24,7 +28,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
     public List<User> userList;
     Context context;
 
-    public UsersListAdapter(List<User> userList) {
+    public UsersListAdapter(List<User> userList, Context context) {
         this.userList = userList;
         this.context = context;
     }
@@ -37,6 +41,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
 
     @Override
     public void onBindViewHolder(UsersListAdapter.ViewHolder holder, final int position) {
+
         holder.nameText.setText(userList.get(position).getFirstName());
         Picasso.get().load(userList.get(position).getImgUrl())
                 .resize(100, 100)
@@ -53,6 +58,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.View
                 ft.replace(R.id.fl_main, profileFragment);
                 ft.addToBackStack(null);
                 ft.commit();
+
             }
         });
     }
