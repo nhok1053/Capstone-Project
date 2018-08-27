@@ -50,8 +50,6 @@ import butterknife.ButterKnife;
 public class LoginFragment extends Fragment {
     @BindView(R.id.sign_in_google)
     ImageButton signInGoogle;
-    @BindView(R.id.sign_in_facebook)
-    ImageButton signInFacebook;
     @BindView(R.id.sign_in_phone)
     ImageButton singInPhone;
     @BindView(R.id.fl)

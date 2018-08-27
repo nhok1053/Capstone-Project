@@ -81,7 +81,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     loadComment(postID, position);
-                                    
+
 
                                 }
                             }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

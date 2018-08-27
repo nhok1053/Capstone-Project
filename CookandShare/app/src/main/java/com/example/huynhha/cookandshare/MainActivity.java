@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     private int[] tabIcons = {
             R.drawable.ic_home,
             R.drawable.ic_categories,
-            R.drawable.ic_home,
+            R.drawable.tipandtrick,
             R.drawable.notificaton_icon,
             R.drawable.ic_personal
     };
