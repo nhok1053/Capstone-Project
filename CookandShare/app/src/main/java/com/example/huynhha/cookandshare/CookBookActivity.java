@@ -63,18 +63,21 @@ public class CookBookActivity extends AppCompatActivity {
     public void importListCookbook() {
         final GridLayoutManager gln = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         rv.setLayoutManager(gln);
-
+        //Query all cookbook of User with UserID
         MainActivity.db.collection("Cookbook").whereEqualTo("userID", getUserID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             if (task.getResult().size() > 0) {
+                                //get CookbookID
                                 final String id = documentSnapshot.getId().toString();
+                                //get Cookbook Post Size
                                 listpost = (ArrayList<String>) documentSnapshot.get("postlist");
                                 final int numberpost = listpost.size();
-                                final String[] image = new String[1];
                                 final String cookbookName = documentSnapshot.get("cookbookName").toString();
+                                //get the image of First Recipe in listpost, set to main cookbook background
+                                final String[] image = {""};
                                 MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString())
                                         .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override

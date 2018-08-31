@@ -226,8 +226,9 @@ public class CookbookInfoFragment extends Fragment {
                         if (documentSnapshot.exists()) {
                             listpost = (ArrayList<String>) documentSnapshot.get("postlist");
                             int numberpost = listpost.size();
-                            final String[] image = new String[1];
-                            MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            final String[] image = {""};
+                            MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString())
+                                    .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     count++;
@@ -318,27 +319,28 @@ public class CookbookInfoFragment extends Fragment {
                             final String postRate = queryDocumentSnapshot.get("numberOfRate").toString();
                             final String postTitle = queryDocumentSnapshot.get("title").toString();
                             final String postUrlImage = queryDocumentSnapshot.get("urlImage").toString();
-                            final String userIDx = queryDocumentSnapshot.get("userID").toString();
-                            final String[] userName = new String[1];
+                            final String userIDOfPost = queryDocumentSnapshot.get("userID").toString();
+                            final String[] userNameOfRecipe = new String[1];
                             if (postTitle == null || postTitle.trim().equals("")) {
                                 Post postnull = new Post("0", "Cong thuc bi xoa", "xx", "Cong thuc bi xoa", "");
                                 posts.add(postnull);
                             }
-                            MainActivity.db.collection("User").whereEqualTo("userID", userIDx).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            MainActivity.db.collection("User").whereEqualTo("userID", userIDOfPost).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     cnt[0]++;
                                     if (task.isSuccessful()) {
                                         QuerySnapshot querySnapshot1 = task.getResult();
                                         for (QueryDocumentSnapshot queryDocumentSnapshot1 : querySnapshot1) {
-                                            userName[0] = queryDocumentSnapshot1.get("firstName").toString();
+                                            userNameOfRecipe[0] = queryDocumentSnapshot1.get("firstName").toString();
                                         }
 
-                                        Post post = new Post(postRate, userName[0], postID, postTitle, postUrlImage);
+                                        Post post = new Post(postRate, userNameOfRecipe[0], postID, postTitle, postUrlImage);
+                                        post.setUserID(userIDOfPost);
                                         posts.add(post);
                                     }
                                     if (cnt[0] == task.getResult().size()) {
-                                        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts, cookbookID, userIDx, userName[0], userUrlImage, userID);
+                                        CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts, cookbookID, userIDOfPost, userNameOfRecipe[0], userUrlImage, userID, userName);
                                         rv.setAdapter(cookbookListPostAdapter);
                                     }
                                 }

@@ -35,6 +35,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -179,30 +180,37 @@ public class LoginFragment extends Fragment {
                                 @Override
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                     System.out.println("Intent2");
-                                    if (queryDocumentSnapshots != null && queryDocumentSnapshots.size() != 0) {
-                                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                                        startActivity(intent);
-                                    } else {
-                                        notiRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentReference> task) {
-
-                                            }
-                                        });
-                                        followRef.add(dataFollow).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentReference> task) {
-
-                                            }
-                                        });
-                                        UpdateProfileFragment updateProfileFragment = new UpdateProfileFragment();
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("type", "0");
-                                        updateProfileFragment.setArguments(bundle);
-                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login, updateProfileFragment).addToBackStack(null);
-                                        transaction.commit();
+                                    Boolean checkUserStatus = false;
+                                    for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                                        checkUserStatus = queryDocumentSnapshot.getBoolean("status");
                                     }
+                                    if (checkUserStatus == true) {
+                                        if (queryDocumentSnapshots != null && queryDocumentSnapshots.size() != 0) {
+                                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                                            startActivity(intent);
+                                        } else {
+                                            notiRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentReference> task) {
 
+                                                }
+                                            });
+                                            followRef.add(dataFollow).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                                }
+                                            });
+                                            UpdateProfileFragment updateProfileFragment = new UpdateProfileFragment();
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("type", "0");
+                                            updateProfileFragment.setArguments(bundle);
+                                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_login, updateProfileFragment).addToBackStack(null);
+                                            transaction.commit();
+                                        }
+                                    } else {
+                                        Toast.makeText(getActivity(), "Tài khoản đã bị khóa", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override

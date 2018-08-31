@@ -43,24 +43,19 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
     private CollectionReference userRef = MainActivity.db.collection("User");
     private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
     private ArrayList<String> arrUpdate;
-    private String userNamex;
+    private String userIDOfCookbook;
+    private String userNameOfCookbook;
+    private String userIDofPost;
 
-    public String getUserNamex() {
-        return userNamex;
-    }
-
-    public void setUserNamex(String userNamex) {
-        this.userNamex = userNamex;
-    }
-
-    public CookbookListPostAdapter(Context context, ArrayList<Post> posts, String cookbookID, String userID, String userName, String userUrlImage, String userNamex) {
+    public CookbookListPostAdapter(Context context, ArrayList<Post> posts, String cookbookID, String userID, String userName, String userUrlImage, String userIDOfCookbook, String userNameOfCookbook) {
         this.context = context;
         this.posts = posts;
         this.cookbookID = cookbookID;
         this.userID = userID;
         this.userName = userName;
         this.userUrlImage = userUrlImage;
-        this.userNamex=userNamex;
+        this.userIDOfCookbook = userIDOfCookbook;
+        this.userNameOfCookbook = userNameOfCookbook;
     }
 
     public class CookbookListViewHolder extends RecyclerView.ViewHolder {
@@ -80,7 +75,7 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
             rb = itemView.findViewById(R.id.rbCookbookListpostPostRate);
             btn = itemView.findViewById(R.id.btnCookbookListpostMore);
             cv = itemView.findViewById(R.id.cvPostInCookbook);
-            if (!userNamex.equals(currentUser) || posts.size() < 2) {
+            if (!userIDOfCookbook.equals(currentUser) || posts.size() < 2) {
                 btn.setVisibility(View.GONE);
             }
         }
@@ -127,8 +122,8 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
                                                     CookbookInfoFragment cookbookInfoFragment = new CookbookInfoFragment();
                                                     Bundle bundle = new Bundle();
                                                     bundle.putString("cookbookID", cookbookID);
-                                                    bundle.putString("userID", userID);
-                                                    bundle.putString("username", userName);
+                                                    bundle.putString("userID", userIDOfCookbook);
+                                                    bundle.putString("username", userNameOfCookbook);
                                                     bundle.putString("userimage", userUrlImage);
                                                     cookbookInfoFragment.setArguments(bundle);
                                                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fl_cookbook,
@@ -160,6 +155,7 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
                 Intent intent = new Intent(context, PostDetails.class);
                 intent.putExtra("postID", post.getPostID());
                 intent.putExtra("userName", post.getUserName());
+                intent.putExtra("userID", post.getUserID());
                 context.startActivity(intent);
             }
         });
