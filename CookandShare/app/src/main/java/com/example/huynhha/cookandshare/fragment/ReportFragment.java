@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -43,6 +44,7 @@ public class ReportFragment extends Fragment {
     private Button btnSend;
     private RadioGroup groupReport;
     private RadioButton radioButton;
+    private EditText edtReport;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private CollectionReference reportRef = db.collection("Report");
@@ -71,6 +73,7 @@ public class ReportFragment extends Fragment {
         reportButton = v.findViewById(R.id.report_close);
         btnSend = v.findViewById(R.id.btn_send_report);
         groupReport = v.findViewById(R.id.group_report);
+        edtReport = v.findViewById(R.id.edt_report);
         userID = getArguments().getString("userID");
         postID = getArguments().getString("postID");
         System.out.println("AZS: "+postID);
@@ -123,6 +126,9 @@ public class ReportFragment extends Fragment {
                         break;
                     case R.id.rp_5:
                         str = "Tin giả,quấy rối";
+                        break;
+                    case R.id.rp_6:
+                        str = edtReport.getText().toString();
                         break;
 
                 }

@@ -57,6 +57,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.View
                 .resize(100, 100)
                 .centerInside()
                 .transform(new CircleTransform()).into(holder.imageView);
+        //sua ten
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

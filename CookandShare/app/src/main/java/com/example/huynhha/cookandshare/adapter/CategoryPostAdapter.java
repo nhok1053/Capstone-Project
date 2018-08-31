@@ -94,6 +94,7 @@ public class CategoryPostAdapter extends RecyclerView.Adapter<CategoryPostAdapte
                 Intent intent = new Intent(context, PostDetails.class);
                 intent.putExtra("postID", post.getPostID());
                 intent.putExtra("userName", userName[0]);
+                intent.putExtra("userID",post.getUserID());
                 context.startActivity(intent);
             }
         });

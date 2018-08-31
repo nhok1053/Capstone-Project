@@ -1,6 +1,7 @@
 package com.example.huynhha.cookandshare.adapter;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.Material;
@@ -38,6 +40,7 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
     private static final int RESULT_LOAD_IMAGE = 2;
     private OnItemStepClick onItemStepClick;
     private OnPostSend onPostSend;
+
     public void setOnItemStepClick(OnItemStepClick onItemStepClick) {
         this.onItemStepClick = onItemStepClick;
     }
@@ -46,7 +49,8 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         this.context = context;
         this.postSteps = postSteps;
     }
-    public void setOnPostSend(OnPostSend onPostSend){
+
+    public void setOnPostSend(OnPostSend onPostSend) {
         this.onPostSend = onPostSend;
     }
 
@@ -63,17 +67,29 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostStepAdapter.PostStepViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final PostStepAdapter.PostStepViewHolder holder, final int position) {
         PostStep postStep = postSteps.get(position);
-        if(!postStep.getImgURL().equals("")){
+        if (!postStep.getImgURL().equals("")) {
             Picasso.get().load(postStep.getImgURL().toString()).centerCrop().fit().into(holder.img_step);
             holder.btn_add_image.setVisibility(View.INVISIBLE);
 
         }
-        if(!postStep.getTime_duration().equals("")){
+        if (!postStep.getTime_duration().equals("")) {
             holder.duration.setText(postStep.getTime_duration().toString());
         }
-        holder.txt_step.setText(""+ (position+1));
+        holder.duration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        holder.duration.setText((i * 60 + i1) + " phút");
+                    }
+                }, 0, 0, true);
+                timePickerDialog.show();
+            }
+        });
+        holder.txt_step.setText("" + (position + 1));
         holder.edt_description.setText(postStep.getDescription().toString());
         holder.btn_add_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,12 +100,12 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
                 ((Activity) context).startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
             }
         });
-        if(postStep.getUri()!=null){
+        if (postStep.getUri() != null) {
             Uri uri = Uri.parse(postStep.getUri());
             Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(((Activity)context).getContentResolver(),uri);
-                bitmap = resizedBitmap(bitmap,960,540);
+                bitmap = MediaStore.Images.Media.getBitmap(((Activity) context).getContentResolver(), uri);
+                bitmap = resizedBitmap(bitmap, 960, 540);
                 holder.btn_add_image.setVisibility(View.INVISIBLE);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -101,9 +117,11 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         System.out.println("Holder" + holder.edt_description.getText().toString());
 
     }
-    public List<PostStep> getPostSteps(){
+
+    public List<PostStep> getPostSteps() {
         return postSteps;
     }
+
     public Bitmap resizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();
@@ -120,6 +138,7 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         bm.recycle();
         return resizedBitmap;
     }
+
     @Override
     public int getItemCount() {
         return postSteps.size();
@@ -141,7 +160,7 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         public PostStepViewHolder(View itemView) {
             super(itemView);
             edt_description = itemView.findViewById(R.id.edt_step_description);
-           // edt_tips = itemView.findViewById(R.id.step_tip);
+            // edt_tips = itemView.findViewById(R.id.step_tip);
             //edt_secret_materials = itemView.findViewById(R.id.material_tip);
             img_step = itemView.findViewById(R.id.img_step_recipe);
             btn_add_image = itemView.findViewById(R.id.btn_step_add_image);
@@ -182,7 +201,7 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                postSteps.get(getAdapterPosition()).setNumberOfStep(txt_step.getText().toString());
+                    postSteps.get(getAdapterPosition()).setNumberOfStep(txt_step.getText().toString());
                 }
 
                 @Override
@@ -210,11 +229,11 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         }
     }
 
-    public interface OnItemStepClick{
+    public interface OnItemStepClick {
         void onClick(int postion);
     }
 
-    public interface OnPostSend{
+    public interface OnPostSend {
         void onClick(List<PostStep> postStep);
     }
 

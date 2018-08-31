@@ -6,12 +6,12 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:layout_margin="4dp"
-        app:cardBackgroundColor="@color/cardview_dark_background"
         android:id="@+id/cv_step_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:elevation="5dp"
+        app:cardBackgroundColor="@color/cardview_dark_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -134,14 +134,16 @@
 
 
             <LinearLayout
-                android:layout_margin="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
                 <ImageView
-                    android:src="@drawable/material"
-                    android:layout_gravity="center"
                     android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/material" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -153,13 +155,18 @@
             </LinearLayout>
 
             <EditText
+
                 android:id="@+id/edt_duration_step"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="8dp"
                 android:background="#ffffff"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:hint="Ví dụ : 1h30p"
                 android:padding="8dp"
                 android:paddingLeft="5dp" />

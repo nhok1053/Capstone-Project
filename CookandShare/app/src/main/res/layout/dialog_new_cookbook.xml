@@ -8,6 +8,7 @@
     android:padding="5dp">
 
     <TextView
+        android:textColor="#000000"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
@@ -54,22 +55,27 @@
     </LinearLayout>
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <Button
+            android:layout_marginLeft="70dp"
+            android:textColor="#757575"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/btnAddNewCookbookCancel"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Hủy" />
+        <Button
+            android:layout_marginLeft="7.5dp"
+            android:textColor="#e91e63"
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/btnAddNewCookbookSave"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="Lưu" />
-
-        <Button
-            android:id="@+id/btnAddNewCookbookCancel"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7.5dp"
-            android:text="Hủy" />
     </LinearLayout>
 </LinearLayout>

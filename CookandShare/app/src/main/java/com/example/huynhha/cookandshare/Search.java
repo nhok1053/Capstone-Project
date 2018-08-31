@@ -215,7 +215,7 @@ public class Search extends AppCompatActivity {
     private void firestorePostSearch(String searchText) {
         postsList.clear();
         //notification when click search button
-        Toast.makeText(Search.this, "Started Search", Toast.LENGTH_LONG).show();
+       // Toast.makeText(Search.this, "Started Search", Toast.LENGTH_LONG).show();
         searchText = covertStringToUnsigned(searchText);
         int searchListLength = postListData.size();
         for (int i = 0; i < searchListLength; i++) {
@@ -228,7 +228,7 @@ public class Search extends AppCompatActivity {
     private void firestoreUserSearch(String searchText) {
         userList.clear();
         //notification when click search button
-        Toast.makeText(Search.this, "Started Search", Toast.LENGTH_LONG).show();
+       // Toast.makeText(Search.this, "Started Search", Toast.LENGTH_LONG).show();
         searchText = covertStringToUnsigned(searchText);
         int searchListLength = userListData.size();
         for (int i = 0; i < searchListLength; i++) {
