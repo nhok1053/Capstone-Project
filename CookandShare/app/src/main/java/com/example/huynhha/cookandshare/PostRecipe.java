@@ -21,6 +21,7 @@ import com.example.huynhha.cookandshare.adapter.PagerAdapter;
 import com.example.huynhha.cookandshare.adapter.PostRecipeTabLayoutAdapter;
 import com.example.huynhha.cookandshare.adapter.PostStepAdapter;
 import com.example.huynhha.cookandshare.entity.Comment;
+import com.example.huynhha.cookandshare.entity.NotificationDetails;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.example.huynhha.cookandshare.entity.PostStep;
 import com.example.huynhha.cookandshare.fragment.PostRecipeMaterialFragment;
@@ -34,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -70,17 +72,25 @@ public class PostRecipe extends AppCompatActivity {
     private List<Map<String, Object>> list1;
     private List<Integer> listCategory;
     private List<String> listPostID;
+    private List<String> listUserID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
     private CollectionReference postRef = db.collection("Post");
     private CollectionReference reportRef = db.collection("Report");
     private CollectionReference commentRef = db.collection("Comment");
     private CollectionReference categoryRef = db.collection("Category");
+    private CollectionReference followerRef = db.collection("Follow");
+    private CollectionReference notiRef = db.collection("Notification");
+    private FirebaseAuth firebaseAuth;
+    private List<Map<String, Object>> listNoti;
+    private ArrayList<NotificationDetails> listNotiDetails;
     final Post post = new Post();
     private int count = 0;
+    private int countNoti = 0;
     private ProgressDialog progressDialog;
     private TabLayout tabLayout;
     private String uuid;
+    private String documentNoti = "";
     @ServerTimestamp
     Date date;
 
@@ -95,6 +105,9 @@ public class PostRecipe extends AppCompatActivity {
         tabLayout = findViewById(R.id.post_recipe_tab_layout);
         listCategory = new ArrayList<>();
         listPostID = new ArrayList<>();
+        listUserID = new ArrayList<>();
+        listNoti = new ArrayList<>();
+        listNotiDetails = new ArrayList<>();
         storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().hide();
         setTabLayout();
@@ -353,7 +366,7 @@ public class PostRecipe extends AppCompatActivity {
 
                     }
                 });
-
+                loadFollowUserIDList(post.getPostID());
                 Log.d("Posted", "onSuccess: ");
                 progressDialog.dismiss();
                 Toast.makeText(PostRecipe.this, "Post Recipe Success", Toast.LENGTH_SHORT).show();
@@ -365,6 +378,115 @@ public class PostRecipe extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void loadFollowUserIDList(final String postID) {
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        followerRef.whereEqualTo("userID", currentFirebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                        try {
+                            listUserID = (ArrayList<String>) documentSnapshot.get("follower");
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
+                        if (listUserID != null) {
+                            if (listUserID.get(0) != null) {
+                                for (int i = 0; i < listUserID.size(); i++) {
+                                    System.out.println("recipe" + listUserID.get(i).toString());
+                                    loadNotification(listUserID.get(i), postID);
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
+        });
+    }
+
+    public void loadNotification(String userID, final String postID) {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        String currentUser = firebaseAuth.getUid().toString();
+        if (currentUser.equals(userID)) {
+            System.out.println("Nothing");
+        } else {
+            System.out.println("UserID " + userID);
+            notiRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String documentNoti = document.getId();
+                            try {
+                                listNoti = (List<Map<String, Object>>) document.get("notification");
+                            } catch (Exception e) {
+                                System.out.println(e);
+                            }
+                            if (listNoti == null) {
+                                addNoti(documentNoti, postID);
+                                System.out.println("recipe zo");
+                                countNoti = 0;
+                                System.out.println("Khong co noti");
+                            } else {
+                                for (int i = 0; i < listNoti.size(); i++) {
+                                    NotificationDetails notificationDetails = new NotificationDetails();
+                                    notificationDetails.setType(listNoti.get(i).get("type").toString());
+                                    notificationDetails.setUserUrlImage(listNoti.get(i).get("userUrlImage").toString());
+                                    notificationDetails.setPostID(listNoti.get(i).get("postID").toString());
+                                    notificationDetails.setTime(listNoti.get(i).get("time").toString());
+                                    notificationDetails.setContent(listNoti.get(i).get("content").toString());
+                                    notificationDetails.setUserID(listNoti.get(i).get("userID").toString());
+                                    listNotiDetails.add(notificationDetails);
+                                    countNoti++;
+                                    System.out.println("recipe countNoti " + countNoti + "= " + listNoti.size());
+                                }
+
+                            }
+                            if (countNoti == listNoti.size()) {
+                                System.out.println("recipe count" + countNoti + "= " + listNoti.size());
+                                System.out.println("recipe count" + countNoti);
+                                System.out.println("recipe zo2");
+                                addNoti(documentNoti, postID);
+                                countNoti = 0;
+                            }
+
+                        }
+
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        }
+    }
+
+    public void addNoti(final String documentID, String postID) {
+        firebaseAuth = FirebaseAuth.getInstance();
+        DateFormat df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        final String date = df.format(Calendar.getInstance().getTime());
+        Map<String, Object> updateNoti = new HashMap<>();
+        updateNoti.put("postID", postID);
+        updateNoti.put("time", date);
+        updateNoti.put("type", 1);
+        updateNoti.put("userID", firebaseAuth.getCurrentUser().getUid().toString());
+        updateNoti.put("userUrlImage", firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+        updateNoti.put("content", firebaseAuth.getCurrentUser().getDisplayName().toString() + " đã thêm một công thức mới. Xem ngay nào.");
+        if (listNoti == null) {
+            listNoti = new ArrayList<>();
+            listNoti.add(updateNoti);
+        } else {
+            listNoti.add(updateNoti);
+        }
+        System.out.println("check noti reicpe");
+        notiRef.document(documentID).update("notification", listNoti);
     }
 }
 

@@ -85,6 +85,7 @@ public class GoMarketDetails extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_go_market_details, container, false);
         setUp(v);
+
         id = getArguments().getString("id"); //fetching value by key
         userID = getArguments().getString("userID");
         recipeName = getArguments().getString("name");
@@ -300,7 +301,7 @@ public class GoMarketDetails extends Fragment {
         double doneMaterials = 0;
         doneMaterials = Math.floor((countCheck / (materials.size())) * 100) / 100;
         Map<String, Object> updateNoti = new HashMap<>();
-        updateNoti.put("postID", id);
+        updateNoti.put("postID", postID);
         updateNoti.put("time", date);
         updateNoti.put("type", 3);
         updateNoti.put("userID", firebaseAuth.getCurrentUser().getUid().toString());
