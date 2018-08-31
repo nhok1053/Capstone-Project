@@ -99,6 +99,7 @@ public class SettingFragment extends Fragment {
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 firebaseAuth.signOut();
                                 ((MainActivity) getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, new LoginFragment()).setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right).addToBackStack(null).commit();
                                 removeFragment(settingFragment);

@@ -70,9 +70,6 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
             holder.btn_add_image.setVisibility(View.INVISIBLE);
 
         }
-        if(!postStep.getTemp().equals("")){
-            holder.edtTemp.setText(postStep.getTemp().toString());
-        }
         if(!postStep.getTime_duration().equals("")){
             holder.duration.setText(postStep.getTime_duration().toString());
         }
@@ -98,7 +95,6 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
                 e.printStackTrace();
             }
             holder.img_step.setImageBitmap(bitmap);
-            holder.edtTemp.setText(postStep.getTemp().toString());
             holder.duration.setText(postStep.getTime_duration().toString());
 
         }
@@ -139,7 +135,6 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
         private ImageView img_delete_image;
         private ImageView img_delete_step;
         private RelativeLayout duration_step;
-        private EditText edtTemp;
         private EditText duration;
 
 
@@ -154,7 +149,6 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
             img_delete_step = itemView.findViewById(R.id.img_delete_step);
             txt_step = itemView.findViewById(R.id.txt_step);
             duration = itemView.findViewById(R.id.edt_duration_step);
-            edtTemp = itemView.findViewById(R.id.edt_temp);
             img_delete_step.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -206,22 +200,6 @@ public class PostStepAdapter extends RecyclerView.Adapter<PostStepAdapter.PostSt
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     postSteps.get(getAdapterPosition()).setTime_duration(duration.getText().toString());
 
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-            edtTemp.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    postSteps.get(getAdapterPosition()).setTemp(edtTemp.getText().toString());
                 }
 
                 @Override

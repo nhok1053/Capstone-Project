@@ -58,7 +58,8 @@ public class CookingActitvity extends AppCompatActivity {
         btnFinish.setEnabled(false);
         startCookingViewpager.addOnPageChangeListener(viewListener);
     }
-    public void setFinishListener(){
+
+    public void setFinishListener() {
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +67,7 @@ public class CookingActitvity extends AppCompatActivity {
             }
         });
     }
+
     public void loadPostData(final String postID) {
 
         postRef.whereEqualTo("postID", postID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -80,7 +82,7 @@ public class CookingActitvity extends AppCompatActivity {
                             postStep.setNumberOfStep("" + (i + 1));
 //                            postStep.setTime_duration(list1.get(i).get("time_duration").toString());
                             postStep.setDescription(list1.get(i).get("description").toString());
-                            postStep.setTemp(list1.get(i).get("temp").toString());
+                            //  postStep.setTemp(list1.get(i).get("temp").toString());
                             postSteps.add(postStep);
                             count++;
                         }

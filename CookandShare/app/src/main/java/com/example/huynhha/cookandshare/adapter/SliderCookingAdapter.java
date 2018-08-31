@@ -68,14 +68,14 @@ public class SliderCookingAdapter extends PagerAdapter {
         ImageView imgStep = view.findViewById(R.id.step_img);
         TextView txtTime = view.findViewById(R.id.step_time);
         TextView txtDescription = view.findViewById(R.id.step_details);
-        TextView txtTemp = view.findViewById(R.id.step_temp);
+       // TextView txtTemp = view.findViewById(R.id.step_temp);
         TextView txtStep = view.findViewById(R.id.step_count);
         System.out.println("Position  "+position);
         System.out.println("Url "+postSteps.get(position).getImgURL());
         txtStep.setText(postSteps.get(position).getNumberOfStep().toString());
       //  txtTime.setText(postSteps.get(position).getTime_duration().toString());
         txtDescription.setText(postSteps.get(position).getDescription().toString());
-        txtTemp.setText(postSteps.get(position).getTemp().toString());
+       // txtTemp.setText(postSteps.get(position).getTemp().toString());
         Picasso.get().load(postSteps.get(position).getImgURL()).fit().centerCrop().into(imgStep);
         container.addView(view);
         return view;

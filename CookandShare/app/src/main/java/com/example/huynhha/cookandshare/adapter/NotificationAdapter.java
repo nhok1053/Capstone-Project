@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.huynhha.cookandshare.CookingActitvity;
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
@@ -60,7 +61,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
                             .commit();
                 } else if (type.equals("1")) {
                     Intent intent = new Intent(context, PostDetails.class);
-                    intent.putExtra("postID", notificationDetail.getPostID().toString());
+                    Bundle bundle = new Bundle();
+                    bundle.putString("postID", notificationDetail.getPostID().toString());
+                    bundle.putString("userID", notificationDetail.getUserID().toString());
+                    bundle.putString("userName", "");
+                    intent.putExtras(bundle);
                     context.startActivity(intent);
                 } else if (type.equals("2")) {
                     ViewProfileFragment viewProfileFragment = new ViewProfileFragment();
@@ -70,6 +75,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fl_main, viewProfileFragment).addToBackStack(null)
                             .commit();
+                }else if(type.equals("3")){
+                    Intent intent = new Intent(context, CookingActitvity.class);
+                    intent.putExtra("postIDStep",notificationDetail.getPostID());
+                    context.startActivity(intent);
                 }
             }
 

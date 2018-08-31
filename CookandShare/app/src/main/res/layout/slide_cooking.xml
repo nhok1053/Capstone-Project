@@ -76,27 +76,7 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
 
-                <ImageView
-                    android:id="@+id/da"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/thermometer" />
-
-                <TextView
-                    android:id="@+id/step_temp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/da"
-                    android:text="30 phut"
-                    android:textSize="15sp" />
-            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
