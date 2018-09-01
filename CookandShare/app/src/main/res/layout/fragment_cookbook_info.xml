@@ -45,9 +45,9 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_below="@+id/cookbookInfoToolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cookbookInfoToolbar">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -109,12 +109,12 @@
             </LinearLayout>
 
             <TextView
-                android:background="@drawable/editext_border"
                 android:id="@+id/tvCookbookInfoCookbookDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llCookbookInfo"
                 android:layout_margin="5dp"
+                android:background="@drawable/editext_border"
                 android:padding="10dp"
                 android:text="Cookbook description" />
 
@@ -124,6 +124,19 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvCookbookInfoCookbookDescription"
                 android:layout_marginTop="10dp"></android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/tvWarningCookbook"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rvCookbookInfoListPostCookbook"
+                android:layout_margin="5dp"
+                android:background="@drawable/editext_border"
+                android:padding="10dp"
+                android:text="Một vài công thức có thể đã bị xóa"
+                android:textAlignment="center"
+                android:textColor="#f00" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

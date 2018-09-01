@@ -165,6 +165,4 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
     public int getItemCount() {
         return posts.size();
     }
-
-
 }

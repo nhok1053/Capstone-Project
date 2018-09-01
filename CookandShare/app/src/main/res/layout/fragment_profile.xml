@@ -44,7 +44,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="50"
+                            android:text="0"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
@@ -69,7 +69,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="50"
+                            android:text="0"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
@@ -94,7 +94,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="50"
+                            android:text="0"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
@@ -124,14 +124,14 @@
                             android:id="@+id/profileUserName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="To Tien Luc"
+                            android:text="Loading"
                             android:textSize="17sp" />
 
                         <TextView
                             android:id="@+id/profileUserDateOfBirth"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="23/04/1996" />
+                            android:text="01/01/2000" />
 
                     </LinearLayout>
 

@@ -101,6 +101,7 @@ public class ProfileFragment extends Fragment {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         }
+        rvImgPost.setFocusable(false);
         profileFragment = this;
         System.out.println(currentUser);
         userInfo();
@@ -109,8 +110,8 @@ public class ProfileFragment extends Fragment {
         countPost();
         countFollowingFollower("following", txtNumberFollowing);
         countFollowingFollower("follower", txtNumberFollower);
-//        clickAllPost(txtAllPost);
-//        clickAllPost(txtNumberAllPost);
+        clickAllPost(txtAllPost);
+        clickAllPost(txtNumberAllPost);
         clickFollowing(txtFollowing);
         clickFollowing(txtNumberFollowing);
         clickFollower(txtFollower);
@@ -133,7 +134,7 @@ public class ProfileFragment extends Fragment {
                 bundle.putString("userID", currentUser);
                 bundle.putString("type", "1");
                 updateProfileFragment.setArguments(bundle);
-                ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.fl_main,updateProfileFragment).addToBackStack(null).commit();
+                ((MainActivity) getContext()).getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.fl_main, updateProfileFragment).addToBackStack(null).commit();
             }
         });
     }
