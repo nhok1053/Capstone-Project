@@ -193,6 +193,7 @@ public class CookbookInfoFragment extends Fragment {
                                                     getFragmentManager().beginTransaction().detach(CookbookInfoFragment.this).commit();
                                                     Toast.makeText(getActivity(), "Đã xóa Cookbook", Toast.LENGTH_SHORT).show();
                                                 }
+                                                getActivity().finish();
 //                                                Toast.makeText(getActivity(), "Đã xóa Cookbook", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(getActivity(), CookBookActivity.class);
                                                 intent.putExtra("getUserID", currentUser);
