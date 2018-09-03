@@ -5,18 +5,22 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.adapter.ListTipsAdapter;
+import com.example.huynhha.cookandshare.adapter.SliderCookingAdapter;
 import com.example.huynhha.cookandshare.adapter.TopAttributeAdapter;
 import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.adapter.TopRecipeAdapter;
@@ -61,6 +65,7 @@ public class HomeFragment extends Fragment {
     RecyclerView rvRecipe;
     @BindView(R.id.rvPost)
     RecyclerView rvPost;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -118,6 +123,10 @@ public class HomeFragment extends Fragment {
         System.out.println("MainActivity : Resume");
     }
 
+    public void importBanner() {
+
+    }
+
     public void importTopPost() {
         posts.clear();
         rvPost.setNestedScrollingEnabled(false);
@@ -137,7 +146,7 @@ public class HomeFragment extends Fragment {
                             System.out.println("Timestamp " + timeconvert);
                             postID = documentSnapshot.get("postID").toString();
                             userID = documentSnapshot.get("userID").toString();
-                            time = "Ngày tạo: " +timeconvert;
+                            time = "Ngày tạo: " + timeconvert;
                             imgUrl = documentSnapshot.get("urlImage").toString();
                             title = documentSnapshot.get("title").toString();
                             description = documentSnapshot.get("description").toString();
@@ -171,16 +180,20 @@ public class HomeFragment extends Fragment {
     public String convertDate(Date date) {
         String str = "";
         String month, day, minutes, hour, second;
+        if (date.getDate() <= 9) {
+
+            day = "0" + date.getDate();
+        } else {
+            day = "" + date.getDate();
+        }
+
         if (date.getMonth() < 9) {
             month = "0" + (date.getMonth() + 1);
         } else {
             month = "" + (date.getMonth() + 1);
         }
-        if (date.getDay() < 10) {
-            day = "0" + date.getDay();
-        } else {
-            day = "" + date.getDay();
-        }
+
+
         if (date.getHours() < 10) {
             hour = "0" + date.getHours();
         } else {
@@ -196,6 +209,7 @@ public class HomeFragment extends Fragment {
         } else {
             second = "" + date.getSeconds();
         }
+        System.out.println("DATE 2" + date.toString());
         str = day + "." + month + "." + "2018" + " " + hour + ":" + minutes + ":" + second;
         return str;
     }

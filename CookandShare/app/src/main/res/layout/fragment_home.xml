@@ -26,6 +26,9 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:src="@drawable/banner"
+                    android:id="@+id/banner_pager"
+                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="#cccccc" />

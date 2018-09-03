@@ -263,6 +263,7 @@ public class PostRecipeMaterialFragment extends Fragment {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                 bitmap = resizedBitmap(bitmap, 960, 540);
                 img_recipe.setImageBitmap(bitmap);
+                btn_add_image.setVisibility(View.INVISIBLE);
             } catch (IOException e) {
                 e.printStackTrace();
             }

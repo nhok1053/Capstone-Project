@@ -210,6 +210,7 @@ public class UpdateProfileFragment extends Fragment {
                     user.setImgUrl(mAuth.getCurrentUser().getPhotoUrl().toString());
                     user.setPhone(edt_phone_number.getText().toString());
                     user.setDeletePostNum(0);
+                    user.setPostRemoved(0);
                     switch (idOfSelected) {
                         case R.id.rdmen:
                             user.setSex("Nam");

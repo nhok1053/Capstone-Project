@@ -119,7 +119,6 @@ public class LoginFragment extends Fragment {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-
                 firebaseAuthWithGoogle(account);
 
             } catch (ApiException e) {

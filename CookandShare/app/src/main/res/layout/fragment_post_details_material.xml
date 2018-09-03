@@ -120,31 +120,13 @@
 sasasas
 sasassa" />
 
-        <TextView
-            android:id="@+id/same_category_recipe_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_material_details"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="4dp"
-            android:text="Các món ăn cùng thể loại"
-            android:textSize="15dp"
-            android:textStyle="bold" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rc_list_recipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/same_category_recipe_title"
-            android:layout_margin="8dp"
-            android:layout_marginBottom="60dp"></android.support.v7.widget.RecyclerView>
 
         <Button
             android:id="@+id/start_cooking"
             android:layout_width="252dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/rc_list_recipe"
+            android:layout_below="@+id/tv_material_details"
             android:layout_centerInParent="true"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"

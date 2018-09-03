@@ -19,12 +19,22 @@ import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.Notification;
 import com.example.huynhha.cookandshare.entity.NotificationDetails;
 import com.example.huynhha.cookandshare.fragment.ViewProfileFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHolder> {
+    public CollectionReference userRef = FirebaseFirestore.getInstance().collection("User");
+    public String userNameQuerry = "";
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,7 +48,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
 
 
     @Override
-    public void onBindViewHolder(NotificationViewHolder holder, int position) {
+    public void onBindViewHolder(final NotificationViewHolder holder, int position) {
         int newposition = notificationDetails.size() - position - 1;
         final NotificationDetails notificationDetail = notificationDetails.get(newposition);
         holder.txtContent.setText(notificationDetail.getContent().toString());
@@ -64,9 +74,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
                     Bundle bundle = new Bundle();
                     bundle.putString("postID", notificationDetail.getPostID().toString());
                     bundle.putString("userID", notificationDetail.getUserID().toString());
-                    bundle.putString("userName", "");
-                    intent.putExtras(bundle);
-                    context.startActivity(intent);
+                    loadUserName(mAuth.getCurrentUser().getUid(), holder, bundle, intent);
+
                 } else if (type.equals("2")) {
                     ViewProfileFragment viewProfileFragment = new ViewProfileFragment();
                     Bundle bundle = new Bundle();
@@ -75,9 +84,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fl_main, viewProfileFragment).addToBackStack(null)
                             .commit();
-                }else if(type.equals("3")){
+                } else if (type.equals("3")) {
                     Intent intent = new Intent(context, CookingActitvity.class);
-                    intent.putExtra("postIDStep",notificationDetail.getPostID());
+                    intent.putExtra("postIDStep", notificationDetail.getPostID());
                     context.startActivity(intent);
                 }
             }
@@ -85,6 +94,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationViewHo
         });
         Picasso.get().load(notificationDetail.getUserUrlImage().toString()).fit().centerCrop().into(holder.imgNoti);
 
+    }
+
+    public void loadUserName(String userID, final NotificationViewHolder holder, final Bundle bundle, final Intent intent) {
+        userRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        userNameQuerry = document.getString("firstName");
+                        bundle.putString("userName", userNameQuerry);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
     public NotificationAdapter(ArrayList<NotificationDetails> notificationDetails, Context context) {
@@ -108,6 +133,7 @@ class NotificationViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public ImageView imgNoti;
     public TextView txtContent;
     public TextView txtTime;
+
 
     public NotificationViewHolder(View itemView) {
         super(itemView);
