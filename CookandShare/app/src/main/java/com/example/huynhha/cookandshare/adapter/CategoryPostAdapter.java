@@ -41,7 +41,7 @@ public class CategoryPostAdapter extends RecyclerView.Adapter<CategoryPostAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
-//        TextView userName;
+        //        TextView userName;
         TextView title;
         private RatingBar ratingBar;
         CardView cardView;
@@ -69,9 +69,10 @@ public class CategoryPostAdapter extends RecyclerView.Adapter<CategoryPostAdapte
         final Post post = posts.get(position);
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int pxWidth = displayMetrics.widthPixels;
-        Picasso.get().load(post.getUrlImage()).resize(pxWidth / 2, 0).into(holder.img);
+        Picasso.get().load(post.getUrlImage()).centerCrop().fit().into(holder.img);
         holder.title.setText(post.getTitle());
         holder.ratingBar.setRating(Float.parseFloat(post.getNumberOfRate()));
+        //ko query dc username de hien thi ra nhung van phai truyen vao de den post detail
         final String[] userName = {""};
         userRef.whereEqualTo("userID", post.getUserID()).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -94,7 +95,7 @@ public class CategoryPostAdapter extends RecyclerView.Adapter<CategoryPostAdapte
                 Intent intent = new Intent(context, PostDetails.class);
                 intent.putExtra("postID", post.getPostID());
                 intent.putExtra("userName", userName[0]);
-                intent.putExtra("userID",post.getUserID());
+                intent.putExtra("userID", post.getUserID());
                 context.startActivity(intent);
             }
         });

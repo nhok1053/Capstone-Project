@@ -21,10 +21,16 @@ public class IntroActivity extends AppIntro {
         addSlide(IntroSlide.newInstance(R.layout.intro_slide_3));
         addSlide(IntroSlide.newInstance(R.layout.intro_slide_4));
         setFadeAnimation();
+        showSkipButton(false);
         SharedPreferences.Editor editor = getSharedPreferences("check", MODE_PRIVATE).edit();
         editor.putString("firstTime", "N");
         editor.apply();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
     }
 
     @Override
@@ -37,7 +43,7 @@ public class IntroActivity extends AppIntro {
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
         Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
-      startActivity(intent);
+        startActivity(intent);
 
     }
 

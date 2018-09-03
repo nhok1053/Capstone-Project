@@ -209,6 +209,8 @@ public class LoginFragment extends Fragment {
                                         }
                                     } else {
                                         Toast.makeText(getActivity(), "Tài khoản đã bị khóa", Toast.LENGTH_SHORT).show();
+                                        mAuth.signOut();
+                                        revokeAccess();
                                     }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {

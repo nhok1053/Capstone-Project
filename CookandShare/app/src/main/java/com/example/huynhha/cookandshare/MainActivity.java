@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
             startActivity(intent);
         }
     }
-
+    
 
     @Override
     public void onCommentClicked(String postID, String userID) {

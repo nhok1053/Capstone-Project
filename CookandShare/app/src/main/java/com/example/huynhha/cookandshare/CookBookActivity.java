@@ -77,7 +77,7 @@ public class CookBookActivity extends AppCompatActivity {
                                 final int numberpost = listpost.size();
                                 final String cookbookName = documentSnapshot.get("cookbookName").toString();
                                 //get the image of First Recipe in listpost, set to main cookbook background
-                                final String[] image = {""};
+                                final String[] image = {"https://firebasestorage.googleapis.com/v0/b/capstone-project-1d078.appspot.com/o/cookbookdefault.jpg?alt=media&token=4e6740ba-acf1-46a8-a91d-0235943685a6"};
                                 MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString())
                                         .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override

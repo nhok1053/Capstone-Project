@@ -73,6 +73,8 @@ public class CookbookInfoFragment extends Fragment {
     Button btnMore;
     @BindView(R.id.btnFragmentCookbookInfoClose)
     Button btnClose;
+    @BindView(R.id.tvWarningCookbook)
+    TextView tvWarning;
     Cookbook cb;
     private ArrayList<String> listpost;
     private ArrayList<Post> posts = new ArrayList<>();
@@ -191,6 +193,7 @@ public class CookbookInfoFragment extends Fragment {
                                                     getFragmentManager().beginTransaction().detach(CookbookInfoFragment.this).commit();
                                                     Toast.makeText(getActivity(), "Đã xóa Cookbook", Toast.LENGTH_SHORT).show();
                                                 }
+                                                getActivity().finish();
 //                                                Toast.makeText(getActivity(), "Đã xóa Cookbook", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(getActivity(), CookBookActivity.class);
                                                 intent.putExtra("getUserID", currentUser);
@@ -226,23 +229,24 @@ public class CookbookInfoFragment extends Fragment {
                         if (documentSnapshot.exists()) {
                             listpost = (ArrayList<String>) documentSnapshot.get("postlist");
                             int numberpost = listpost.size();
-                            final String[] image = {""};
+                            final String[] image = {"https://firebasestorage.googleapis.com/v0/b/capstone-project-1d078.appspot.com/o/cookbookdefault.jpg?alt=media&token=4e6740ba-acf1-46a8-a91d-0235943685a6"};
                             MainActivity.db.collection("Post").whereEqualTo("postID", listpost.get(0).toString())
                                     .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                public void onComplete(@NonNull Task<QuerySnapshot> task1) {
                                     count++;
-                                    if (task.isSuccessful()) {
-                                        QuerySnapshot querySnapshot = task.getResult();
-                                        if (task.getResult() != null) {
+                                    if (task1.isSuccessful()) {
+                                        QuerySnapshot querySnapshot = task1.getResult();
+                                        if (task1.getResult() != null) {
                                             for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-                                                image[0] = queryDocumentSnapshot.get("urlImage").toString();
-                                                Picasso.get().load(image[0]).fit().centerCrop().into(imgMain);
+                                                if (queryDocumentSnapshot.get("urlImage").toString() != null || !queryDocumentSnapshot.get("urlImage").toString().equals("")) {
+                                                    image[0] = queryDocumentSnapshot.get("urlImage").toString();
+                                                }
+
                                             }
                                         }
-                                        if (count == task.getResult().size()) {
-                                            loadListPost(listpost);
-                                        }
+                                        Picasso.get().load(image[0]).fit().centerCrop().into(imgMain);
+                                        loadListPost(listpost);
                                     }
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -294,7 +298,7 @@ public class CookbookInfoFragment extends Fragment {
 
     }
 
-    private void loadListPost(ArrayList<String> list) {
+    private void loadListPost(final ArrayList<String> list) {
         rv.setNestedScrollingEnabled(false);
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rv.setLayoutManager(lln);
@@ -321,10 +325,6 @@ public class CookbookInfoFragment extends Fragment {
                             final String postUrlImage = queryDocumentSnapshot.get("urlImage").toString();
                             final String userIDOfPost = queryDocumentSnapshot.get("userID").toString();
                             final String[] userNameOfRecipe = new String[1];
-                            if (postTitle == null || postTitle.trim().equals("")) {
-                                Post postnull = new Post("0", "Cong thuc bi xoa", "xx", "Cong thuc bi xoa", "");
-                                posts.add(postnull);
-                            }
                             MainActivity.db.collection("User").whereEqualTo("userID", userIDOfPost).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -342,6 +342,12 @@ public class CookbookInfoFragment extends Fragment {
                                     if (cnt[0] == task.getResult().size()) {
                                         CookbookListPostAdapter cookbookListPostAdapter = new CookbookListPostAdapter(getActivity(), posts, cookbookID, userIDOfPost, userNameOfRecipe[0], userUrlImage, userID, userName);
                                         rv.setAdapter(cookbookListPostAdapter);
+                                        //check post da bi xoa
+                                        if (posts.size() != list.size()) {
+                                            tvWarning.setVisibility(View.VISIBLE);
+                                        } else if (posts.size() == list.size()) {
+                                            tvWarning.setVisibility(View.GONE);
+                                        }
                                     }
                                 }
 
