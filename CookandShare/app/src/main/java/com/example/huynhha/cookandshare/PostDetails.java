@@ -411,7 +411,7 @@ public class PostDetails extends AppCompatActivity {
                             public void onClick(View view) {
                                 int cbNameCount = 0;
                                 for (String cookbookName : cbName) {
-                                    if (name.getText().toString().equals(cookbookName)) {
+                                    if (name.getText().toString().equalsIgnoreCase(cookbookName)) {
                                         Toast.makeText(context, "Tên Cookbook đã tồn tại", Toast.LENGTH_SHORT).show();
                                         cbNameCount = 1;
                                     }

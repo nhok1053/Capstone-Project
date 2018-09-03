@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.R;
+import com.example.huynhha.cookandshare.Validate.ValidateFunction;
 import com.example.huynhha.cookandshare.adapter.MaterialAdapter;
 import com.example.huynhha.cookandshare.entity.Comment;
 import com.example.huynhha.cookandshare.entity.Material;
@@ -54,8 +55,9 @@ public class EditMaterialFragment extends Fragment {
     private MaterialAdapter materialAdapter;
     private Button btnAddEditMaterials;
     private int count = 0;
-    private String urlImage="";
-    private String documentID ="";
+    private String urlImage = "";
+    private String documentID = "";
+
     public EditMaterialFragment() {
         // Required empty public constructor
     }
@@ -73,21 +75,29 @@ public class EditMaterialFragment extends Fragment {
         return v;
     }
 
-    public List<Material> getMaterial(){
+    public void calValidate(){
+        validateMaterial();
+    }
+
+    public List<Material> getMaterial() {
         return materials;
     }
-    public String getDescription(){
+
+    public String getDescription() {
         String description = edtEditDescription.getText().toString();
         return description;
     }
-    public String getRecipeTitle(){
+
+    public String getRecipeTitle() {
         String title = edtEditRecipeName.getText().toString();
         return title;
     }
-    public String getImgUrl(){
+
+    public String getImgUrl() {
         return urlImage;
     }
-    public String getDocumentID(){
+
+    public String getDocumentID() {
         return documentID;
     }
 
@@ -101,7 +111,7 @@ public class EditMaterialFragment extends Fragment {
         edtEditNameMaterials = v.findViewById(R.id.edt_edit_name_of_material);
         edtEditQuatityMaterials = v.findViewById(R.id.edt_edit_quatity);
         btnAddEditMaterials = v.findViewById(R.id.btn_edit_add_material);
-        spinnerEditMaterials =v.findViewById(R.id.material_edit_quantity_type);
+        spinnerEditMaterials = v.findViewById(R.id.material_edit_quantity_type);
 
     }
 
@@ -140,13 +150,12 @@ public class EditMaterialFragment extends Fragment {
     }
 
 
-
     public void addMaterial() {
         btnAddEditMaterials.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edtEditNameMaterials.getText().toString().trim().length()==0 || edtEditQuatityMaterials.getText().toString().trim().length()==0) {
-                    Toast.makeText(getActivity(),"Tên nguyên liệu và số lượng không được để trống!!!",Toast.LENGTH_SHORT).show();
+                if (edtEditNameMaterials.getText().toString().trim().length() == 0 || edtEditQuatityMaterials.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getActivity(), "Tên nguyên liệu và số lượng không được để trống!!!", Toast.LENGTH_SHORT).show();
                 } else {
                     materials.add(new Material("", edtEditNameMaterials.getText().toString(), edtEditQuatityMaterials.getText().toString() + spinnerEditMaterials.getSelectedItem().toString(), ""));
                     importPostMaterial();
@@ -160,7 +169,7 @@ public class EditMaterialFragment extends Fragment {
     public void importPostMaterial() {
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rcEditMaterials.setLayoutManager(lln);
-        MaterialAdapter materialAdapter = new MaterialAdapter(materials,1);
+        MaterialAdapter materialAdapter = new MaterialAdapter(materials, 1);
         rcEditMaterials.setAdapter(materialAdapter);
     }
 
@@ -170,8 +179,18 @@ public class EditMaterialFragment extends Fragment {
         edtEditDescription.setText(post.getDescription().toString());
         LinearLayoutManager lln = new LinearLayoutManager(this.getActivity());
         rcEditMaterials.setLayoutManager(lln);
-        materialAdapter = new MaterialAdapter(materials,1);
+        materialAdapter = new MaterialAdapter(materials, 1);
         rcEditMaterials.setAdapter(materialAdapter);
     }
 
+    public void validateMaterial() {
+        ValidateFunction validateFunction = new ValidateFunction();
+        boolean valid = validateFunction.checkEditEditTextMaterials(edtEditNameMaterials.getText().toString(), edtEditQuatityMaterials.getText().toString());
+        if (!valid) {
+            Toast.makeText(getActivity(), "Tên nguyên liệu và số lượng không được để trống!!!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            importPostMaterial();
+        }
+    }
 }
