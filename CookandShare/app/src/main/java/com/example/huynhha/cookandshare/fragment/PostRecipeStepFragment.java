@@ -69,7 +69,7 @@ public class PostRecipeStepFragment extends Fragment {
                     importPostStep();
                 } else {
                     if (addPostList().get(addPostList().size() - 1).getUri().trim().length() == 0 || addPostList().get(addPostList().size() - 1).getDescription().trim().length() == 0
-                            || addPostList().get(addPostList().size() - 1).getTemp().trim().length() == 0) {
+                            ) {
                         Toast.makeText(getActivity(), "Trước khi thêm bước mới, hãy điền hết thông tin của bước hiện tại!!!", Toast.LENGTH_LONG).show();
                     } else {
                         postSteps.add(new PostStep("", "", "", "", "", ""));

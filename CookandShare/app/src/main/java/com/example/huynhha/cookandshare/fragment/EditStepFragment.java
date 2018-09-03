@@ -72,7 +72,6 @@ public class EditStepFragment extends Fragment {
                         if (listStep != null) {
                             for (int i = 0; i < listStep.size(); i++) {
                                 PostStep postStep = new PostStep();
-                                postStep.setTemp(listStep.get(i).get("temp").toString());
                                 postStep.setTime_duration(listStep.get(i).get("time_duration").toString());
                                 postStep.setDescription(listStep.get(i).get("description").toString());
                                 postStep.setImgURL(listStep.get(i).get("imgURL").toString());

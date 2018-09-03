@@ -209,7 +209,6 @@ public class EditPostActivity extends AppCompatActivity {
         for (int i = 0; i < editStepFragment.getListStep().size(); i++) {
             if (editStepFragment.getListStep().get(i).getImgURL().trim().length() == 0 ||
                     editStepFragment.getListStep().get(i).getDescription().trim().length() == 0 ||
-                    editStepFragment.getListStep().get(i).getTemp().trim().length() == 0 ||
                     editStepFragment.getListStep().get(i).getTime_duration().trim().length() == 0) {
                 Check = false;
                 Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian không được để trống!!!", Toast.LENGTH_SHORT).show();

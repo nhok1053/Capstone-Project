@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.adapter.PostsListAdapter;
@@ -44,7 +45,7 @@ public class Search extends AppCompatActivity {
     private static final String TAG = "SEARCH_TAG";
     ViewPager viewPager;
     Button btn_close_activity;
-    Button btn_title,btn_user,btn_tag,btn_material;
+    Button btn_title, btn_user, btn_tag, btn_material;
     private List<Post> postsList;
     private List<Post> postListData;
     private List<User> userList;
@@ -58,7 +59,7 @@ public class Search extends AppCompatActivity {
     private int count = 0;
     private RecyclerView mResultList;
     private ProgressDialog progressDialog;
-    String postID, userID, time, imgUrl, title,titleLower, description, userImgUrl;
+    String postID, userID, time, imgUrl, title, titleLower, description, userImgUrl;
     String dateOfBirth, firstName, firstNameLower, secondName, phone, sex;
     int like, comment;
     private String strCheckBtnClickValue;
@@ -66,7 +67,7 @@ public class Search extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        progressDialog =new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         setContentView(R.layout.activity_search);
         btn_close_activity = findViewById(R.id.btn_close);
         btn_title = findViewById(R.id.btn_title);
@@ -80,11 +81,11 @@ public class Search extends AppCompatActivity {
         postListData = new ArrayList<>();
         userList = new ArrayList<>();
         userListData = new ArrayList<>();
-        postsListAdapter = new PostsListAdapter(postsList,this);
-        usersListAdapter = new UsersListAdapter(userList,this);
+        postsListAdapter = new PostsListAdapter(postsList, this);
+        usersListAdapter = new UsersListAdapter(userList, this);
+        LinearLayoutManager lln = new LinearLayoutManager(this);
         mResultList.setHasFixedSize(true);
-        mResultList.setLayoutManager(new LinearLayoutManager(this));
-
+        mResultList.setLayoutManager(lln);
         storageReference = FirebaseStorage.getInstance().getReference();
         getSupportActionBar().hide();
         addPostDataToList();
@@ -103,7 +104,7 @@ public class Search extends AppCompatActivity {
         });
     }
 
-    public void searchButtonActivity(){
+    public void searchButtonActivity() {
 
         btn_title.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -155,7 +156,7 @@ public class Search extends AppCompatActivity {
         return "";
     }
 
-    public void addPostDataToList(){
+    public void addPostDataToList() {
         db.collection("Post")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -172,9 +173,9 @@ public class Search extends AppCompatActivity {
                             like = Integer.parseInt(documentSnapshot.get("like").toString());
                             comment = Integer.parseInt(documentSnapshot.get("comment").toString());
                             titleLower = covertStringToUnsigned(title);
-                            Post post = new Post(postID, userID, time, imgUrl, title,titleLower, description, userImgUrl, like, comment);
+                            Post post = new Post(postID, userID, time, imgUrl, title, titleLower, description, userImgUrl, like, comment);
                             postListData.add(post);
-                            Log.d(TAG,"Post Title: "+ title);
+                            Log.d(TAG, "Post Title: " + title);
                         }
                     }
 
@@ -185,7 +186,8 @@ public class Search extends AppCompatActivity {
             }
         });
     }
-    public void addUserDataToList(){
+
+    public void addUserDataToList() {
         db.collection("User")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -199,9 +201,9 @@ public class Search extends AppCompatActivity {
                             sex = documentSnapshot.get("sex").toString();
                             phone = documentSnapshot.get("phone").toString();
                             firstNameLower = covertStringToUnsigned(firstName);
-                            User user = new User(userID, userImgUrl, phone, sex, firstName,firstNameLower, secondName, dateOfBirth);
+                            User user = new User(userID, userImgUrl, phone, sex, firstName, firstNameLower, secondName, dateOfBirth);
                             userListData.add(user);
-                            Log.d(TAG,"User first name: "+ firstName);
+                            Log.d(TAG, "User first name: " + firstName);
                         }
                     }
 
@@ -212,10 +214,11 @@ public class Search extends AppCompatActivity {
             }
         });
     }
+
     private void firestorePostSearch(String searchText) {
         postsList.clear();
         //notification when click search button
-       // Toast.makeText(Search.this, "Started Search", Toast.LENGTH_LONG).show();
+        // Toast.makeText(Search.this, "Started Search", Toast.LENGTH_LONG).show();
         searchText = covertStringToUnsigned(searchText);
         int searchListLength = postListData.size();
         for (int i = 0; i < searchListLength; i++) {
@@ -225,10 +228,11 @@ public class Search extends AppCompatActivity {
             }
         }
     }
+
     private void firestoreUserSearch(String searchText) {
         userList.clear();
         //notification when click search button
-       // Toast.makeText(Search.this, "Started Search", Toast.LENGTH_LONG).show();
+        // Toast.makeText(Search.this, "Started Search", Toast.LENGTH_LONG).show();
         searchText = covertStringToUnsigned(searchText);
         int searchListLength = userListData.size();
         for (int i = 0; i < searchListLength; i++) {
@@ -240,7 +244,7 @@ public class Search extends AppCompatActivity {
     }
 
     @SuppressLint("NewApi")
-    public void setButtonBackground(){
+    public void setButtonBackground() {
         btn_title.setBackground(getDrawable(R.drawable.button_background));
 //        btn_material.setBackground(getDrawable(R.drawable.button_background));
 //        btn_tag.setBackground(getDrawable(R.drawable.button_background));
@@ -248,43 +252,67 @@ public class Search extends AppCompatActivity {
     }
 
 
+    private void searchTextFieldChange() {
+        mSearchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    postsList.clear();
+                    userList.clear();
+                    postsListAdapter.notifyDataSetChanged();
+                    usersListAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
 
+                }
 
-    private void searchTextFieldChange(){
-       mSearchField.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-               postsList.clear();
-               userList.clear();
-           }
+            }
 
-           @Override
-           public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String searchText = mSearchField.getText().toString();
+                if (searchText.equals("")) {
+                    try {
+                        postsList.clear();
+                        userList.clear();
+                        postsListAdapter.notifyDataSetChanged();
+                        usersListAdapter.notifyDataSetChanged();
+                    } catch (Exception e) {
+                        System.out.println("" + e);
+                    }
 
-           }
+                }
+            }
 
-           @Override
-           public void afterTextChanged(Editable editable) {
-               String searchText = mSearchField.getText().toString();
-               if(searchText.equals("")){
-                   postsList.clear();
-                   userList.clear();
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String searchText = mSearchField.getText().toString();
+                if (searchText.equals("")) {
+                    try {
+                        postsList.clear();
+                        userList.clear();
+                        postsListAdapter.notifyDataSetChanged();
+                        usersListAdapter.notifyDataSetChanged();
+                    } catch (Exception e) {
+                        System.out.println("" + e);
+                    }
 
-               }else{
-                   if(strCheckBtnClickValue.equals("Title")){
-                       postsList.clear();
-                       mResultList.setAdapter(postsListAdapter);
-                       firestorePostSearch(searchText);
-                   }
-                   if(strCheckBtnClickValue.equals("User")){
-                       userList.clear();
-                       mResultList.setAdapter(usersListAdapter);
-                       firestoreUserSearch(searchText);
-                   }
-               }
+                } else {
+                    if (strCheckBtnClickValue.equals("Title")) {
+                        postsList.clear();
+                        postsListAdapter.notifyDataSetChanged();
+                        mResultList.setAdapter(postsListAdapter);
+                        firestorePostSearch(searchText);
+                    }
+                    if (strCheckBtnClickValue.equals("User")) {
+                        userList.clear();
+                        usersListAdapter.notifyDataSetChanged();
+                        mResultList.setAdapter(usersListAdapter);
+                        firestoreUserSearch(searchText);
+                    }
+                }
 
-           }
-       });
+            }
+        });
     }
 
 }

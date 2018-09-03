@@ -203,9 +203,8 @@ public class PostRecipe extends AppCompatActivity {
         Boolean Check = true;
         for (int i = 0; i < postRecipeStepFragment.addPostList().size(); i++) {
             if (postRecipeStepFragment.addPostList().get(i).getUri().trim().length() == 0 ||
-                    postRecipeStepFragment.addPostList().get(i).getDescription().trim().length() == 0 ||
-                    postRecipeStepFragment.addPostList().get(i).getTemp().trim().length() == 0 ||
-                    postRecipeStepFragment.addPostList().get(i).getTime_duration().trim().length() == 0) {
+                    postRecipeStepFragment.addPostList().get(i).getDescription().trim().length() == 0
+                    ) {
                 Check = false;
                 Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian của các bước thực hiện không được để trống!!!", Toast.LENGTH_SHORT).show();
 

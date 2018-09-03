@@ -65,9 +65,7 @@ public class HomeFragment extends Fragment {
     RecyclerView rvRecipe;
     @BindView(R.id.rvPost)
     RecyclerView rvPost;
-    private ViewPager imageBanner;
-    private SliderCookingAdapter sliderCookingAdapter;
-    private TextView[] mDots;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -96,7 +94,6 @@ public class HomeFragment extends Fragment {
         rvPost = v.findViewById(R.id.rvPost);
         rvChef = v.findViewById(R.id.rvChef);
         rvRecipe = v.findViewById(R.id.rvRecipe);
-        imageBanner = v.findViewById(R.id.banner_pager);
         posts = new ArrayList<>();
         topRecipes = new ArrayList<>();
         ButterKnife.bind(v);
@@ -125,9 +122,11 @@ public class HomeFragment extends Fragment {
         super.onResume();
         System.out.println("MainActivity : Resume");
     }
-    public void importBanner(){
+
+    public void importBanner() {
 
     }
+
     public void importTopPost() {
         posts.clear();
         rvPost.setNestedScrollingEnabled(false);
@@ -181,16 +180,20 @@ public class HomeFragment extends Fragment {
     public String convertDate(Date date) {
         String str = "";
         String month, day, minutes, hour, second;
+        if (date.getDate() <= 9) {
+
+            day = "0" + date.getDate();
+        } else {
+            day = "" + date.getDate();
+        }
+
         if (date.getMonth() < 9) {
             month = "0" + (date.getMonth() + 1);
         } else {
             month = "" + (date.getMonth() + 1);
         }
-        if (date.getDay() < 10) {
-            day = "0" + date.getDay();
-        } else {
-            day = "" + date.getDay();
-        }
+
+
         if (date.getHours() < 10) {
             hour = "0" + date.getHours();
         } else {
@@ -206,6 +209,7 @@ public class HomeFragment extends Fragment {
         } else {
             second = "" + date.getSeconds();
         }
+        System.out.println("DATE 2" + date.toString());
         str = day + "." + month + "." + "2018" + " " + hour + ":" + minutes + ":" + second;
         return str;
     }

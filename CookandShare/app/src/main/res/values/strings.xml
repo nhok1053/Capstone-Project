@@ -31,6 +31,7 @@
         <item>@string/kg</item>
         <item>@string/g</item>
         <item>@string/lb</item>
+        <item>@string/ml</item>
         <item>@string/cup</item>
         <item>@string/fruit</item>
         <item>@string/bunchs</item>
@@ -49,7 +50,9 @@
     <string name="search">Search</string>
     <string name="title">Title</string>đề
     <string name="user">People</string>
+
     <string name="ingredient">Ingredient</string>
+    <string name="ml">ml</string>
 
 
 </resources>
