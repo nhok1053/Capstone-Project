@@ -26,8 +26,12 @@ import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.entity.Cookbook;
 import com.example.huynhha.cookandshare.entity.Post;
 import com.example.huynhha.cookandshare.fragment.CookbookInfoFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -154,9 +158,24 @@ public class CookbookListPostAdapter extends RecyclerView.Adapter<CookbookListPo
             public void onClick(View view) {
                 Intent intent = new Intent(context, PostDetails.class);
                 intent.putExtra("postID", post.getPostID());
-                intent.putExtra("userName", post.getUserName());
                 intent.putExtra("userID", post.getUserID());
-                context.startActivity(intent);
+                loadUserName(post.getUserID(), holder, intent);
+            }
+        });
+    }
+
+    public void loadUserName(String userID, final CookbookListPostAdapter.CookbookListViewHolder holder, final Intent intent) {
+        userRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String userNameQuerry = "";
+                        userNameQuerry = document.getString("firstName");
+                        intent.putExtra("userName", userNameQuerry);
+                        context.startActivity(intent);
+                    }
+                }
             }
         });
     }

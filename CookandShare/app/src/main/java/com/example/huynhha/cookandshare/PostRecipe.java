@@ -291,6 +291,7 @@ public class PostRecipe extends AppCompatActivity {
                             post.setPostSteps(postSteps);
                             post.setCountRate(0);
                             post.setCountView(0);
+                            post.setNumberOfReported(0);
                             listCategory = postRecipeMaterialFragment.getCategory();
                             post.setListCategory(listCategory);
                             for (int i = 0; i < listCategory.size(); i++) {

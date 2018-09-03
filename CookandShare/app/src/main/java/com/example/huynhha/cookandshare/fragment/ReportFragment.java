@@ -128,7 +128,8 @@ public class ReportFragment extends Fragment {
                         str = "Tin giả,quấy rối";
                         break;
                     case R.id.rp_6:
-                        str = edtReport.getText().toString();
+                        str = String.valueOf(edtReport.getText());
+                        System.out.println("STRa: "+str);
                         break;
 
                 }
@@ -140,6 +141,7 @@ public class ReportFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 System.out.println("ID :" + document.getId());
+                                System.out.println("STRa:1 "+finalStr);
                                 documentID = document.getId();
                                 addData(finalStr, documentID);
                                 Toast.makeText(getContext(), "Gửi thành công!\n Cảm ơn bạn đã giúp đỡ chúng tôi loại bỏ những bài đăng không an toàn!", Toast.LENGTH_SHORT).show();

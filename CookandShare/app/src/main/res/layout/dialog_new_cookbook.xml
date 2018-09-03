@@ -62,7 +62,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="40dp"
             android:textColor="#757575"
             style="?android:attr/borderlessButtonStyle"
             android:id="@+id/btnAddNewCookbookCancel"

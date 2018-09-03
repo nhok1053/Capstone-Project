@@ -17,6 +17,33 @@ public class User {
     private String firstNameLower;
     private String mail;
     private String dateOfBirth;
+    private int postRemoved;
+
+    public int getPostRemoved() {
+        return postRemoved;
+    }
+
+    public void setPostRemoved(int postRemoved) {
+        this.postRemoved = postRemoved;
+    }
+
+    public User(String userID, String imgUrl, String phone, String sex, String firstName, String firstNameLower, String mail, String dateOfBirth, int postRemoved, List<String> postID, int countFollow, boolean status, int deletePostNum, Date time) {
+        this.userID = userID;
+        this.imgUrl = imgUrl;
+        this.phone = phone;
+        this.sex = sex;
+        this.firstName = firstName;
+        this.firstNameLower = firstNameLower;
+        this.mail = mail;
+        this.dateOfBirth = dateOfBirth;
+        this.postRemoved = postRemoved;
+        this.postID = postID;
+        this.countFollow = countFollow;
+        this.status = status;
+        this.deletePostNum = deletePostNum;
+        this.time = time;
+    }
+
     private List<String> postID;
     private int countFollow;
     private boolean status;

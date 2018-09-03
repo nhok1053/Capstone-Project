@@ -5,18 +5,22 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.adapter.ListTipsAdapter;
+import com.example.huynhha.cookandshare.adapter.SliderCookingAdapter;
 import com.example.huynhha.cookandshare.adapter.TopAttributeAdapter;
 import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.adapter.TopRecipeAdapter;
@@ -61,6 +65,9 @@ public class HomeFragment extends Fragment {
     RecyclerView rvRecipe;
     @BindView(R.id.rvPost)
     RecyclerView rvPost;
+    private ViewPager imageBanner;
+    private SliderCookingAdapter sliderCookingAdapter;
+    private TextView[] mDots;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -89,6 +96,7 @@ public class HomeFragment extends Fragment {
         rvPost = v.findViewById(R.id.rvPost);
         rvChef = v.findViewById(R.id.rvChef);
         rvRecipe = v.findViewById(R.id.rvRecipe);
+        imageBanner = v.findViewById(R.id.banner_pager);
         posts = new ArrayList<>();
         topRecipes = new ArrayList<>();
         ButterKnife.bind(v);
@@ -117,7 +125,9 @@ public class HomeFragment extends Fragment {
         super.onResume();
         System.out.println("MainActivity : Resume");
     }
+    public void importBanner(){
 
+    }
     public void importTopPost() {
         posts.clear();
         rvPost.setNestedScrollingEnabled(false);
@@ -137,7 +147,7 @@ public class HomeFragment extends Fragment {
                             System.out.println("Timestamp " + timeconvert);
                             postID = documentSnapshot.get("postID").toString();
                             userID = documentSnapshot.get("userID").toString();
-                            time = "Ngày tạo: " +timeconvert;
+                            time = "Ngày tạo: " + timeconvert;
                             imgUrl = documentSnapshot.get("urlImage").toString();
                             title = documentSnapshot.get("title").toString();
                             description = documentSnapshot.get("description").toString();

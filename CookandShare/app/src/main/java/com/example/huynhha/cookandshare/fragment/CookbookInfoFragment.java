@@ -351,6 +351,7 @@ public class CookbookInfoFragment extends Fragment {
                                     System.out.println(e.getMessage());
                                 }
                             });
+
                         }
                     }
                 }
