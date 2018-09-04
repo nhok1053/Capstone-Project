@@ -1,12 +1,20 @@
 package com.example.huynhha.cookandshare.Validate;
 
+import android.content.Context;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.huynhha.cookandshare.R;
+
 import java.text.Normalizer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class ValidateFunction {
     //function in search activity
-    public String covertStringToUnsigned(String str) {
+    public String covertStringToUnsigneded(String str) {
         try {
             String temp = Normalizer.normalize(str, Normalizer.Form.NFD);
             Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
@@ -35,6 +43,7 @@ public class ValidateFunction {
         }
     }
 
+    //function in updateProfileFragment
     public boolean checkInputFirstNameText(String name) {
         if (!name.matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯẠẢẤẦẨẪẬẮẰẲẴẶ" +
                 "ẸẺẼỀẾỂưạảấầẩẫậắằẳẵặẹẻẽềếểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +

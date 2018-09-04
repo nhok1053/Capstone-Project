@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostRecipe;
 import com.example.huynhha.cookandshare.R;
+import com.example.huynhha.cookandshare.Validate.ValidateFunction;
 import com.example.huynhha.cookandshare.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -112,6 +113,10 @@ public class UpdateProfileFragment extends Fragment {
         super.onStart();
     }
 
+    public void useValidate(){
+        validateUserInfo();
+    }
+
     public void loadUserInfoFromProfile() {
         userRef.whereEqualTo("userID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -155,7 +160,8 @@ public class UpdateProfileFragment extends Fragment {
         }
 
     }
-    public void datePicker(){
+
+    public void datePicker() {
         edt_date_of_birth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +172,7 @@ public class UpdateProfileFragment extends Fragment {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        edt_date_of_birth.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
+                        edt_date_of_birth.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
                     }
                 }, year, month, day);
@@ -175,7 +181,6 @@ public class UpdateProfileFragment extends Fragment {
         });
 
     }
-
 
 
     public void setBtn_UpdateListener() {
@@ -187,9 +192,9 @@ public class UpdateProfileFragment extends Fragment {
                 if (edt_first_name.getText().toString().trim().length() == 0 || edt_date_of_birth.getText().toString().trim().length() == 0 ||
                         edt_email.getText().toString().trim().length() == 0 || edt_phone_number.getText().toString().trim().length() == 0) {
                     Toast.makeText(getActivity(), "Vui lòng điền đầy đủ thông tin!!!", Toast.LENGTH_SHORT).show();
-                } else if (!edt_first_name.getText().toString().matches( "^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯẠẢẤẦẨẪẬẮẰẲẴẶ" +
+                } else if (!edt_first_name.getText().toString().matches("^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯẠẢẤẦẨẪẬẮẰẲẴẶ" +
                         "ẸẺẼỀẾỂưạảấầẩẫậắằẳẵặẹẻẽềếểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +
-                        "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$" )) {
+                        "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$")) {
                     Toast.makeText(getActivity(), "Họ và Tên không được chứa kí tự đặc biệt (trừ khoảng trắng và dấu gạch nối)", Toast.LENGTH_LONG).show();
                 } else if (edt_first_name.getText().toString().trim().length() > 30) {
                     Toast.makeText(getActivity(), "Họ và Tên không được nhiều hơn 30 kí tự!!!", Toast.LENGTH_SHORT).show();
@@ -274,7 +279,7 @@ public class UpdateProfileFragment extends Fragment {
                         userRef.document(userID).update("mail", user.getMail());
                         Toast.makeText(getActivity(), "Cập nhập thông tin thành công!", Toast.LENGTH_SHORT).show();
                         removeFragment(updateProfileFragment);
-                        ((MainActivity)getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fl_profile,new ProfileFragment()).commit();
+                        ((MainActivity) getContext()).getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fl_profile, new ProfileFragment()).commit();
                     }
                 }
 
@@ -287,4 +292,35 @@ public class UpdateProfileFragment extends Fragment {
         });
     }
 
+    public void validateUserInfo() {
+        ValidateFunction vf = new ValidateFunction();
+        if (vf.checkInputFirstNameText(edt_first_name.getText().toString())) {
+            Toast.makeText(getActivity(), "Họ và Tên không được chứa kí tự đặc biệt (trừ khoảng trắng và dấu gạch nối)", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (vf.checkInputFirstNameLength(edt_first_name.getText().toString())) {
+            Toast.makeText(getActivity(), "Họ và Tên không được nhiều hơn 30 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (vf.checkInputMail(edt_email.getText().toString())) {
+            Toast.makeText(getActivity(), "Vui lòng điền đúng định dạng email (vd: cookandshare@fpt.edu)", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (vf.checkPhoneNumber(edt_phone_number.getText().toString())) {
+            Toast.makeText(getActivity(), "Vui lòng nhập số điện thoại đúng định dạng và có độ dài 10-13 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (vf.checkInputDateOfBirth(edt_date_of_birth.getText().toString())) {
+            Toast.makeText(getActivity(), "Bạn chưa nhập ngày sinh!!!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            User userUpdate = new User();
+            userUpdate.setFirstName(edt_first_name.getText().toString());
+            userUpdate.setDateOfBirth(edt_date_of_birth.getText().toString());
+            userUpdate.setImgUrl(mAuth.getCurrentUser().getPhotoUrl().toString());
+            userUpdate.setPhone(edt_phone_number.getText().toString());
+            updateProfile(userUpdate);
+            Toast.makeText(getActivity(), "Sửa thông tin thành công!!!", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

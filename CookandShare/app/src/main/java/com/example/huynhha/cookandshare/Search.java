@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.huynhha.cookandshare.Validate.ValidateFunction;
 import com.example.huynhha.cookandshare.adapter.PostsListAdapter;
 import com.example.huynhha.cookandshare.adapter.UsersListAdapter;
 import com.example.huynhha.cookandshare.entity.Post;
@@ -93,6 +94,10 @@ public class Search extends AppCompatActivity {
         searchButtonActivity();
         searchTextFieldChange();
         closeActivityListener();
+    }
+
+    public void valid() {
+        convert();
     }
 
     public void closeActivityListener() {
@@ -251,6 +256,10 @@ public class Search extends AppCompatActivity {
         btn_user.setBackground(getDrawable(R.drawable.button_background));
     }
 
+    public void convert() {
+        ValidateFunction vf = new ValidateFunction();
+        vf.covertStringToUnsigneded(mSearchField.getText().toString());
+    }
 
     private void searchTextFieldChange() {
         mSearchField.addTextChangedListener(new TextWatcher() {

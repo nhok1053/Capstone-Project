@@ -121,7 +121,6 @@ public class PostDetailsMaterialFragment extends Fragment {
         txt_number_of_people_eat_details = v.findViewById(R.id.number_of_people_eat_detail);
         txt_difficult = v.findViewById(R.id.difficult_type);
         txt_material = v.findViewById(R.id.tv_material_details);
-        rc_list_recipe = v.findViewById(R.id.rc_list_recipe);
         btn_start_cooking = v.findViewById(R.id.start_cooking);
     }
 

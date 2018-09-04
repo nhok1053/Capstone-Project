@@ -26,49 +26,49 @@ public class UnitTest {
     public void testEquivalenceInputSearchBarAllUpperCase() {
         String input = "ABC";
         String expectedValue = "abc";
-        assertEquals(expectedValue, vf.covertStringToUnsigned(input));
+        assertEquals(expectedValue, vf.covertStringToUnsigneded(input));
     }
 
     @Test
     public void testEquivalenceInputSearchBarSomeUpperCase() {
         String input = "AbC";
         String expectedValue = "abc";
-        assertEquals(expectedValue, vf.covertStringToUnsigned(input));
+        assertEquals(expectedValue, vf.covertStringToUnsigneded(input));
     }
 
     @Test
     public void testEquivalenceInputSearchBarAllLowerCase() {
         String input = "abc";
         String expectedValue = "abc";
-        assertEquals(expectedValue, vf.covertStringToUnsigned(input));
+        assertEquals(expectedValue, vf.covertStringToUnsigneded(input));
     }
 
     @Test
     public void testBoundaryInputSearchBarContainVietnameseTextWithAllLowerCase() {
         String input = "đang";
         String expectedValue = "dang";
-        assertEquals(expectedValue, vf.covertStringToUnsigned(input));
+        assertEquals(expectedValue, vf.covertStringToUnsigneded(input));
     }
 
     @Test
     public void testBoundaryInputSearchBarContainVietnameseTextWithSomeUpperCase() {
         String input = "ĐanG";
         String expectedValue = "dang";
-        assertEquals(expectedValue, vf.covertStringToUnsigned(input));
+        assertEquals(expectedValue, vf.covertStringToUnsigneded(input));
     }
 
     @Test
     public void testBoundaryInputSearchBarContainVietnameseTextWithAllUpperCase() {
         String input = "ĐANG";
         String expectedValue = "dang";
-        assertEquals(expectedValue, vf.covertStringToUnsigned(input));
+        assertEquals(expectedValue, vf.covertStringToUnsigneded(input));
     }
 
     @Test
     public void testBoundaryInputSearchBarContainNoChar() {
         String input = "";
         String expectedValue = "";
-        assertEquals(expectedValue, vf.covertStringToUnsigned(input));
+        assertEquals(expectedValue, vf.covertStringToUnsigneded(input));
     }
 
     //test input at edit material name and quality

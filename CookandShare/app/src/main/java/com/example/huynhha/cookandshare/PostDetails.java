@@ -30,6 +30,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.huynhha.cookandshare.Validate.ValidateFunction;
 import com.example.huynhha.cookandshare.adapter.AddCookbookAdapter;
 import com.example.huynhha.cookandshare.adapter.CategoryPostAdapter;
 import com.example.huynhha.cookandshare.adapter.PagerAdapter;
@@ -180,6 +181,10 @@ public class PostDetails extends AppCompatActivity {
         settingsListener();
     }
 
+    public void valid() {
+        validCookbook();
+    }
+
     public void setBtnBackListener() {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,8 +244,8 @@ public class PostDetails extends AppCompatActivity {
                                     final Intent intent = new Intent(context, EditPostActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.putExtra("postID", postID);
-                                    intent.putExtra("userID",userID);
-                                    intent.putExtra("userName",userNamePost);
+                                    intent.putExtra("userID", userID);
+                                    intent.putExtra("userName", userNamePost);
                                     intent.putExtra("type", "0");
                                     context.startActivity(intent);
                                     ((PostDetails) context).finish();
@@ -793,6 +798,30 @@ public class PostDetails extends AppCompatActivity {
         cursor1.close();
     }
 
+    public void validCookbook() {
+        ValidateFunction vf = new ValidateFunction();
+        EditText edtCBName = findViewById(R.id.etAddNewCookbookName);
+        EditText createCBName = findViewById(R.id.etEditCookbookEditName);
+        EditText edtCBDes = findViewById(R.id.etAddNewCookbookDes);
+        if (!vf.checkInputCookbookNameCreateNewCookbook(edtCBName.getText().toString())) {
+            Toast.makeText(context, "Tên cookbook không được để trống và phải ít hơn 60 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!vf.checkInputCookbookDescriptionCreateNewCookbook(edtCBDes.getText().toString())) {
+            Toast.makeText(context, "Mô tả cookbook không được để trống và phải ít hơn 200 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!vf.checkInputCookbookNameDupplicate(edtCBName.getText().toString(), createCBName.getText().toString())) {
+            Toast.makeText(context, "Tên Cookbook đã tồn tại!!!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            final Map<String, Object> cookbookNew = new HashMap<>();
+            cookbookNew.put("cookbookName", edtCBName.getText().toString());
+            cookbookNew.put("cookbookDescription", edtCBDes.getText().toString());
+            cookbookNew.put("userID", currentUser);
+            Toast.makeText(context, "Thêm công thức thành công!!!", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 
 

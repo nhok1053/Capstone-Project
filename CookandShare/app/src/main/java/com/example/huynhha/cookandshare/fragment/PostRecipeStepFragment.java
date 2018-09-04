@@ -1,6 +1,7 @@
 package com.example.huynhha.cookandshare.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,14 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.huynhha.cookandshare.R;
+import com.example.huynhha.cookandshare.Validate.ValidateFunction;
 import com.example.huynhha.cookandshare.adapter.PostStepAdapter;
 import com.example.huynhha.cookandshare.entity.PostStep;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +52,10 @@ public class PostRecipeStepFragment extends Fragment {
         importPostStep();
         addStep();
         return view;
+    }
+
+    public void valid(){
+        validStep();
     }
 
     public void importPostStep() {
@@ -112,4 +121,30 @@ public class PostRecipeStepFragment extends Fragment {
         postStepList = postStepAdapter.getPostSteps();
         return postStepList;
     }
+    public void validStep() {
+        Context context = getActivity();
+        ValidateFunction vf = new ValidateFunction();
+        EditText edtStepRes = getView().findViewById(R.id.etAddNewCookbookName);
+        EditText edtStepTime = getView().findViewById(R.id.etEditCookbookEditDes);
+        EditText edtStepTemp = getView().findViewById(R.id.etAddNewCookbookDes);
+        if (!vf.checkPostStepDescription(edtStepRes.getText().toString())) {
+            Toast.makeText(context, "Mô tả bước công thức không được để trống và phải ít hơn 200 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!vf.checkPostStepTime(edtStepTime.getText().toString())) {
+            Toast.makeText(context, "Thời gian bước không được trống!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!vf.checkPostStepTemperature(edtStepTemp.getText().toString())) {
+            Toast.makeText(context, "Nhiệt độ không đúng tiêu chuẩn!!!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            final Map<String, Object> step = new HashMap<>();
+            step.put("description", edtStepRes.getText().toString());
+            step.put("time", edtStepTime.getText().toString());
+            step.put("temp", edtStepTemp.getText().toString());
+            Toast.makeText(context, "Thêm bước thành công!!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

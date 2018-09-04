@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
+import com.example.huynhha.cookandshare.Validate.ValidateFunction;
 import com.example.huynhha.cookandshare.adapter.MaterialAdapter;
 import com.example.huynhha.cookandshare.adapter.TopRecipeAdapter;
 import com.example.huynhha.cookandshare.entity.Material;
@@ -142,6 +143,9 @@ public class PostRecipeMaterialFragment extends Fragment {
         return view;
     }
 
+    public void useValid() {
+        validateMaterials();
+    }
 
     @Override
     public void onStart() {
@@ -382,4 +386,18 @@ public class PostRecipeMaterialFragment extends Fragment {
         return list;
     }
 
+    public void validateMaterials() {
+        ValidateFunction vf = new ValidateFunction();
+        String mateName = edt_namme_of_material.getText().toString();
+        String mateQuality = edt_quatity.getText().toString();
+        String mateType = material_quantity_type.getSelectedItem().toString();
+        boolean valid = vf.checkInputMaterials(mateName, mateQuality);
+        if (!valid) {
+            Toast.makeText(getActivity(), "Tên nguyên liệu và số lượng không được để trống!!!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            materials.add(new Material("", mateName, edt_quatity + mateType, ""));
+            importPostMaterial();
+        }
+    }
 }
