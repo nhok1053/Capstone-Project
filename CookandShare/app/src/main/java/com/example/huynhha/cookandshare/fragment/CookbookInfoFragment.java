@@ -28,6 +28,7 @@ import com.example.huynhha.cookandshare.MainActivity;
 import com.example.huynhha.cookandshare.PostDetails;
 import com.example.huynhha.cookandshare.R;
 import com.example.huynhha.cookandshare.RoundedTransformation;
+import com.example.huynhha.cookandshare.Validate.ValidateFunction;
 import com.example.huynhha.cookandshare.adapter.CookbookListPostAdapter;
 import com.example.huynhha.cookandshare.adapter.TopPostAdapter;
 import com.example.huynhha.cookandshare.entity.Cookbook;
@@ -43,6 +44,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -130,6 +132,10 @@ public class CookbookInfoFragment extends Fragment {
         close();
         return v;
 
+    }
+
+    public void valid() {
+        validCookbook();
     }
 
     private void clickMore() {
@@ -367,6 +373,32 @@ public class CookbookInfoFragment extends Fragment {
                     System.out.println(e.getMessage());
                 }
             });
+        }
+    }
+
+    public void validCookbook() {
+        Context context = getActivity();
+        ValidateFunction vf = new ValidateFunction();
+        EditText edtCBName = getView().findViewById(R.id.etAddNewCookbookName);
+        EditText createCBName = getView().findViewById(R.id.etEditCookbookEditName);
+        EditText edtCBDes = getView().findViewById(R.id.etAddNewCookbookDes);
+        if (!vf.checkInputEditCookbookName(edtCBName.getText().toString())) {
+            Toast.makeText(context, "Tên cookbook không được để trống và phải ít hơn 60 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!vf.checkInputEditCookbookDescription(edtCBDes.getText().toString())) {
+            Toast.makeText(context, "Mô tả cookbook không được để trống và phải ít hơn 200 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!vf.checkInputEditCookbookNameDupplicate(edtCBName.getText().toString(), createCBName.getText().toString())) {
+            Toast.makeText(context, "Tên Cookbook đã tồn tại!!!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            final Map<String, Object> cookbookNew = new HashMap<>();
+            cookbookNew.put("cookbookName", edtCBName.getText().toString());
+            cookbookNew.put("cookbookDescription", edtCBDes.getText().toString());
+            cookbookNew.put("userID", currentUser);
+            Toast.makeText(context, "Thêm công thức thành công!!!", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.huynhha.cookandshare.Validate.ValidateFunction;
 import com.example.huynhha.cookandshare.adapter.PagerAdapter;
 import com.example.huynhha.cookandshare.adapter.PostRecipeTabLayoutAdapter;
 import com.example.huynhha.cookandshare.adapter.PostStepAdapter;
@@ -66,6 +67,7 @@ public class PostRecipe extends AppCompatActivity {
     ViewPager viewPager;
     Button btn_close_activity;
     Button btn_finish;
+    private boolean ck;
     private PostRecipeStepFragment postRecipeStepFragment;
     private PostRecipeMaterialFragment postRecipeMaterialFragment;
     public List<PostStep> postSteps;
@@ -115,6 +117,10 @@ public class PostRecipe extends AppCompatActivity {
         uuid = UUID.randomUUID().toString().replace("-", "");
         setPostListener(uuid, uuid);
         closeActivityListener();
+    }
+
+    private void validCheck(){
+        validatePosts();
     }
 
     private void setTabLayout() {
@@ -487,6 +493,48 @@ public class PostRecipe extends AppCompatActivity {
         }
         System.out.println("check noti reicpe");
         notiRef.document(documentID).update("notification", listNoti);
+    }
+
+    public void validatePosts() {
+        ValidateFunction vf = new ValidateFunction();
+        EditText edtName = findViewById(R.id.edt_recipe_name);
+        EditText edtDes = findViewById(R.id.edt_recipe_description);
+        TextView edtTime = findViewById(R.id.tv_time_cook);
+        if (vf.checkInputNameOfRecipe(edtName.getText().toString())) {
+            Toast.makeText(getApplicationContext(), "Tên của món ăn không được để trống và phải ít hơn 50 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (vf.checkInputDescriptionOfRecipe(edtDes.getText().toString())) {
+            Toast.makeText(getApplicationContext(), "Mô tả của món ăn không được để trống và phải ít hơn 300 kí tự!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (vf.checkInputListCategoryOfRecipe(listCategory)) {
+            Toast.makeText(getApplicationContext(), "Hãy chọn thể loại của món ăn!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (vf.checkInputListMaterital(list1)) {
+            Toast.makeText(getApplicationContext(), "Phải có ít nhất một nguyên liệu!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (vf.checkInputListStepOfRecipe(listNoti)) {
+            Toast.makeText(getApplicationContext(), "Phải có ít nhất một bước!!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (vf.checkInputTotalTimeCook(edtTime.getText().toString())) {
+            Toast.makeText(getApplicationContext(), "Hãy nhập thời gian!!!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            for (int i = 0; i < postRecipeStepFragment.addPostList().size(); i++) {
+                if (postRecipeStepFragment.addPostList().get(i).getUri().trim().length() == 0 ||
+                        postRecipeStepFragment.addPostList().get(i).getDescription().trim().length() == 0
+                        ) {
+                    ck = false;
+                    Toast.makeText(getApplicationContext(), "Ảnh, mô tả, nhiệt độ, thời gian của các bước thực hiện không được để trống!!!", Toast.LENGTH_SHORT).show();
+                } else {
+                    ck = true;
+                }
+            }
+        }
     }
 }
 
