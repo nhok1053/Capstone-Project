@@ -128,6 +128,7 @@ public class LoginFragment extends Fragment {
             }
         }
     }
+
     private void revokeAccess() {
         mGoogleSignInClient.revokeAccess().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -179,11 +180,12 @@ public class LoginFragment extends Fragment {
                                 @Override
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                     System.out.println("Intent2");
-                                    Boolean checkUserStatus = false;
+                                    Boolean checkUserStatus = true;
                                     for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                                         checkUserStatus = queryDocumentSnapshot.getBoolean("status");
+                                        System.out.println("CHECK STATUS"+checkUserStatus);
                                     }
-                                    if (checkUserStatus == true) {
+                                    if (checkUserStatus == true || checkUserStatus == null||queryDocumentSnapshots ==null) {
                                         if (queryDocumentSnapshots != null && queryDocumentSnapshots.size() != 0) {
                                             Intent intent = new Intent(getActivity(), MainActivity.class);
                                             startActivity(intent);

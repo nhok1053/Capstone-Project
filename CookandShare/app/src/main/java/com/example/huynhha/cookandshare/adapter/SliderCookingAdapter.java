@@ -73,7 +73,7 @@ public class SliderCookingAdapter extends PagerAdapter {
         System.out.println("Position  "+position);
         System.out.println("Url "+postSteps.get(position).getImgURL());
         txtStep.setText(postSteps.get(position).getNumberOfStep().toString());
-      //  txtTime.setText(postSteps.get(position).getTime_duration().toString());
+        txtTime.setText(postSteps.get(position).getTime_duration().toString());
         txtDescription.setText(postSteps.get(position).getDescription().toString());
        // txtTemp.setText(postSteps.get(position).getTemp().toString());
         Picasso.get().load(postSteps.get(position).getImgURL()).fit().centerCrop().into(imgStep);

@@ -80,7 +80,7 @@ public class CookingActitvity extends AppCompatActivity {
                             PostStep postStep = new PostStep();
                             postStep.setImgURL(list1.get(i).get("imgURL").toString());
                             postStep.setNumberOfStep("" + (i + 1));
-//                            postStep.setTime_duration(list1.get(i).get("time_duration").toString());
+                            postStep.setTime_duration(list1.get(i).get("time_duration").toString());
                             postStep.setDescription(list1.get(i).get("description").toString());
                             //  postStep.setTemp(list1.get(i).get("temp").toString());
                             postSteps.add(postStep);

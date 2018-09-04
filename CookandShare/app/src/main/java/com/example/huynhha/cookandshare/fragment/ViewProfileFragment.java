@@ -438,12 +438,11 @@ public class ViewProfileFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 if (count > 1) {
                                     if (listFollower.size() > 0 && listFollowing.size() > 0) {
-                                        loadNotification();
-
                                         notebookRefFollow.document(sFollowing).update("following", listFollowing);
                                         notebookRefFollow.document(sFollower).update("follower", listFollower);
                                         notebookRefFollow.document(sFollower).update("countFollower", listFollower.size());
                                         if (getFragmentManager() != null) {
+                                            loadNotification();
                                             getFragmentManager().beginTransaction().detach(ViewProfileFragment.this).attach(ViewProfileFragment.this).commit();
                                         }
                                     }
